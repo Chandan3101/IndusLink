@@ -71,6 +71,7 @@ import {
   AuditHistoryView,
 } from './AdminViews.tsx';
 import { LifeVaultSidebar } from './LifeVaultSidebar.tsx';
+import { DualSymbiosisView } from './DualSymbiosisView.tsx';
 
 interface AppShellProps {
   currentUser: UserProfile;
@@ -312,7 +313,18 @@ export const AppShell: React.FC<AppShellProps> = ({
         <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto w-full space-y-8">
           {/* DASHBOARD ROUTE */}
           {activeTab === 'dashboard' && (
-            workspaceMode === 'seller' ? (
+            workspaceMode === 'both' ? (
+              <DualSymbiosisView
+                materials={materials}
+                buyerSpecs={buyerSpecs}
+                enquiries={enquiries}
+                offers={offers}
+                clusterNodes={clusterNodes}
+                onNavigateTab={(tab) => setActiveTab(tab)}
+                onOpenRegisterMaterial={() => setActiveTab('registry')}
+                onOpenCreateSpec={() => setActiveTab('registry')}
+              />
+            ) : workspaceMode === 'seller' ? (
               <SellerOverview
                 materials={materials}
                 buyerSpecs={buyerSpecs}

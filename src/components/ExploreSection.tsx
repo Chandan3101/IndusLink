@@ -7,11 +7,11 @@ import React from 'react';
 import { motion } from 'motion/react';
 import { SectionId } from '../types/index.ts';
 import {
-  Compass,
   Cpu,
+  ShieldCheck,
   DollarSign,
   Leaf,
-  ShieldCheck,
+  Activity,
   Network,
   ArrowRight,
   Lock,
@@ -25,36 +25,36 @@ interface ExploreSectionProps {
 }
 
 export const ExploreSection: React.FC<ExploreSectionProps> = ({ onNavigate, onOpenAccess }) => {
-  // Six distinct, compact entry points as strictly requested
-  const entryPoints = [
+  // Exact 6 platform capabilities specified in Section 3 & 4
+  const capabilities = [
     {
-      title: 'Discover Materials',
-      desc: 'Browse qualified byproduct streams by chemistry and radius.',
-      icon: Compass,
-    },
-    {
-      title: 'Assess Compatibility',
-      desc: 'Verify engineering tolerances against receiving specs.',
+      title: 'Explainable Material Matching',
+      desc: 'Verify byproduct chemistry against receiving engineering specs with explicit tolerances.',
       icon: Cpu,
     },
     {
-      title: 'Calculate Delivered Cost',
-      desc: 'Model gate price, freight, and testing amortized per ton.',
-      icon: DollarSign,
-    },
-    {
-      title: 'Compare Environmental Impact',
-      desc: 'Measure net emissions against virgin material baselines.',
-      icon: Leaf,
-    },
-    {
-      title: 'Review Evidence',
-      desc: 'Audit ISO 17025 test certificates and data gaps.',
+      title: 'Technical Evidence Review',
+      desc: 'Audit ISO 17025 test certificates, dates, and identify critical missing parameters.',
       icon: ShieldCheck,
     },
     {
-      title: 'Optimize Resource Flows',
-      desc: 'Solve regional multi-facility symbiosis routing.',
+      title: 'Delivered-Cost Analysis',
+      desc: 'Calculate gate prices, haulage freight rates, and amortized QA testing per ton.',
+      icon: DollarSign,
+    },
+    {
+      title: 'Environmental Scenario Analysis',
+      desc: 'Compare avoided virgin emissions against transportation footprint with break-even distance.',
+      icon: Leaf,
+    },
+    {
+      title: 'Supply Reliability',
+      desc: 'Model batch variation, monthly generation variance, and buffer storage requirements.',
+      icon: Activity,
+    },
+    {
+      title: 'Industrial Network Optimization',
+      desc: 'Optimize regional multi-facility clusters and cross-industry symbiosis routing.',
       icon: Network,
     },
   ];
@@ -66,7 +66,7 @@ export const ExploreSection: React.FC<ExploreSectionProps> = ({ onNavigate, onOp
       className="relative min-h-[90vh] py-20 md:py-28 border-t border-white/5 flex flex-col justify-between scroll-mt-24"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full space-y-16">
-        {/* Section 4 — Platform Header */}
+        {/* Section 4 — Platform Capabilities */}
         <div>
           <motion.div
             initial={{ opacity: 0, y: 18 }}
@@ -77,20 +77,21 @@ export const ExploreSection: React.FC<ExploreSectionProps> = ({ onNavigate, onOp
           >
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full glass-surface text-xs font-semibold tracking-widest text-emerald-400 uppercase mb-3">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-              <span>Platform</span>
+              <span>Platform Capabilities</span>
             </div>
             <AnimatedHeading
               tag="h2"
+              effect="unblurLines"
               className="font-serif text-3xl sm:text-5xl font-medium tracking-tight text-[#F8FAFC] leading-tight"
             >
               Industrial Intelligence. One Workspace.
             </AnimatedHeading>
           </motion.div>
 
-          {/* Six Distinct, Compact Entry Points */}
+          {/* Six Compact Capability Cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-12">
-            {entryPoints.map((point, idx) => {
-              const Icon = point.icon;
+            {capabilities.map((cap, idx) => {
+              const Icon = cap.icon;
               return (
                 <div
                   key={idx}
@@ -103,16 +104,16 @@ export const ExploreSection: React.FC<ExploreSectionProps> = ({ onNavigate, onOp
                     </div>
                     <div>
                       <h3 className="font-serif text-base font-semibold text-[#F8FAFC]">
-                        {point.title}
+                        {cap.title}
                       </h3>
                       <p className="text-xs text-zinc-300 leading-relaxed mt-1">
-                        {point.desc}
+                        {cap.desc}
                       </p>
                     </div>
                   </div>
 
                   <div className="pt-3 mt-4 border-t border-white/5 flex items-center justify-between text-[11px] text-emerald-400 font-mono">
-                    <span>Launch Module</span>
+                    <span>Explore Capability</span>
                     <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
                   </div>
                 </div>
@@ -120,19 +121,20 @@ export const ExploreSection: React.FC<ExploreSectionProps> = ({ onNavigate, onOp
             })}
           </div>
 
-          {/* Call to Action Banner */}
+          {/* Concluding CTA Banner */}
           <div className="glass-surface-elevated rounded-3xl p-8 sm:p-10 text-center max-w-2xl mx-auto space-y-5 border border-emerald-500/20 shadow-2xl relative overflow-hidden">
             <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-emerald-400 to-transparent opacity-80" />
 
-            <div className="space-y-1.5">
+            <div className="space-y-2">
               <AnimatedHeading
                 tag="h3"
+                effect="softFocus"
                 className="font-serif text-2xl sm:text-3xl font-semibold text-[#F8FAFC]"
               >
                 One organization. Buy, sell, or both.
               </AnimatedHeading>
-              <p className="text-xs text-zinc-300 max-w-md mx-auto">
-                Connect secondary mineral and chemical streams to industrial off-takers with verified technical evidence.
+              <p className="text-sm text-zinc-300 max-w-md mx-auto">
+                Evaluate opportunities through one connected workspace.
               </p>
             </div>
 
@@ -141,7 +143,7 @@ export const ExploreSection: React.FC<ExploreSectionProps> = ({ onNavigate, onOp
                 onClick={() => onOpenAccess('start')}
                 className="glow-button-emerald px-7 py-3 rounded-full text-xs sm:text-sm font-semibold flex items-center gap-2"
               >
-                <span>Explore Platform</span>
+                <span>Launch Platform</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
             </div>
@@ -158,7 +160,7 @@ export const ExploreSection: React.FC<ExploreSectionProps> = ({ onNavigate, onOp
           </div>
         </div>
 
-        {/* Footer */}
+        {/* Minimal Footer */}
         <footer className="border-t border-white/10 pt-8 pb-6 text-xs text-zinc-400">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-2 font-serif font-bold text-base text-[#F8FAFC]">

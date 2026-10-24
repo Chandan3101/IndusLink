@@ -71,16 +71,16 @@ export const Navigation: React.FC<NavigationProps> = ({
           isScrolled ? 'shadow-2xl' : 'shadow-lg'
         }`}
       >
-        {/* Brand Mark & Simple Emblem */}
+        {/* Brand Mark & Emblem */}
         <button
           onClick={() => {
             onNavigate('home');
             setMobileMenuOpen(false);
           }}
-          className="flex items-center gap-2 px-2 py-1 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors shrink-0 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#9D1738]"
+          className="flex items-center gap-2 px-2 py-1 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors shrink-0 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
           title="IndusLink — Home"
         >
-          <div className="w-6 h-6 rounded-full bg-gradient-to-br from-[#9D1738] to-[#680C23] text-[#F8FAFC] flex items-center justify-center font-bold text-[10px] tracking-tight shadow-sm ring-1 ring-white/20">
+          <div className="w-6 h-6 rounded-full bg-gradient-to-br from-emerald-500 to-teal-700 text-[#F8FAFC] flex items-center justify-center font-bold text-[10px] tracking-tight shadow-sm ring-1 ring-white/20">
             IL
           </div>
           <span className="font-serif font-bold text-sm tracking-wider text-[#15161A] dark:text-[#F8FAFC] hidden min-[440px]:inline">
@@ -91,12 +91,12 @@ export const Navigation: React.FC<NavigationProps> = ({
         {/* Vertical divider */}
         <div className="w-px h-4 bg-black/10 dark:bg-white/15 shrink-0" aria-hidden="true" />
 
-        {/* Section Navigation with Prev/Next Steppers and Active Indicator */}
+        {/* Section Navigation with Steppers and Active Indicator */}
         <div className="flex items-center gap-1 shrink-0">
           <button
             onClick={handlePrev}
             disabled={currentIndex === 0}
-            className="hidden sm:inline-flex min-h-10 min-w-10 items-center justify-center rounded-full hover:bg-black/5 dark:hover:bg-white/10 disabled:opacity-25 disabled:cursor-not-allowed transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#9D1738]"
+            className="hidden sm:inline-flex min-h-10 min-w-10 items-center justify-center rounded-full hover:bg-black/5 dark:hover:bg-white/10 disabled:opacity-25 disabled:cursor-not-allowed transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
             aria-label="Previous section"
             title="Previous section"
           >
@@ -126,7 +126,7 @@ export const Navigation: React.FC<NavigationProps> = ({
 
           {/* Mobile Current Active Section Label */}
           <div className="sm:hidden px-2.5 py-1 rounded-full text-[11px] font-bold tracking-wider bg-emerald-600 text-[#F8FAFC] uppercase">
-            {SECTIONS[currentIndex]?.label || 'HOME'}
+            {SECTIONS[currentIndex]?.label || 'HERO'}
           </div>
 
           <button
@@ -146,7 +146,7 @@ export const Navigation: React.FC<NavigationProps> = ({
         {/* Theme Toggle */}
         <button
           onClick={onToggleTheme}
-          className="min-h-11 min-w-11 inline-flex items-center justify-center rounded-full hover:bg-black/5 dark:hover:bg-white/10 text-[#61646E] dark:text-[#94A3B8] hover:text-emerald-500 dark:hover:text-[#F8FAFC] transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 shrink-0"
+          className="min-h-10 min-w-10 inline-flex items-center justify-center rounded-full hover:bg-black/5 dark:hover:bg-white/10 text-[#61646E] dark:text-[#94A3B8] hover:text-emerald-400 dark:hover:text-[#F8FAFC] transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 shrink-0"
           aria-label={isDark ? 'Switch to light theme' : 'Switch to dark theme'}
           title={isDark ? 'Switch to light theme' : 'Switch to dark theme'}
         >
@@ -157,7 +157,7 @@ export const Navigation: React.FC<NavigationProps> = ({
           )}
         </button>
 
-        {/* Actions: Log In & Launch Platform */}
+        {/* Actions: Sign In & Launch Platform */}
         <div className="hidden md:flex items-center gap-1.5 shrink-0 ml-1">
           <button
             onClick={() => onOpenAccess('login')}
@@ -179,7 +179,7 @@ export const Navigation: React.FC<NavigationProps> = ({
         {/* Mobile Menu Hamburger */}
         <button
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="md:hidden min-h-11 min-w-11 inline-flex items-center justify-center rounded-full hover:bg-black/5 dark:hover:bg-white/10 text-[#61646E] dark:text-[#94A3B8] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#9D1738]"
+          className="md:hidden min-h-10 min-w-10 inline-flex items-center justify-center rounded-full hover:bg-black/5 dark:hover:bg-white/10 text-[#61646E] dark:text-[#94A3B8] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
           aria-label="Toggle mobile menu"
           aria-expanded={mobileMenuOpen}
           aria-controls="mobile-navigation-menu"
@@ -199,9 +199,9 @@ export const Navigation: React.FC<NavigationProps> = ({
                   onNavigate(section.id);
                   setMobileMenuOpen(false);
                 }}
-                className={`min-h-11 text-left px-4 py-2.5 rounded-xl text-xs font-semibold tracking-wider transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#9D1738] ${
+                className={`min-h-11 text-left px-4 py-2.5 rounded-xl text-xs font-semibold tracking-wider transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 ${
                   activeSection === section.id
-                    ? 'bg-[#9D1738] text-[#F8FAFC]'
+                    ? 'bg-emerald-600 text-[#F8FAFC]'
                     : 'text-[#61646E] dark:text-[#94A3B8] hover:bg-black/5 dark:hover:bg-white/5'
                 }`}
               >
@@ -216,18 +216,18 @@ export const Navigation: React.FC<NavigationProps> = ({
                 onOpenAccess('login');
                 setMobileMenuOpen(false);
               }}
-              className="min-h-11 py-2 rounded-xl text-xs font-medium text-center border border-black/10 dark:border-white/10 text-[#15161A] dark:text-[#F8FAFC] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#9D1738]"
+              className="min-h-11 py-2 rounded-xl text-xs font-medium text-center border border-black/10 dark:border-white/10 text-[#15161A] dark:text-[#F8FAFC] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
             >
-              Log In
+              Sign In
             </button>
             <button
               onClick={() => {
                 onOpenAccess('start');
                 setMobileMenuOpen(false);
               }}
-              className="min-h-11 py-2 rounded-xl text-xs font-semibold text-center bg-[#9D1738] text-[#F8FAFC] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#9D1738]"
+              className="min-h-11 py-2 rounded-xl text-xs font-semibold text-center glow-button-emerald focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
             >
-              Get Started
+              Launch Platform
             </button>
           </div>
         </div>

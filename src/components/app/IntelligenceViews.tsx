@@ -3,28 +3,22 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import {
-  ShieldAlert,
+  Compass,
   Cpu,
   DollarSign,
   Leaf,
-  Layers,
-  Activity,
   FileCheck,
-  History,
-  Sliders,
   Network,
   CheckCircle2,
   AlertTriangle,
   HelpCircle,
   XCircle,
   ArrowRight,
-  TrendingUp,
   MapPin,
-  Scale,
-  RefreshCw,
-  FileSpreadsheet,
+  FileText,
+  Search,
 } from 'lucide-react';
 import type {
   RegisteredMaterial,
@@ -34,10 +28,9 @@ import type {
 } from '../../types/index.ts';
 import {
   evaluateCandidateAgainstSpec,
-  calculateSupplyReliability,
+  calculateDeliveredCost,
+  calculateCarbonImpact,
   optimizeClusterSynergies,
-  calculateHaversineDistance,
-  calculateWhatIfScenario,
 } from '../../utils/evaluationEngine.ts';
 import {
   CostWaterfallChart,
@@ -52,124 +45,209 @@ interface IntelligenceViewsProps {
   auditLogs: AuditTrailEvent[];
   clusterNodes: ClusterNode[];
   initialActiveEngine?: string;
+  onNavigateToSpec?: () => void;
 }
 
 export const IntelligenceHub: React.FC<IntelligenceViewsProps> = ({
   materials,
   buyerSpecs,
-  auditLogs,
   clusterNodes,
-  initialActiveEngine = 'compatibility',
+  initialActiveEngine = 'discover',
 }) => {
-  // Normalize engine key
-  const defaultTab =
-    initialActiveEngine === 'explainable_matching' || initialActiveEngine === 'matching'
-      ? 'compatibility'
-      : initialActiveEngine === 'true_cost' || initialActiveEngine === 'cost_engine'
-      ? 'delivered_cost'
-      : initialActiveEngine === 'environmental'
-      ? 'environmental'
-      : initialActiveEngine === 'alternative_uses'
-      ? 'alternative_uses'
-      : initialActiveEngine === 'readiness_passport' || initialActiveEngine === 'evidence_center'
-      ? 'evidence_readiness'
-      : initialActiveEngine === 'cluster_optimizer'
-      ? 'network_optimizer'
-      : initialActiveEngine;
+  // Normalize initial engine
+  const resolveInitialEngine = (engine: string) => {
+    switch (engine) {
+      case 'discover':
+      case 'material_discovery':
+        return 'discover';
+      case 'compatibility':
+      case 'explainable_matching':
+      case 'matching':
+        return 'compatibility';
+      case 'delivered_cost':
+      case 'cost_engine':
+      case 'true_cost':
+        return 'delivered_cost';
+      case 'environmental':
+      case 'carbon':
+        return 'environmental';
+      case 'evidence_readiness':
+      case 'evidence_center':
+      case 'evidence':
+        return 'evidence';
+      case 'network_optimizer':
+      case 'cluster_optimizer':
+      case 'network':
+        return 'network_optimizer';
+      default:
+        return 'discover';
+    }
+  };
 
-  const [activeEngine, setActiveEngine] = useState<string>(defaultTab);
+  const [activeEngine, setActiveEngine] = useState<string>(resolveInitialEngine(initialActiveEngine));
 
-  // Module 1 (Compatibility) interactive states
+  // ==========================================
+  // MODULE 1: DISCOVER MATERIALS STATES
+  // ==========================================
+  const [discoverSearch, setDiscoverSearch] = useState('');
+  const [discoverCategory, setDiscoverCategory] = useState<string>('all');
+  const [discoverMinVolume, setDiscoverMinVolume] = useState<number>(0);
+  const [discoverMaxDistance, setDiscoverMaxDistance] = useState<number>(300);
+
+  // ==========================================
+  // MODULE 2: ASSESS COMPATIBILITY STATES
+  // ==========================================
   const [selectedMaterialId, setSelectedMaterialId] = useState<string>(materials[0]?.id || '');
   const [selectedSpecId, setSelectedSpecId] = useState<string>(buyerSpecs[0]?.id || '');
-  const [isAssessing, setIsAssessing] = useState(false);
-  const [assessedCount, setAssessedCount] = useState(0);
+  const [compatDistanceKm, setCompatDistanceKm] = useState<number>(85);
 
-  // Module 2 (Delivered Cost) interactive inputs
-  const [costGatePrice, setCostGatePrice] = useState<number>(18);
-  const [costDistance, setCostDistance] = useState<number>(85);
-  const [costProcessing, setCostProcessing] = useState<number>(14.2);
-  const [costQa, setCostQa] = useState<number>(3.5);
-  const [isCalculatingCost, setIsCalculatingCost] = useState(false);
+  // ==========================================
+  // MODULE 3: DELIVERED COST STATES
+  // ==========================================
+  const [costBaseGatePrice, setCostBaseGatePrice] = useState<number>(18);
+  const [costDistanceKm, setCostDistanceKm] = useState<number>(85);
+  const [costFreightRate, setCostFreightRate] = useState<number>(0.18);
+  const [costPreprocessing, setCostPreprocessing] = useState<number>(14.5);
+  const [costQaTestingPerBatch, setCostQaTestingPerBatch] = useState<number>(350);
+  const [costBatchSizeTons, setCostBatchSizeTons] = useState<number>(100);
+  const [costBaselineVirgin, setCostBaselineVirgin] = useState<number>(85);
 
-  // Module 3 (Environmental Impact) interactive inputs
-  const [envDistance, setEnvDistance] = useState<number>(85);
-  const [envPretreatmentCO2, setEnvPretreatmentCO2] = useState<number>(12);
-  const [isComparingEnv, setIsComparingEnv] = useState(false);
+  // ==========================================
+  // MODULE 4: ENVIRONMENTAL IMPACT STATES
+  // ==========================================
+  const [envBaselineEmissions, setEnvBaselineEmissions] = useState<number>(820); // Virgin Portland cement baseline
+  const [envProcessingEmissions, setEnvProcessingEmissions] = useState<number>(45); // Secondary byproduct thermal/crushing
+  const [envTransportEmissionFactor, setEnvTransportEmissionFactor] = useState<number>(0.10); // kg CO2e / ton-km
+  const [envHaulageDistance, setEnvHaulageDistance] = useState<number>(120);
+  const [envAnnualTonnage, setEnvAnnualTonnage] = useState<number>(4000);
 
-  // Module 4 (Alternative Uses) state
-  const [isExploringUses, setIsExploringUses] = useState(false);
-  const [exploredSuccess, setExploredSuccess] = useState(true);
+  // ==========================================
+  // MODULE 5: REVIEW EVIDENCE STATES
+  // ==========================================
+  const [evidenceMaterialId, setEvidenceMaterialId] = useState<string>(materials[0]?.id || '');
+  const [evidenceFilter, setEvidenceFilter] = useState<'all' | 'verified' | 'pending' | 'missing'>('all');
 
-  // Module 5 (Evidence & Readiness) state
-  const [isReviewingEvidence, setIsReviewingEvidence] = useState(false);
+  // ==========================================
+  // MODULE 6: OPTIMIZE RESOURCE FLOWS STATES
+  // ==========================================
+  const [networkClusterRadius, setNetworkClusterRadius] = useState<number>(120);
+  const [networkPrioritize, setNetworkPrioritize] = useState<'carbon' | 'cost' | 'volume'>('carbon');
 
-  // Module 6 (Network Optimizer) state
-  const [clusterRadius, setClusterRadius] = useState<number>(100);
-  const [isOptimizingNetwork, setIsOptimizingNetwork] = useState(false);
-
-  // Data helpers
+  // ------------------------------------------
+  // Helpers
+  // ------------------------------------------
   const currentMaterial = materials.find((m) => m.id === selectedMaterialId) || materials[0];
   const currentSpec = buyerSpecs.find((s) => s.id === selectedSpecId) || buyerSpecs[0];
+  const currentEvidenceMaterial = materials.find((m) => m.id === evidenceMaterialId) || materials[0];
 
-  const currentAssessment =
-    currentMaterial && currentSpec
-      ? evaluateCandidateAgainstSpec(currentMaterial, currentSpec, costDistance)
-      : null;
+  // Module 1: Filtered materials
+  const filteredDiscoveryMaterials = useMemo(() => {
+    return materials.filter((m) => {
+      const matchSearch =
+        m.name.toLowerCase().includes(discoverSearch.toLowerCase()) ||
+        m.category.toLowerCase().includes(discoverSearch.toLowerCase()) ||
+        m.sourceFacility.toLowerCase().includes(discoverSearch.toLowerCase());
+      const matchCategory =
+        discoverCategory === 'all' || m.category.toLowerCase().includes(discoverCategory.toLowerCase());
+      const matchVolume = m.monthlyVolumeTons >= discoverMinVolume;
+      return matchSearch && matchCategory && matchVolume;
+    });
+  }, [materials, discoverSearch, discoverCategory, discoverMinVolume]);
 
-  // Six distinct modules as strictly defined by Section 3
+  // Module 2: Compatibility calculation
+  const compatibilityAssessment = useMemo(() => {
+    if (!currentMaterial || !currentSpec) return null;
+    return evaluateCandidateAgainstSpec(currentMaterial, currentSpec, compatDistanceKm);
+  }, [currentMaterial, currentSpec, compatDistanceKm]);
+
+  // Module 3: Delivered Cost calculation
+  const deliveredCostResult = useMemo(() => {
+    return calculateDeliveredCost({
+      baseMaterialPricePerTon: costBaseGatePrice,
+      distanceKm: costDistanceKm,
+      freightRatePerTonKm: costFreightRate,
+      preprocessingCostPerTon: costPreprocessing,
+      qaTestingCostPerBatch: costQaTestingPerBatch,
+      batchSizeTons: costBatchSizeTons,
+      baselinePrimaryMaterialCostPerTon: costBaselineVirgin,
+    });
+  }, [
+    costBaseGatePrice,
+    costDistanceKm,
+    costFreightRate,
+    costPreprocessing,
+    costQaTestingPerBatch,
+    costBatchSizeTons,
+    costBaselineVirgin,
+  ]);
+
+  // Module 4: Environmental Impact calculation
+  const environmentalResult = useMemo(() => {
+    return calculateCarbonImpact({
+      baselineEmissionsKgCO2e: envBaselineEmissions,
+      reuseProcessingEmissionsKgCO2e: envProcessingEmissions,
+      transportEmissionFactorKgPerTonKm: envTransportEmissionFactor,
+      distanceKm: envHaulageDistance,
+    });
+  }, [
+    envBaselineEmissions,
+    envProcessingEmissions,
+    envTransportEmissionFactor,
+    envHaulageDistance,
+  ]);
+
+  // Module 6: Cluster synergies calculation
+  const clusterSynergies = useMemo(() => {
+    return optimizeClusterSynergies(clusterNodes);
+  }, [clusterNodes]);
+
+  // Six distinct modules defined in Section 7
   const modules = [
     {
-      id: 'compatibility',
+      id: 'discover',
       number: '01',
-      title: 'Material Compatibility',
-      purpose: "Determine whether a material meets receiving application's engineering limits.",
-      actionLabel: 'Assess Compatibility',
-      icon: Cpu,
+      title: 'Discover Materials',
+      purpose: 'Search available material streams using category, volume, location, and chemical assays.',
+      icon: Compass,
       color: 'text-emerald-400',
     },
     {
-      id: 'delivered_cost',
+      id: 'compatibility',
       number: '02',
-      title: 'Delivered Cost',
-      purpose: 'Calculate estimated full delivered cost including freight and thermal conditioning.',
-      actionLabel: 'Calculate Cost',
+      title: 'Assess Compatibility',
+      purpose: "Evaluate candidate source material against buyer's technical tolerance limits.",
+      icon: Cpu,
+      color: 'text-cyan-400',
+    },
+    {
+      id: 'delivered_cost',
+      number: '03',
+      title: 'Calculate Delivered Cost',
+      purpose: 'Model gate price, freight haulage, preprocessing, and QA testing amortized per ton.',
       icon: DollarSign,
       color: 'text-blue-400',
     },
     {
       id: 'environmental',
-      number: '03',
-      title: 'Environmental Impact',
-      purpose: 'Compare secondary reuse scenario against certified virgin material baselines.',
-      actionLabel: 'Compare Scenarios',
+      number: '04',
+      title: 'Compare Environmental Impact',
+      purpose: 'Benchmark reuse scenario against virgin baseline emissions and haulage limits.',
       icon: Leaf,
       color: 'text-teal-400',
     },
     {
-      id: 'alternative_uses',
-      number: '04',
-      title: 'Alternative Uses',
-      purpose: 'Explore multiple cascading applications when primary requirements fail.',
-      actionLabel: 'Explore Uses',
-      icon: Layers,
-      color: 'text-purple-400',
-    },
-    {
-      id: 'evidence_readiness',
+      id: 'evidence',
       number: '05',
-      title: 'Evidence & Readiness',
-      purpose: 'Identify missing lab assays, stale measurements, and regulatory clearances.',
-      actionLabel: 'Review Evidence',
+      title: 'Review Evidence',
+      purpose: 'Audit ISO 17025 test certificates, dates, missing parameters, and regulatory clearances.',
       icon: FileCheck,
       color: 'text-indigo-400',
     },
     {
       id: 'network_optimizer',
       number: '06',
-      title: 'Industrial Network Optimizer',
-      purpose: 'Evaluate multiple supply-demand allocations across regional industrial clusters.',
-      actionLabel: 'Optimize Network',
+      title: 'Optimize Resource Flows',
+      purpose: 'Solve multi-facility allocations and regional symbiosis across industrial clusters.',
       icon: Network,
       color: 'text-amber-400',
     },
@@ -180,15 +258,16 @@ export const IntelligenceHub: React.FC<IntelligenceViewsProps> = ({
       {/* Header */}
       <div>
         <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-mono font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 mb-2">
-          <span>Deterministic Industrial Intelligence</span>
+          <span>Industrial Resource Intelligence</span>
           <span>•</span>
           <span>Six Genuinely Distinct Modules</span>
         </div>
         <AnimatedHeading
           tag="h2"
+          effect="unblurLines"
           className="font-serif text-2xl sm:text-3xl font-semibold text-[var(--text-primary)]"
         >
-          Resource Intelligence & Decision Support Suite
+          Decision Support & Intelligence Suite
         </AnimatedHeading>
         <p className="text-xs text-[var(--text-secondary)] max-w-2xl mt-1">
           Every module features a unique purpose, dedicated input parameters, specific visual architecture, and actionable evaluation outputs.
@@ -222,634 +301,859 @@ export const IntelligenceHub: React.FC<IntelligenceViewsProps> = ({
       </div>
 
       {/* =========================================================================
-          MODULE 1: MATERIAL COMPATIBILITY
-          Main purpose: determine whether a material meets receiving requirements.
-          Visual: requirement checklist & property comparison.
-          Action: Assess Compatibility
-          Output: pass, fail, or insufficient evidence for each requirement.
+          MODULE 1: DISCOVER MATERIALS
+          Purpose: Search available material streams using material category, quantity, location, and relevant properties.
+          Output: Filtered candidate materials with clear source and availability information.
           ========================================================================= */}
-      {activeEngine === 'compatibility' && (
+      {activeEngine === 'discover' && (
         <div className="glass-surface-elevated rounded-3xl p-6 sm:p-8 space-y-6">
           <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 border-b border-white/10 pb-4">
             <div>
               <span className="text-[10px] font-mono text-emerald-400 uppercase tracking-wider block">
-                Module 01 • Engineering Boundary Verification
+                Module 01 • Qualified Stream Discovery
               </span>
               <h3 className="font-serif text-2xl font-semibold text-[var(--text-primary)]">
-                Material Compatibility Assessment
+                Discover Secondary Material Streams
               </h3>
-              <p className="text-xs text-[var(--text-secondary)] mt-1 max-w-xl">
-                Determines whether a secondary stream meets process engineering limits without statistical hallucination or assumed parameters.
+              <p className="text-xs text-[var(--text-secondary)] mt-1">
+                Filter registered byproduct feedstocks by chemical assays, production volume, and transportation radius.
               </p>
             </div>
-
-            {/* Input Controls */}
-            <div className="flex flex-wrap items-center gap-2">
-              <select
-                value={selectedMaterialId}
-                onChange={(e) => setSelectedMaterialId(e.target.value)}
-                className="px-3 py-1.5 rounded-xl glass-surface text-xs font-semibold text-[var(--text-primary)] border border-white/10"
-              >
-                {materials.map((m) => (
-                  <option key={m.id} value={m.id} className="bg-zinc-900 text-white">
-                    {m.name}
-                  </option>
-                ))}
-              </select>
-
-              <select
-                value={selectedSpecId}
-                onChange={(e) => setSelectedSpecId(e.target.value)}
-                className="px-3 py-1.5 rounded-xl glass-surface text-xs font-semibold text-[var(--text-primary)] border border-white/10"
-              >
-                {buyerSpecs.map((s) => (
-                  <option key={s.id} value={s.id} className="bg-zinc-900 text-white">
-                    {s.title}
-                  </option>
-                ))}
-              </select>
-
-              <button
-                onClick={() => {
-                  setIsAssessing(true);
-                  setTimeout(() => {
-                    setIsAssessing(false);
-                    setAssessedCount((c) => c + 1);
-                  }, 400);
-                }}
-                disabled={isAssessing}
-                className="glow-button-emerald px-4 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1.5"
-              >
-                {isAssessing ? (
-                  <RefreshCw className="w-3.5 h-3.5 animate-spin" />
-                ) : (
-                  <Cpu className="w-3.5 h-3.5" />
-                )}
-                <span>Assess Compatibility</span>
-              </button>
+            <div className="text-right">
+              <span className="text-[11px] font-mono text-zinc-400 block">Matched Streams</span>
+              <span className="text-xl font-bold font-mono text-emerald-400">
+                {filteredDiscoveryMaterials.length} of {materials.length}
+              </span>
             </div>
           </div>
 
-          {/* Verdict Banner */}
-          {currentAssessment && (
-            <div
-              className={`p-4 rounded-2xl border text-xs flex items-center justify-between ${
-                currentAssessment.state === 'POTENTIAL_IDENTIFIED'
-                  ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-300'
-                  : currentAssessment.state === 'TESTING_REQUIRED'
-                  ? 'bg-amber-500/10 border-amber-500/30 text-amber-300'
-                  : currentAssessment.state === 'DATA_MISSING'
-                  ? 'bg-blue-500/10 border-blue-500/30 text-blue-300'
-                  : 'bg-rose-500/10 border-rose-500/30 text-rose-300'
-              }`}
-            >
-              <div className="flex items-center gap-2.5">
-                <ShieldAlert className="w-5 h-5 shrink-0" />
-                <div>
-                  <strong>Compatibility Verdict: {currentAssessment.stateLabel}</strong>
-                  <div className="text-[11px] opacity-90 mt-0.5">{currentAssessment.actionRequired}</div>
-                </div>
+          {/* Interactive Search & Filter Controls */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 p-4 rounded-2xl bg-black/20 border border-white/5">
+            {/* Search Query */}
+            <div>
+              <label className="text-[10px] font-mono text-zinc-400 uppercase block mb-1.5">
+                Keyword / Chemistry
+              </label>
+              <div className="relative">
+                <Search className="w-3.5 h-3.5 absolute left-3 top-3 text-zinc-400" />
+                <input
+                  type="text"
+                  value={discoverSearch}
+                  onChange={(e) => setDiscoverSearch(e.target.value)}
+                  placeholder="e.g. SiO2, Ash, Slag..."
+                  className="w-full pl-8 pr-3 py-2 rounded-xl glass-surface text-xs text-[var(--text-primary)] focus:outline-none focus:ring-1 focus:ring-emerald-500"
+                />
               </div>
-              <span className="font-mono text-xs font-bold px-2.5 py-1 rounded bg-black/20">
-                {Math.round(
-                  (currentAssessment.propertyEvaluations.filter((p) => p.status === 'passed').length /
-                    (currentAssessment.propertyEvaluations.length || 1)) *
-                    100
-                )}% Spec Match
-              </span>
             </div>
-          )}
 
-          {/* Unique Visual: Property Tolerance Checklist */}
-          {currentAssessment && (
-            <div className="space-y-3">
-              <h4 className="font-semibold text-xs text-[var(--text-primary)]">
-                Engineering Property Requirement Checklist:
-              </h4>
+            {/* Category Filter */}
+            <div>
+              <label className="text-[10px] font-mono text-zinc-400 uppercase block mb-1.5">
+                Material Category
+              </label>
+              <select
+                value={discoverCategory}
+                onChange={(e) => setDiscoverCategory(e.target.value)}
+                className="w-full px-3 py-2 rounded-xl glass-surface text-xs text-[var(--text-primary)] focus:outline-none focus:ring-1 focus:ring-emerald-500"
+              >
+                <option value="all" className="bg-zinc-900">All Categories</option>
+                <option value="ash" className="bg-zinc-900">Pozzolanic & Bio Ash</option>
+                <option value="slag" className="bg-zinc-900">Metallurgical Slag</option>
+                <option value="mineral" className="bg-zinc-900">Mineral & Gypsum</option>
+                <option value="sand" className="bg-zinc-900">Foundry & Silica Sand</option>
+              </select>
+            </div>
 
-              <div className="space-y-2">
-                {currentAssessment.propertyEvaluations.map((chk, idx) => (
-                  <div
-                    key={idx}
-                    className="p-3.5 rounded-xl glass-surface flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs"
-                  >
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <span className="font-semibold text-[var(--text-primary)]">{chk.name}</span>
-                        {chk.status === 'passed' && (
-                          <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-emerald-500/15 text-emerald-400 font-bold">
-                            PASS
-                          </span>
-                        )}
-                        {chk.status === 'failed' && (
-                          <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-rose-500/15 text-rose-400 font-bold">
-                            FAIL (Hard Constraint Exceeded)
-                          </span>
-                        )}
-                        {chk.status === 'lab_needed' && (
-                          <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-amber-500/15 text-amber-400 font-bold">
-                            LAB ASSAY REQUIRED
-                          </span>
-                        )}
-                        {chk.status === 'unknown' && (
-                          <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-blue-500/15 text-blue-400 font-bold">
-                            DATA MISSING
-                          </span>
-                        )}
+            {/* Min Volume Slider */}
+            <div>
+              <div className="flex justify-between text-[10px] font-mono text-zinc-400 mb-1.5">
+                <span>Min Monthly Volume</span>
+                <span className="text-emerald-400 font-bold">{discoverMinVolume} t/mo</span>
+              </div>
+              <input
+                type="range"
+                min="0"
+                max="3000"
+                step="100"
+                value={discoverMinVolume}
+                onChange={(e) => setDiscoverMinVolume(Number(e.target.value))}
+                className="w-full accent-emerald-500 cursor-pointer"
+              />
+            </div>
+
+            {/* Max Haulage Radius */}
+            <div>
+              <div className="flex justify-between text-[10px] font-mono text-zinc-400 mb-1.5">
+                <span>Maximum Radius</span>
+                <span className="text-blue-400 font-bold">{discoverMaxDistance} km</span>
+              </div>
+              <input
+                type="range"
+                min="30"
+                max="500"
+                step="10"
+                value={discoverMaxDistance}
+                onChange={(e) => setDiscoverMaxDistance(Number(e.target.value))}
+                className="w-full accent-blue-500 cursor-pointer"
+              />
+            </div>
+          </div>
+
+          {/* Results Grid / Table */}
+          <div className="data-table-container">
+            <table className="w-full text-left text-xs">
+              <thead className="border-b border-white/10 text-[10px] font-mono text-zinc-400 uppercase">
+                <tr>
+                  <th className="pb-3 font-medium">Material Stream</th>
+                  <th className="pb-3 font-medium">Source Facility</th>
+                  <th className="pb-3 font-medium">Monthly Generation</th>
+                  <th className="pb-3 font-medium">Key Chemistry</th>
+                  <th className="pb-3 font-medium">Lab Status</th>
+                  <th className="pb-3 font-medium text-right">Action</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-white/5">
+                {filteredDiscoveryMaterials.map((mat) => (
+                  <tr key={mat.id} className="hover:bg-white/5 transition-colors group">
+                    <td className="py-3 pr-4">
+                      <div className="font-serif font-semibold text-[var(--text-primary)] text-sm">
+                        {mat.name}
                       </div>
-                      <p className="text-[11px] text-[var(--text-secondary)] mt-0.5">{chk.message}</p>
-                    </div>
-
-                    <div className="flex items-center gap-4 text-[11px] font-mono">
-                      <span className="text-zinc-400">{chk.isHardRequirement ? 'Hard Boundary' : 'Target Spec'}</span>
-                    </div>
-                  </div>
+                      <div className="text-[10px] text-zinc-400">{mat.category}</div>
+                    </td>
+                    <td className="py-3 pr-4 text-zinc-300">
+                      <div className="flex items-center gap-1.5">
+                        <MapPin className="w-3 h-3 text-emerald-400 shrink-0" />
+                        <span className="truncate max-w-[160px]">{mat.sourceFacility}</span>
+                      </div>
+                    </td>
+                    <td className="py-3 pr-4 font-mono font-medium text-emerald-400">
+                      {mat.monthlyVolumeTons} t/mo
+                    </td>
+                    <td className="py-3 pr-4 font-mono text-[11px] text-zinc-300">
+                      {mat.properties
+                        .slice(0, 2)
+                        .map((p) => `${p.name}: ${p.value !== null ? p.value : 'N/A'} ${p.unit}`)
+                        .join(' · ')}
+                    </td>
+                    <td className="py-3 pr-4">
+                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-mono bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                        <CheckCircle2 className="w-2.5 h-2.5" />
+                        ISO 17025
+                      </span>
+                    </td>
+                    <td className="py-3 text-right">
+                      <button
+                        onClick={() => {
+                          setSelectedMaterialId(mat.id);
+                          setActiveEngine('compatibility');
+                        }}
+                        className="px-3 py-1.5 rounded-xl text-xs font-semibold bg-emerald-500/15 text-emerald-300 hover:bg-emerald-500/25 border border-emerald-500/30 transition-all inline-flex items-center gap-1.5"
+                      >
+                        <span>Assess Compatibility</span>
+                        <ArrowRight className="w-3 h-3" />
+                      </button>
+                    </td>
+                  </tr>
                 ))}
-              </div>
-            </div>
-          )}
-
-          {/* Evidence and Assumptions Panel */}
-          <div className="p-4 rounded-2xl bg-black/20 border border-white/5 text-[11px] text-zinc-400 space-y-1">
-            <strong className="text-zinc-300 block">Assumptions & Audit Boundary:</strong>
-            <p>
-              Tolerance evaluation uses ASTM C618 standards. Missing parameters trigger an immediate halt to prevent false matching.
-            </p>
+              </tbody>
+            </table>
           </div>
         </div>
       )}
 
       {/* =========================================================================
-          MODULE 2: DELIVERED COST
-          Main purpose: calculate estimated full cost of reuse.
-          Visual: cost breakdown & Waterfall Chart.
-          Action: Calculate Cost
-          Output: itemized purchase, transport, processing, testing, handling.
+          MODULE 2: ASSESS COMPATIBILITY
+          Purpose: Evaluate a selected source material against a buyer's actual requirements.
+          Output: A requirement-by-requirement assessment identifying passes, failures, unknowns, and required tests.
+          ========================================================================= */}
+      {activeEngine === 'compatibility' && (
+        <div className="glass-surface-elevated rounded-3xl p-6 sm:p-8 space-y-6">
+          <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 border-b border-white/10 pb-4">
+            <div>
+              <span className="text-[10px] font-mono text-cyan-400 uppercase tracking-wider block">
+                Module 02 • Technical Boundary Evaluation
+              </span>
+              <h3 className="font-serif text-2xl font-semibold text-[var(--text-primary)]">
+                Material Compatibility Assessment
+              </h3>
+              <p className="text-xs text-[var(--text-secondary)] mt-1">
+                Deterministic matching engine evaluating tolerance boundaries, toxicological limits, and laboratory requirements.
+              </p>
+            </div>
+            {compatibilityAssessment && (
+              <div className="text-right">
+                <span className="text-[10px] font-mono text-zinc-400 block">Evaluation State</span>
+                <span
+                  className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-bold mt-1 ${
+                    compatibilityAssessment.state === 'POTENTIAL_IDENTIFIED'
+                      ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
+                      : compatibilityAssessment.state === 'TESTING_REQUIRED'
+                      ? 'bg-purple-500/20 text-purple-300 border border-purple-500/30'
+                      : compatibilityAssessment.state === 'DATA_MISSING'
+                      ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30'
+                      : 'bg-rose-500/20 text-rose-400 border border-rose-500/30'
+                  }`}
+                >
+                  {compatibilityAssessment.stateLabel || compatibilityAssessment.state.replace(/_/g, ' ')}
+                </span>
+              </div>
+            )}
+          </div>
+
+          {/* Interactive Material & Specification Selectors */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 p-4 rounded-2xl bg-black/20 border border-white/5">
+            <div>
+              <label className="text-[10px] font-mono text-zinc-400 uppercase block mb-1.5">
+                Source Byproduct
+              </label>
+              <select
+                value={selectedMaterialId}
+                onChange={(e) => setSelectedMaterialId(e.target.value)}
+                className="w-full px-3 py-2 rounded-xl glass-surface text-xs text-[var(--text-primary)] focus:outline-none focus:ring-1 focus:ring-cyan-500"
+              >
+                {materials.map((m) => (
+                  <option key={m.id} value={m.id} className="bg-zinc-900">
+                    {m.name} ({m.sourceFacility})
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <label className="text-[10px] font-mono text-zinc-400 uppercase block mb-1.5">
+                Buyer Receiving Specification
+              </label>
+              <select
+                value={selectedSpecId}
+                onChange={(e) => setSelectedSpecId(e.target.value)}
+                className="w-full px-3 py-2 rounded-xl glass-surface text-xs text-[var(--text-primary)] focus:outline-none focus:ring-1 focus:ring-cyan-500"
+              >
+                {buyerSpecs.map((s) => (
+                  <option key={s.id} value={s.id} className="bg-zinc-900">
+                    {s.targetApplication} ({s.receivingFacility})
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <div className="flex justify-between text-[10px] font-mono text-zinc-400 mb-1.5">
+                <span>Haulage Distance</span>
+                <span className="text-cyan-400 font-bold">{compatDistanceKm} km</span>
+              </div>
+              <input
+                type="range"
+                min="10"
+                max="400"
+                step="5"
+                value={compatDistanceKm}
+                onChange={(e) => setCompatDistanceKm(Number(e.target.value))}
+                className="w-full accent-cyan-500 cursor-pointer"
+              />
+            </div>
+          </div>
+
+          {/* Requirement-by-Requirement Checklist */}
+          {compatibilityAssessment && (
+            <div className="space-y-4">
+              <div className="flex items-center justify-between text-xs">
+                <span className="font-serif font-semibold text-[var(--text-primary)] text-base">
+                  Requirement Verification Breakdown
+                </span>
+                <span className="text-zinc-400 font-mono text-[11px]">
+                  {compatibilityAssessment.propertyEvaluations.filter((p) => p.status === 'passed').length} of{' '}
+                  {compatibilityAssessment.propertyEvaluations.length} parameters satisfied
+                </span>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                {compatibilityAssessment.propertyEvaluations.map((prop, idx) => {
+                  const isPass = prop.status === 'passed';
+                  const isFail = prop.status === 'failed';
+                  const isLab = prop.status === 'lab_needed';
+                  const isUnknown = prop.status === 'unknown';
+
+                  return (
+                    <div
+                      key={idx}
+                      className={`p-3.5 rounded-2xl border transition-all flex items-start justify-between gap-3 ${
+                        isPass
+                          ? 'glass-surface border-emerald-500/30'
+                          : isFail
+                          ? 'glass-surface border-rose-500/40 bg-rose-500/5'
+                          : isLab
+                          ? 'glass-surface border-purple-500/30 bg-purple-500/5'
+                          : 'glass-surface border-amber-500/30 bg-amber-500/5'
+                      }`}
+                    >
+                      <div className="space-y-1">
+                        <div className="flex items-center gap-2">
+                          <span className="font-semibold text-xs text-[var(--text-primary)]">
+                            {prop.name}
+                          </span>
+                          {prop.isHardRequirement && (
+                            <span className="px-1.5 py-0.2 rounded text-[9px] font-mono bg-rose-500/20 text-rose-300 border border-rose-500/30">
+                              Hard Constraint
+                            </span>
+                          )}
+                        </div>
+                        <div className="text-[10px] text-zinc-400">{prop.message}</div>
+                      </div>
+
+                      <div className="shrink-0 pt-0.5">
+                        {isPass && <CheckCircle2 className="w-4 h-4 text-emerald-400" />}
+                        {isFail && <XCircle className="w-4 h-4 text-rose-400" />}
+                        {isLab && <AlertTriangle className="w-4 h-4 text-purple-400" />}
+                        {isUnknown && <HelpCircle className="w-4 h-4 text-amber-400" />}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+
+              {/* Hard Constraint Failure Warning if any */}
+              {compatibilityAssessment.isHardConstraintViolated && (
+                <div className="p-4 rounded-2xl bg-rose-500/10 border border-rose-500/30 flex items-center gap-3 text-xs text-rose-300">
+                  <XCircle className="w-5 h-5 shrink-0 text-rose-400" />
+                  <div>
+                    <span className="font-bold block">Hard Engineering Constraint Violated</span>
+                    <span>
+                      This material cannot be accepted for {currentSpec.targetApplication} without dedicated prior decontamination or secondary beneficiation.
+                    </span>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* =========================================================================
+          MODULE 3: CALCULATE DELIVERED COST
+          Purpose: Compare the real cost of an exchange (material price, transport, handling, testing, processing).
+          Output: Itemized cost breakdown, comparable delivered cost per unit, waterfall chart.
           ========================================================================= */}
       {activeEngine === 'delivered_cost' && (
         <div className="glass-surface-elevated rounded-3xl p-6 sm:p-8 space-y-6">
           <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 border-b border-white/10 pb-4">
             <div>
               <span className="text-[10px] font-mono text-blue-400 uppercase tracking-wider block">
-                Module 02 • Economics & Logistics Waterfall
+                Module 03 • Economics & Haulage Breakdown
               </span>
               <h3 className="font-serif text-2xl font-semibold text-[var(--text-primary)]">
-                Delivered Cost Engine
+                Delivered Cost & Logistics Waterfall
               </h3>
-              <p className="text-xs text-[var(--text-secondary)] mt-1 max-w-xl">
-                A byproduct free at the supplier gate is rarely free delivered. Calculates point-to-point freight, drying, pre-milling, and QA testing.
+              <p className="text-xs text-[var(--text-secondary)] mt-1">
+                Transparent itemized cost model incorporating gate pricing, trucking rates, conditioning, and batch QA testing.
               </p>
             </div>
-
-            <button
-              onClick={() => {
-                setIsCalculatingCost(true);
-                setTimeout(() => setIsCalculatingCost(false), 300);
-              }}
-              className="glow-button-blue px-4 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1.5 self-start"
-            >
-              {isCalculatingCost ? (
-                <RefreshCw className="w-3.5 h-3.5 animate-spin" />
-              ) : (
-                <DollarSign className="w-3.5 h-3.5" />
-              )}
-              <span>Calculate Cost</span>
-            </button>
+            <div className="text-right">
+              <span className="text-[10px] font-mono text-zinc-400 block">Total Delivered Cost</span>
+              <span className="text-2xl font-bold font-mono text-blue-400">
+                ${deliveredCostResult.totalDeliveredCostPerTon.toFixed(2)}/t
+              </span>
+              <span className="text-[10px] text-emerald-400 block font-mono">
+                Savings: ${Math.abs(deliveredCostResult.deltaCostPerTon).toFixed(2)}/t vs virgin
+              </span>
+            </div>
           </div>
 
           {/* Interactive Cost Inputs */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
-            <div className="p-3 rounded-xl glass-surface space-y-1">
-              <span className="text-[10px] text-zinc-400 block">Gate Price ($/t)</span>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 p-4 rounded-2xl bg-black/20 border border-white/5">
+            <div>
+              <label className="text-[10px] font-mono text-zinc-400 uppercase block mb-1">
+                Gate Price ($/t)
+              </label>
               <input
                 type="number"
-                value={costGatePrice}
-                onChange={(e) => setCostGatePrice(Number(e.target.value))}
-                className="w-full bg-black/30 border border-white/10 rounded-lg p-1.5 font-mono text-sm font-bold text-white"
+                value={costBaseGatePrice}
+                onChange={(e) => setCostBaseGatePrice(Number(e.target.value))}
+                className="w-full px-2.5 py-1.5 rounded-xl glass-surface text-xs font-mono font-bold text-[var(--text-primary)]"
               />
             </div>
 
-            <div className="p-3 rounded-xl glass-surface space-y-1">
-              <span className="text-[10px] text-zinc-400 block">Haulage Distance (km)</span>
+            <div>
+              <label className="text-[10px] font-mono text-zinc-400 uppercase block mb-1">
+                Distance (km)
+              </label>
               <input
                 type="number"
-                value={costDistance}
-                onChange={(e) => setCostDistance(Number(e.target.value))}
-                className="w-full bg-black/30 border border-white/10 rounded-lg p-1.5 font-mono text-sm font-bold text-white"
+                value={costDistanceKm}
+                onChange={(e) => setCostDistanceKm(Number(e.target.value))}
+                className="w-full px-2.5 py-1.5 rounded-xl glass-surface text-xs font-mono font-bold text-[var(--text-primary)]"
               />
             </div>
 
-            <div className="p-3 rounded-xl glass-surface space-y-1">
-              <span className="text-[10px] text-zinc-400 block">Thermal Conditioning ($/t)</span>
+            <div>
+              <label className="text-[10px] font-mono text-zinc-400 uppercase block mb-1">
+                Freight ($/t-km)
+              </label>
               <input
                 type="number"
-                value={costProcessing}
-                onChange={(e) => setCostProcessing(Number(e.target.value))}
-                className="w-full bg-black/30 border border-white/10 rounded-lg p-1.5 font-mono text-sm font-bold text-white"
+                step="0.01"
+                value={costFreightRate}
+                onChange={(e) => setCostFreightRate(Number(e.target.value))}
+                className="w-full px-2.5 py-1.5 rounded-xl glass-surface text-xs font-mono font-bold text-[var(--text-primary)]"
               />
             </div>
 
-            <div className="p-3 rounded-xl glass-surface space-y-1">
-              <span className="text-[10px] text-zinc-400 block">Batch QA & Leaching ($/t)</span>
+            <div>
+              <label className="text-[10px] font-mono text-zinc-400 uppercase block mb-1">
+                Processing ($/t)
+              </label>
               <input
                 type="number"
-                value={costQa}
-                onChange={(e) => setCostQa(Number(e.target.value))}
-                className="w-full bg-black/30 border border-white/10 rounded-lg p-1.5 font-mono text-sm font-bold text-white"
+                value={costPreprocessing}
+                onChange={(e) => setCostPreprocessing(Number(e.target.value))}
+                className="w-full px-2.5 py-1.5 rounded-xl glass-surface text-xs font-mono font-bold text-[var(--text-primary)]"
+              />
+            </div>
+
+            <div>
+              <label className="text-[10px] font-mono text-zinc-400 uppercase block mb-1">
+                QA / Batch ($)
+              </label>
+              <input
+                type="number"
+                value={costQaTestingPerBatch}
+                onChange={(e) => setCostQaTestingPerBatch(Number(e.target.value))}
+                className="w-full px-2.5 py-1.5 rounded-xl glass-surface text-xs font-mono font-bold text-[var(--text-primary)]"
+              />
+            </div>
+
+            <div>
+              <label className="text-[10px] font-mono text-zinc-400 uppercase block mb-1">
+                Virgin Primary ($/t)
+              </label>
+              <input
+                type="number"
+                value={costBaselineVirgin}
+                onChange={(e) => setCostBaselineVirgin(Number(e.target.value))}
+                className="w-full px-2.5 py-1.5 rounded-xl glass-surface text-xs font-mono font-bold text-[var(--text-primary)]"
               />
             </div>
           </div>
 
-          {/* Unique Visual: Waterfall Chart */}
-          <div className="p-4 rounded-2xl glass-surface space-y-3">
-            <CostWaterfallChart
-              gatePrice={costGatePrice}
-              freightCost={Number((costDistance * 0.18).toFixed(2))}
-              processingCost={costProcessing}
-              qaCost={costQa}
-              totalDelivered={Number((costGatePrice + costDistance * 0.18 + costProcessing + costQa).toFixed(2))}
-              baselinePrice={95.0}
-            />
-          </div>
+          {/* Visual Delivered Cost Waterfall */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+            <div className="lg:col-span-8 p-4 rounded-2xl glass-surface border border-white/5">
+              <CostWaterfallChart
+                gatePrice={costBaseGatePrice}
+                freightCost={deliveredCostResult.freightCostPerTon}
+                processingCost={costPreprocessing}
+                qaCost={deliveredCostResult.qaCostPerTon}
+                totalDelivered={deliveredCostResult.totalDeliveredCostPerTon}
+                baselinePrice={costBaselineVirgin}
+              />
+            </div>
 
-          {/* Assumptions Panel */}
-          <div className="p-4 rounded-2xl bg-black/20 border border-white/5 text-[11px] text-zinc-400 space-y-1">
-            <strong className="text-zinc-300 block">Freight Economics Assumptions:</strong>
-            <p>
-              Freight indexed at $0.18 / ton-km for heavy bulk dry pneumatic transport. Baseline benchmark: Ordinary Portland Cement at $95.00/t.
-            </p>
+            <div className="lg:col-span-4 space-y-3">
+              <div className="p-4 rounded-2xl glass-surface border border-white/5 space-y-2">
+                <span className="text-[10px] font-mono text-zinc-400 uppercase block">
+                  Delivered Savings Analysis
+                </span>
+                <div className="text-xl font-bold font-mono text-emerald-400">
+                  {deliveredCostResult.isEconomicallyViable ? 'Economically Viable' : 'Deficit Corridor'}
+                </div>
+                <div className="text-xs text-zinc-300">
+                  Net margin delta:{' '}
+                  <span className="font-bold font-mono">
+                    ${Math.abs(deliveredCostResult.deltaCostPerTon).toFixed(2)} / ton
+                  </span>
+                </div>
+                <div className="text-[11px] text-zinc-400">
+                  At 5,000 t/yr procurement, projected annual economic surplus is{' '}
+                  <span className="font-mono text-emerald-300 font-bold">
+                    ${(Math.abs(deliveredCostResult.deltaCostPerTon) * 5000).toLocaleString()}
+                  </span>.
+                </div>
+              </div>
+
+              <div className="p-4 rounded-2xl glass-surface border border-white/5 text-xs text-zinc-400 space-y-1">
+                <div className="font-semibold text-zinc-300">Itemized Cost Summary:</div>
+                <div>• Gate Supply: ${costBaseGatePrice.toFixed(2)}/t</div>
+                <div>• Haulage ({costDistanceKm} km): ${deliveredCostResult.freightCostPerTon.toFixed(2)}/t</div>
+                <div>• Conditioning: ${costPreprocessing.toFixed(2)}/t</div>
+                <div>• QA Amortized: ${deliveredCostResult.qaCostPerTon.toFixed(2)}/t</div>
+              </div>
+            </div>
           </div>
         </div>
       )}
 
       {/* =========================================================================
-          MODULE 3: ENVIRONMENTAL IMPACT
-          Main purpose: compare reuse scenario with documented baseline.
-          Visual: baseline-versus-scenario chart.
-          Action: Compare Scenarios
-          Output: estimated net impact, assumptions, boundaries, and uncertainty.
+          MODULE 4: COMPARE ENVIRONMENTAL IMPACT
+          Purpose: Compare a reuse scenario against a documented baseline (transport & processing emissions).
+          Output: Baseline versus proposed scenario, assumptions, avoided emissions, break-even distance.
           ========================================================================= */}
       {activeEngine === 'environmental' && (
         <div className="glass-surface-elevated rounded-3xl p-6 sm:p-8 space-y-6">
           <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 border-b border-white/10 pb-4">
             <div>
               <span className="text-[10px] font-mono text-teal-400 uppercase tracking-wider block">
-                Module 03 • ISO 14044 Lifecycle Accounting
+                Module 04 • Carbon Accounting & LCA Baseline
               </span>
               <h3 className="font-serif text-2xl font-semibold text-[var(--text-primary)]">
-                Net Environmental Impact
+                Environmental Scenario Analysis
               </h3>
-              <p className="text-xs text-[var(--text-secondary)] mt-1 max-w-xl">
-                Calculates true avoided emissions minus transport emissions to identify the environmental break-even haulage radius.
+              <p className="text-xs text-[var(--text-secondary)] mt-1">
+                ISO 14044-aligned comparison of secondary byproduct utilization against virgin mineral extraction baselines.
               </p>
             </div>
-
-            <button
-              onClick={() => {
-                setIsComparingEnv(true);
-                setTimeout(() => setIsComparingEnv(false), 300);
-              }}
-              className="glow-button-emerald px-4 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1.5 self-start"
-            >
-              {isComparingEnv ? (
-                <RefreshCw className="w-3.5 h-3.5 animate-spin" />
-              ) : (
-                <Leaf className="w-3.5 h-3.5" />
-              )}
-              <span>Compare Scenarios</span>
-            </button>
-          </div>
-
-          {/* Sliders & Inputs */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
-            <div className="p-4 rounded-2xl glass-surface space-y-2">
-              <div className="flex justify-between font-semibold">
-                <span className="text-[var(--text-primary)]">Freight Transit Distance</span>
-                <span className="font-mono text-teal-400 font-bold">{envDistance} km</span>
-              </div>
-              <input
-                type="range"
-                min="20"
-                max="800"
-                step="10"
-                value={envDistance}
-                onChange={(e) => setEnvDistance(Number(e.target.value))}
-                className="w-full accent-teal-400 cursor-pointer"
-              />
-              <span className="text-[10px] text-zinc-400">Highway haulage emissions factor: 0.089 kg CO2e / ton-km</span>
-            </div>
-
-            <div className="p-4 rounded-2xl glass-surface space-y-2">
-              <div className="flex justify-between font-semibold">
-                <span className="text-[var(--text-primary)]">Thermal Pre-treatment Burden</span>
-                <span className="font-mono text-teal-400 font-bold">{envPretreatmentCO2} kg CO2e / t</span>
-              </div>
-              <input
-                type="range"
-                min="0"
-                max="50"
-                step="2"
-                value={envPretreatmentCO2}
-                onChange={(e) => setEnvPretreatmentCO2(Number(e.target.value))}
-                className="w-full accent-teal-400 cursor-pointer"
-              />
-              <span className="text-[10px] text-zinc-400">Natural gas drying burner fuel emissions</span>
+            <div className="text-right">
+              <span className="text-[10px] font-mono text-zinc-400 block">Net Avoided Emissions</span>
+              <span className="text-2xl font-bold font-mono text-emerald-400">
+                {environmentalResult.netAvoidedEmissionsKgCO2e.toFixed(0)} kg CO2e/t
+              </span>
+              <span className="text-[10px] text-teal-400 block font-mono">
+                Break-even: {environmentalResult.breakEvenDistanceKm.toLocaleString()} km
+              </span>
             </div>
           </div>
 
-          {/* Visual: Carbon Break-Even Chart */}
-          <div className="p-4 rounded-2xl glass-surface">
-            <CarbonBreakEvenChart
-              distanceKm={envDistance}
-              breakEvenKm={7200}
-              netAvoidedCO2ePerTonKg={Number((650 - envDistance * 0.089 - envPretreatmentCO2).toFixed(1))}
-            />
-          </div>
-
-          {/* Assumptions Panel */}
-          <div className="p-4 rounded-2xl bg-black/20 border border-white/5 text-[11px] text-zinc-400 space-y-1">
-            <strong className="text-zinc-300 block">System Boundary & Emission Factors:</strong>
-            <p>
-              Cradle-to-gate boundary based on Ecoinvent 3.8. Baseline virgin clinker emission factor: 820 kg CO2e/t clinker.
-            </p>
-          </div>
-        </div>
-      )}
-
-      {/* =========================================================================
-          MODULE 4: ALTERNATIVE USES
-          Main purpose: explore multiple possible applications for a material.
-          Visual: ranked application list with technical constraint indicators.
-          Action: Explore Uses
-          Output: candidate applications and requirements that need validation.
-          ========================================================================= */}
-      {activeEngine === 'alternative_uses' && (
-        <div className="glass-surface-elevated rounded-3xl p-6 sm:p-8 space-y-6">
-          <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 border-b border-white/10 pb-4">
+          {/* Interactive LCA Parameters */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 p-4 rounded-2xl bg-black/20 border border-white/5">
             <div>
-              <span className="text-[10px] font-mono text-purple-400 uppercase tracking-wider block">
-                Module 04 • Cascading Industrial Pathways
-              </span>
-              <h3 className="font-serif text-2xl font-semibold text-[var(--text-primary)]">
-                Alternative-Use Discovery
-              </h3>
-              <p className="text-xs text-[var(--text-secondary)] mt-1 max-w-xl">
-                When a primary high-specification application fails engineering constraints, discovers viable cascading lower-specification applications.
-              </p>
+              <label className="text-[10px] font-mono text-zinc-400 uppercase block mb-1">
+                Virgin Baseline (kg CO2e/t)
+              </label>
+              <input
+                type="number"
+                value={envBaselineEmissions}
+                onChange={(e) => setEnvBaselineEmissions(Number(e.target.value))}
+                className="w-full px-3 py-2 rounded-xl glass-surface text-xs font-mono font-bold text-[var(--text-primary)]"
+              />
+              <span className="text-[9px] text-zinc-500 block mt-1">e.g. Portland cement clinker</span>
             </div>
 
-            <button
-              onClick={() => {
-                setIsExploringUses(true);
-                setTimeout(() => setIsExploringUses(false), 300);
-              }}
-              className="glow-button-emerald px-4 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1.5 self-start"
-            >
-              {isExploringUses ? (
-                <RefreshCw className="w-3.5 h-3.5 animate-spin" />
-              ) : (
-                <Layers className="w-3.5 h-3.5" />
-              )}
-              <span>Explore Uses</span>
-            </button>
-          </div>
+            <div>
+              <label className="text-[10px] font-mono text-zinc-400 uppercase block mb-1">
+                Reuse Processing (kg CO2e/t)
+              </label>
+              <input
+                type="number"
+                value={envProcessingEmissions}
+                onChange={(e) => setEnvProcessingEmissions(Number(e.target.value))}
+                className="w-full px-3 py-2 rounded-xl glass-surface text-xs font-mono font-bold text-[var(--text-primary)]"
+              />
+              <span className="text-[9px] text-zinc-500 block mt-1">Thermal conditioning & grinding</span>
+            </div>
 
-          {/* Visual: Ranked Application Cascade List */}
-          <div className="space-y-3 text-xs">
-            <h4 className="font-semibold text-[var(--text-primary)]">
-              Ranked Cascading Applications for {currentMaterial.name}:
-            </h4>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="p-4 rounded-2xl glass-surface border border-rose-500/30 space-y-2">
-                <span className="font-bold text-rose-400 block">Primary Application (Blocked)</span>
-                <span className="text-sm font-semibold text-white block">Concrete SCM Binder</span>
-                <p className="text-zinc-400 text-[11px] leading-relaxed">
-                  ASTM C618 pozzolanic strength activity index requires verification of amorphous phase purity.
-                </p>
-                <div className="text-[10px] font-mono text-rose-400 pt-2 border-t border-white/5">
-                  Barrier: XRD Amorphous Ratio Unreported
-                </div>
+            <div>
+              <div className="flex justify-between text-[10px] font-mono text-zinc-400 mb-1">
+                <span>Haulage Distance</span>
+                <span className="text-teal-400 font-bold">{envHaulageDistance} km</span>
               </div>
+              <input
+                type="range"
+                min="10"
+                max="600"
+                step="10"
+                value={envHaulageDistance}
+                onChange={(e) => setEnvHaulageDistance(Number(e.target.value))}
+                className="w-full accent-teal-500 cursor-pointer mt-2"
+              />
+              <span className="text-[9px] text-zinc-500 block mt-1">Truck freight: 0.10 kg/t-km</span>
+            </div>
 
-              <div className="p-4 rounded-2xl glass-surface border border-purple-500/30 space-y-2">
-                <span className="font-bold text-purple-400 block">Alternative Rank 1 (Viable)</span>
-                <span className="text-sm font-semibold text-white block">Road Base Stabilization</span>
-                <p className="text-zinc-400 text-[11px] leading-relaxed">
-                  Sub-base geopolymer fill requires lower silica activity index. Satisfies mechanical compaction standards.
-                </p>
-                <div className="text-[10px] font-mono text-purple-400 pt-2 border-t border-white/5">
-                  Validation Needed: Proctor Compaction Test
-                </div>
-              </div>
-
-              <div className="p-4 rounded-2xl glass-surface border border-emerald-500/30 space-y-2">
-                <span className="font-bold text-emerald-400 block">Alternative Rank 2 (Viable)</span>
-                <span className="text-sm font-semibold text-white block">Refractory Insulating Brick</span>
-                <p className="text-zinc-400 text-[11px] leading-relaxed">
-                  High thermal resistance (melting point &gt;1400°C) allows dry pressed lightweight refractory ceramic blocks.
-                </p>
-                <div className="text-[10px] font-mono text-emerald-400 pt-2 border-t border-white/5">
-                  Validation Needed: Pyrometric Cone Equivalent
-                </div>
-              </div>
+            <div>
+              <label className="text-[10px] font-mono text-zinc-400 uppercase block mb-1">
+                Annual Off-take (t/yr)
+              </label>
+              <input
+                type="number"
+                value={envAnnualTonnage}
+                onChange={(e) => setEnvAnnualTonnage(Number(e.target.value))}
+                className="w-full px-3 py-2 rounded-xl glass-surface text-xs font-mono font-bold text-[var(--text-primary)]"
+              />
+              <span className="text-[9px] text-zinc-500 block mt-1">Annualized displacement volume</span>
             </div>
           </div>
 
-          {/* Evidence Panel */}
-          <div className="p-4 rounded-2xl bg-black/20 border border-white/5 text-[11px] text-zinc-400 space-y-1">
-            <strong className="text-zinc-300 block">Cascade Validation Criteria:</strong>
-            <p>
-              Applications are automatically ranked by market tonnage capacity, freight tolerance, and remaining lab verification hurdles.
-            </p>
+          {/* Environmental Chart & Metric Cards */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+            <div className="lg:col-span-8 p-4 rounded-2xl glass-surface border border-white/5">
+              <CarbonBreakEvenChart
+                distanceKm={envHaulageDistance}
+                breakEvenKm={environmentalResult.breakEvenDistanceKm}
+                netAvoidedCO2ePerTonKg={Math.round(environmentalResult.netAvoidedEmissionsKgCO2e)}
+              />
+            </div>
+
+            <div className="lg:col-span-4 space-y-3">
+              <div className="p-4 rounded-2xl glass-surface border border-white/5 space-y-2">
+                <span className="text-[10px] font-mono text-zinc-400 uppercase block">
+                  Net Climate Benefit
+                </span>
+                <div className="text-xl font-bold font-mono text-emerald-400">
+                  -{(environmentalResult.netAvoidedEmissionsKgCO2e * envAnnualTonnage / 1000).toFixed(0)} t CO2e/yr
+                </div>
+                <p className="text-xs text-zinc-300">
+                  Replacing virgin material saves{' '}
+                  <span className="font-bold text-white font-mono">
+                    {environmentalResult.netAvoidedEmissionsKgCO2e.toFixed(0)} kg CO2e
+                  </span>{' '}
+                  per ton delivered.
+                </p>
+                <div className="pt-2 border-t border-white/5 text-[11px] text-zinc-400">
+                  Break-even haulage radius is{' '}
+                  <span className="font-mono text-teal-300 font-bold">
+                    {environmentalResult.breakEvenDistanceKm.toLocaleString()} km
+                  </span>. Beyond this, transport emissions exceed virgin savings.
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       )}
 
       {/* =========================================================================
-          MODULE 5: EVIDENCE & READINESS
-          Main purpose: identify missing documents, stale measurements, and approvals.
-          Visual: evidence completeness, missing-data list, and readiness checklist.
-          Action: Review Evidence
-          Output: evidence-backed readiness state and required next steps.
+          MODULE 5: REVIEW EVIDENCE
+          Purpose: Inspect uploaded technical documents, test results, source dates, missing measurements, and review status.
+          Output: Evidence checklist showing what is present, missing, expired, unverified, or awaiting review.
           ========================================================================= */}
-      {activeEngine === 'evidence_readiness' && (
+      {activeEngine === 'evidence' && (
         <div className="glass-surface-elevated rounded-3xl p-6 sm:p-8 space-y-6">
           <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 border-b border-white/10 pb-4">
             <div>
               <span className="text-[10px] font-mono text-indigo-400 uppercase tracking-wider block">
-                Module 05 • Assay Freshness & Stage-Gate Audit
+                Module 05 • Laboratory & Regulatory Proof
               </span>
               <h3 className="font-serif text-2xl font-semibold text-[var(--text-primary)]">
-                Evidence & Readiness Passport
+                Technical Evidence & Document Audit
               </h3>
-              <p className="text-xs text-[var(--text-secondary)] mt-1 max-w-xl">
-                Surfaces missing test documents, stale test assays older than 180 days, and enforces mandatory laboratory provenance.
+              <p className="text-xs text-[var(--text-secondary)] mt-1">
+                Rigorous verification of ISO 17025 test certificates, leaching toxicity assays, and compliance documents.
               </p>
             </div>
-
-            <button
-              onClick={() => {
-                setIsReviewingEvidence(true);
-                setTimeout(() => setIsReviewingEvidence(false), 300);
-              }}
-              className="glow-button-emerald px-4 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1.5 self-start"
-            >
-              {isReviewingEvidence ? (
-                <RefreshCw className="w-3.5 h-3.5 animate-spin" />
-              ) : (
-                <FileCheck className="w-3.5 h-3.5" />
-              )}
-              <span>Review Evidence</span>
-            </button>
+            <div className="text-right">
+              <span className="text-[10px] font-mono text-zinc-400 block">Verification Integrity</span>
+              <span className="text-2xl font-bold font-mono text-emerald-400">
+                {currentEvidenceMaterial.batches[0]?.status === 'Ready for Dispatch' ? '92%' : '48%'}
+              </span>
+              <span className="text-[10px] text-zinc-400 block font-mono">Audit Score</span>
+            </div>
           </div>
 
-          {/* Mandatory Disclaimer Banner */}
-          <div className="p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/30 text-xs text-amber-300 flex items-center gap-2">
-            <ShieldAlert className="w-4 h-4 shrink-0" />
-            <span>Document uploaded — authenticity not independently verified. Certified ISO 17025 laboratory assay required for final clearance.</span>
-          </div>
-
-          {/* Visual: Readiness Checklist & Missing Data List */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
-            {/* Checklist */}
-            <div className="p-4 rounded-2xl glass-surface space-y-3">
-              <span className="font-semibold text-[var(--text-primary)] block">Readiness Gate Checklist</span>
-              <div className="space-y-2">
-                {[
-                  { label: 'XRF Major Elemental Oxides', ok: true, note: 'ASTM C114 certified' },
-                  { label: 'Loss on Ignition (LOI < 6%)', ok: true, note: 'ASTM D7348 compliant' },
-                  { label: 'Quantitative XRD Mineralogy', ok: false, note: 'Missing: Rietveld amorphous scan' },
-                  { label: 'TCLP Trace Leachate (EPA 1311)', ok: true, note: 'Below universal treatment standards' },
-                ].map((item, i) => (
-                  <div key={i} className="flex items-center justify-between p-2 rounded-lg bg-black/20">
-                    <div>
-                      <span className="font-medium text-white block">{item.label}</span>
-                      <span className="text-[10px] text-zinc-400">{item.note}</span>
-                    </div>
-                    {item.ok ? (
-                      <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-                    ) : (
-                      <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0" />
-                    )}
-                  </div>
+          {/* Material Selector & Audit Filter */}
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 rounded-2xl bg-black/20 border border-white/5">
+            <div className="w-full sm:w-1/2">
+              <label className="text-[10px] font-mono text-zinc-400 uppercase block mb-1">
+                Select Stream to Audit
+              </label>
+              <select
+                value={evidenceMaterialId}
+                onChange={(e) => setEvidenceMaterialId(e.target.value)}
+                className="w-full px-3 py-2 rounded-xl glass-surface text-xs text-[var(--text-primary)] focus:outline-none focus:ring-1 focus:ring-indigo-500"
+              >
+                {materials.map((m) => (
+                  <option key={m.id} value={m.id} className="bg-zinc-900">
+                    {m.name} — {m.sourceFacility}
+                  </option>
                 ))}
-              </div>
+              </select>
             </div>
 
-            {/* Missing Data & Next Steps */}
-            <div className="p-4 rounded-2xl glass-surface space-y-3">
-              <span className="font-semibold text-[var(--text-primary)] block">Required Next Steps</span>
-              <div className="p-3 rounded-xl bg-blue-500/10 border border-blue-500/20 text-blue-300 text-xs space-y-2">
-                <strong>Outstanding Action:</strong>
-                <p className="text-[11px] leading-relaxed">
-                  Dispatch 500g representative composite specimen to accredited ISO 17025 mineralogy lab for Rietveld powder diffraction.
-                </p>
-                <div className="pt-2 text-[10px] font-mono text-zinc-300 border-t border-blue-500/20">
-                  Estimated turnaround: 4 business days
-                </div>
-              </div>
+            <div className="flex items-center gap-2">
+              {(['all', 'verified', 'pending', 'missing'] as const).map((filter) => (
+                <button
+                  key={filter}
+                  onClick={() => setEvidenceFilter(filter)}
+                  className={`px-3 py-1.5 rounded-xl text-xs font-semibold capitalize transition-all ${
+                    evidenceFilter === filter
+                      ? 'bg-indigo-500/20 text-indigo-300 border border-indigo-500/30'
+                      : 'glass-surface text-zinc-400 hover:text-white'
+                  }`}
+                >
+                  {filter}
+                </button>
+              ))}
             </div>
+          </div>
+
+          {/* Evidence Checklist Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {[
+              {
+                title: 'Chemical Composition Assay (XRF)',
+                lab: 'SGS Mineral Analytics (ISO 17025 Accredited)',
+                date: '2026-08-14',
+                status: 'verified',
+                details: 'SiO2: 89.4%, Al2O3: 1.2%, Fe2O3: 0.8%, Loss on Ignition: 4.1%',
+              },
+              {
+                title: 'TCLP Leaching & Toxicity Assessment',
+                lab: 'Eurofins Industrial Lab',
+                date: '2026-07-20',
+                status: 'verified',
+                details: 'Heavy metals below EPA RCRA 40 CFR 261 non-hazardous threshold.',
+              },
+              {
+                title: 'Particle Size Distribution (Laser Diffraction)',
+                lab: 'In-house Producer QC',
+                date: '2026-09-02',
+                status: 'pending',
+                details: 'D50 = 18.2 µm. Requires accredited 3rd party lab validation.',
+              },
+              {
+                title: 'XRD Amorphous Phase Ratio',
+                lab: 'Pending Accredited Lab Booking',
+                date: 'Expired / Not Uploaded',
+                status: 'missing',
+                details: 'Required for Class N pozzolanic binder verification.',
+              },
+            ]
+              .filter((item) => evidenceFilter === 'all' || item.status === evidenceFilter)
+              .map((doc, idx) => (
+                <div
+                  key={idx}
+                  className="p-4 rounded-2xl glass-surface border border-white/5 space-y-2 relative overflow-hidden"
+                >
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <div className="font-semibold text-sm text-[var(--text-primary)]">
+                        {doc.title}
+                      </div>
+                      <div className="text-[11px] text-zinc-400 flex items-center gap-1.5 mt-0.5">
+                        <FileText className="w-3 h-3 text-indigo-400" />
+                        <span>{doc.lab}</span>
+                      </div>
+                    </div>
+                    <span
+                      className={`px-2 py-0.5 rounded-full text-[10px] font-mono font-bold capitalize ${
+                        doc.status === 'verified'
+                          ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
+                          : doc.status === 'pending'
+                          ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30'
+                          : 'bg-rose-500/20 text-rose-400 border border-rose-500/30'
+                      }`}
+                    >
+                      {doc.status}
+                    </span>
+                  </div>
+
+                  <p className="text-xs text-zinc-300 leading-relaxed">{doc.details}</p>
+
+                  <div className="flex items-center justify-between pt-2 border-t border-white/5 text-[10px] font-mono text-zinc-400">
+                    <span>Audit Date: {doc.date}</span>
+                    <button className="text-indigo-400 hover:text-indigo-300 font-semibold">
+                      Inspect Document →
+                    </button>
+                  </div>
+                </div>
+              ))}
           </div>
         </div>
       )}
 
       {/* =========================================================================
-          MODULE 6: INDUSTRIAL NETWORK OPTIMIZER
-          Main purpose: evaluate multiple supply-demand combinations.
-          Visual: industrial network graph or supply-demand matrix.
-          Action: Optimize Network
-          Output: feasible candidate allocations with capacity and logistics.
+          MODULE 6: OPTIMIZE RESOURCE FLOWS
+          Purpose: Evaluate multiple potential suppliers and buyers under technical, capacity, quantity, and distance constraints.
+          Output: A ranked set of feasible candidates or allocation scenarios with explanations.
           ========================================================================= */}
       {activeEngine === 'network_optimizer' && (
         <div className="glass-surface-elevated rounded-3xl p-6 sm:p-8 space-y-6">
           <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 border-b border-white/10 pb-4">
             <div>
               <span className="text-[10px] font-mono text-amber-400 uppercase tracking-wider block">
-                Module 06 • Multi-Facility Symbiosis Solver
+                Module 06 • Regional Industrial Symbiosis
               </span>
               <h3 className="font-serif text-2xl font-semibold text-[var(--text-primary)]">
                 Industrial Network Optimizer
               </h3>
-              <p className="text-xs text-[var(--text-secondary)] mt-1 max-w-xl">
-                Evaluates multi-facility resource routing within regional perimeters to minimize ton-miles and balance byproduct allocations.
+              <p className="text-xs text-[var(--text-secondary)] mt-1">
+                Multi-facility supply and off-take optimization across regional manufacturing clusters.
               </p>
             </div>
-
-            <button
-              onClick={() => {
-                setIsOptimizingNetwork(true);
-                setTimeout(() => setIsOptimizingNetwork(false), 400);
-              }}
-              className="glow-button-emerald px-4 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1.5 self-start"
-            >
-              {isOptimizingNetwork ? (
-                <RefreshCw className="w-3.5 h-3.5 animate-spin" />
-              ) : (
-                <Network className="w-3.5 h-3.5" />
-              )}
-              <span>Optimize Network</span>
-            </button>
-          </div>
-
-          {/* Interactive Cluster Radius Slider */}
-          <div className="p-4 rounded-2xl glass-surface space-y-2 text-xs max-w-md">
-            <div className="flex justify-between font-semibold">
-              <span className="text-[var(--text-primary)]">Regional Symbiosis Perimeter</span>
-              <span className="font-mono text-amber-400 font-bold">{clusterRadius} km Radius</span>
+            <div className="text-right">
+              <span className="text-[10px] font-mono text-zinc-400 block">Identified Synergies</span>
+              <span className="text-2xl font-bold font-mono text-amber-400">
+                {clusterSynergies.length} Links
+              </span>
+              <span className="text-[10px] text-zinc-400 block font-mono">Across 5 Facilities</span>
             </div>
-            <input
-              type="range"
-              min="25"
-              max="250"
-              step="25"
-              value={clusterRadius}
-              onChange={(e) => setClusterRadius(Number(e.target.value))}
-              className="w-full accent-amber-400 cursor-pointer"
-            />
-            <span className="text-[10px] text-zinc-400">Scans 4 regional facilities across Michigan and Illinois</span>
           </div>
 
-          {/* Visual: Industrial Network Graph */}
-          <IndustrialNetworkGraph />
+          {/* Interactive Cluster Radius Control */}
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 rounded-2xl bg-black/20 border border-white/5">
+            <div className="w-full sm:w-1/2">
+              <div className="flex justify-between text-[10px] font-mono text-zinc-400 mb-1">
+                <span>Cluster Optimization Radius</span>
+                <span className="text-amber-400 font-bold">{networkClusterRadius} km</span>
+              </div>
+              <input
+                type="range"
+                min="50"
+                max="250"
+                step="10"
+                value={networkClusterRadius}
+                onChange={(e) => setNetworkClusterRadius(Number(e.target.value))}
+                className="w-full accent-amber-500 cursor-pointer"
+              />
+            </div>
 
-          {/* Feasible Allocations Output Table */}
-          <div className="space-y-3 text-xs">
-            <h4 className="font-serif text-base font-semibold text-[var(--text-primary)]">
-              Optimized Multi-Facility Routing Synergies:
-            </h4>
+            <div className="flex items-center gap-2">
+              <span className="text-xs text-zinc-400">Priority Objective:</span>
+              {(['carbon', 'cost', 'volume'] as const).map((pri) => (
+                <button
+                  key={pri}
+                  onClick={() => setNetworkPrioritize(pri)}
+                  className={`px-3 py-1.5 rounded-xl text-xs font-semibold capitalize transition-all ${
+                    networkPrioritize === pri
+                      ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30'
+                      : 'glass-surface text-zinc-400 hover:text-white'
+                  }`}
+                >
+                  Max {pri}
+                </button>
+              ))}
+            </div>
+          </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              {optimizeClusterSynergies(clusterNodes).map((opp, idx) => (
-                <div key={idx} className="p-4 rounded-2xl glass-surface space-y-2">
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <span className="font-bold text-[var(--text-primary)] block text-xs">{opp.streamName}</span>
-                      <span className="text-[10px] text-[var(--text-secondary)]">
-                        {opp.sourceNodeName} → {opp.targetNodeName}
+          {/* Network Graph & Ranked Allocation Scenarios */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+            <div className="lg:col-span-7 p-4 rounded-2xl glass-surface border border-white/5 space-y-3">
+              <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-400 block">
+                Regional Cluster Topology
+              </span>
+              <IndustrialNetworkGraph />
+            </div>
+
+            <div className="lg:col-span-5 space-y-3">
+              <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-400 block">
+                Ranked Feasible Symbiosis Pairings
+              </span>
+              <div className="space-y-2.5 max-h-[380px] overflow-y-auto pr-1">
+                {clusterSynergies.map((syn, idx) => (
+                  <div
+                    key={idx}
+                    className="p-3.5 rounded-2xl glass-surface border border-white/5 space-y-1.5 hover:border-amber-500/30 transition-colors"
+                  >
+                    <div className="flex items-center justify-between">
+                      <span className="font-semibold text-xs text-[var(--text-primary)]">
+                        {syn.streamName}
+                      </span>
+                      <span className="px-2 py-0.5 rounded-full text-[9px] font-mono bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                        {syn.synergyType}
                       </span>
                     </div>
-                    <span className="font-mono text-xs font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded">
-                      {opp.distanceKm} km
-                    </span>
-                  </div>
 
-                  <div className="grid grid-cols-2 gap-2 pt-2 border-t border-black/5 dark:border-white/5 text-[11px]">
-                    <div>
-                      <span className="text-[var(--text-secondary)] text-[10px] block">Logistics Savings:</span>
-                      <strong className="font-mono text-emerald-400">
-                        ${opp.estAnnualLogisticsSavingsUSD.toLocaleString()} / yr
-                      </strong>
+                    <div className="text-[11px] text-zinc-300 flex items-center gap-1.5 font-mono">
+                      <span className="text-zinc-400">{syn.sourceNodeName}</span>
+                      <ArrowRight className="w-3 h-3 text-amber-400 shrink-0" />
+                      <span className="text-amber-300">{syn.targetNodeName}</span>
                     </div>
-                    <div>
-                      <span className="text-[var(--text-secondary)] text-[10px] block">Avoided Emissions:</span>
-                      <strong className="font-mono text-teal-400">
-                        {opp.avoidedVirginCO2eTons.toLocaleString()} t CO2e / yr
-                      </strong>
+
+                    <div className="flex items-center justify-between pt-1 border-t border-white/5 text-[10px] font-mono text-zinc-400">
+                      <span>Haulage: {syn.distanceKm} km</span>
+                      <span className="text-emerald-400 font-bold">
+                        -{syn.avoidedVirginCO2eTons} t CO2/yr
+                      </span>
                     </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           </div>
         </div>

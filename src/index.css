@@ -7,15 +7,14 @@
   --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
 
-  /* Authentic Wallstreet Industrial Palette */
-  --color-obsidian: #0B0D11;
+  /* Industrial Design Palette */
+  --color-obsidian: #0B0D0F;
   --color-graphite: #12151D;
-  --color-burgundy: #9D1738;
-  --color-burgundy-hover: #BE185D;
-  --color-burgundy-subtle: rgba(157, 23, 56, 0.16);
-  --color-metallic: #C9AA79;
-  --color-metallic-subtle: rgba(201, 170, 121, 0.15);
-  --color-industrial-cool: #91AAB8;
+  --color-emerald-accent: #00C896;
+  --color-emerald-primary: #059669;
+  --color-emerald-hover: #10B981;
+  --color-technical-blue: #3B82F6;
+  --color-industrial-cool: #94A3B8;
 
   --color-text-primary-dark: #F8FAFC;
   --color-text-secondary-dark: #94A3B8;
@@ -25,39 +24,41 @@
 
 :root {
   --bg-page: #F7F5F0;
-  --bg-glass-base: rgba(255, 255, 255, 0.75);
-  --bg-glass-card: rgba(255, 255, 255, 0.88);
-  --bg-glass-elevated: rgba(255, 255, 255, 0.95);
+  --bg-glass-base: rgba(255, 255, 255, 0.82);
+  --bg-glass-card: rgba(255, 255, 255, 0.90);
+  --bg-glass-elevated: rgba(255, 255, 255, 0.96);
   --glass-border: rgba(15, 23, 42, 0.08);
   --glass-border-strong: rgba(15, 23, 42, 0.14);
   --text-primary: #0F172A;
   --text-secondary: #475569;
   --text-muted: #64748B;
-  --accent-burgundy: #8B1130;
-  --accent-burgundy-hover: #9D1738;
-  --accent-burgundy-subtle: rgba(139, 17, 48, 0.12);
-  --accent-metallic: #A8864C;
-  --accent-metallic-subtle: rgba(168, 134, 76, 0.12);
-  --accent-cool: #567385;
+  --accent-emerald: #059669;
+  --accent-emerald-hover: #10B981;
+  --accent-cool: #3B82F6;
   --glass-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.06);
+
+  /* Radius Tokens */
+  --radius-panel: 22px;
+  --radius-card: 16px;
+  --radius-btn: 12px;
+  --radius-badge: 9999px;
+  --radius-sidebar: 20px;
+  --radius-dialog: 24px;
 }
 
 .dark {
-  --bg-page: #0B0D11;
-  --bg-glass-base: rgba(18, 22, 31, 0.68);
-  --bg-glass-card: rgba(22, 27, 38, 0.78);
-  --bg-glass-elevated: rgba(27, 33, 46, 0.90);
+  --bg-page: #0B0D0F;
+  --bg-glass-base: rgba(18, 22, 29, 0.80);
+  --bg-glass-card: rgba(22, 27, 36, 0.85);
+  --bg-glass-elevated: rgba(26, 32, 42, 0.92);
   --glass-border: rgba(255, 255, 255, 0.08);
   --glass-border-strong: rgba(255, 255, 255, 0.14);
   --text-primary: #F8FAFC;
   --text-secondary: #94A3B8;
   --text-muted: #64748B;
-  --accent-burgundy: #9D1738;
-  --accent-burgundy-hover: #BE185D;
-  --accent-burgundy-subtle: rgba(157, 23, 56, 0.16);
-  --accent-metallic: #C9AA79;
-  --accent-metallic-subtle: rgba(201, 170, 121, 0.15);
-  --accent-cool: #91AAB8;
+  --accent-emerald: #00C896;
+  --accent-emerald-hover: #10B981;
+  --accent-cool: #60A5FA;
   --glass-shadow: 0 16px 40px -8px rgba(0, 0, 0, 0.6);
 }
 
@@ -98,7 +99,7 @@ body {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Glassmorphism Surface Utility Classes */
+/* Glassmorphism Surface Utility Classes with 80-90% Opacity Target */
 .glass-surface {
   background-color: var(--bg-glass-base);
   backdrop-filter: blur(16px);
@@ -211,7 +212,7 @@ body {
   box-shadow: 0 0 24px rgba(16, 185, 129, 0.55);
 }
 .glow-button-emerald:active {
-  transform: scale(0.95);
+  transform: scale(0.97);
 }
 
 /* Secondary Glowing Button Token (Blue) */
@@ -228,7 +229,7 @@ body {
   box-shadow: 0 0 24px rgba(96, 165, 250, 0.55);
 }
 .glow-button-blue:active {
-  transform: scale(0.95);
+  transform: scale(0.97);
 }
 
 /* Navigation Laser Underline with ~3.2s cycle */
@@ -283,4 +284,3 @@ body {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
 }
-
