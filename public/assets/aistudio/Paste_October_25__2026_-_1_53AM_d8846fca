@@ -1,0 +1,880 @@
+# INDUSLINK — COMPLETE WEBSITE REDESIGN & FULL-STACK IMPLEMENTATION MASTER PROMPT
+
+**Repository:** https://github.com/Chandan3101/IndusLink.git
+
+**Primary mission:** Transform the existing IndusLink website into a simple, premium, intuitive, visually impressive, fully functional industrial resource intelligence platform. Reduce landing-page text by approximately 50%, eliminate the text-heavy appearance, create complete buyer and seller dashboards, integrate the ten intelligence engines, and implement refined interactive animations throughout the application.
+
+**Do not merely generate a plan or a screenshot. Inspect the existing repository, modify its actual files, integrate the implementation, run available checks, and fix errors.**
+
+---
+
+# 1. YOUR ROLE
+
+Act as a principal full-stack engineer, product designer, UX architect, animation engineer, industrial data specialist, security engineer, and quality assurance engineer.
+
+Your priorities, in order:
+
+1. Make the website easier to understand and use.
+2. Reduce unnecessary text and cognitive overload.
+3. Make the main workflows functional from beginning to end.
+4. Deliver an exceptional but restrained visual design.
+5. Add the requested spring-driven heading animation and accessible custom pointer effect.
+6. Apply the global glow, laser, pulse, and ambient animation system.
+7. Validate functionality, responsiveness, accessibility, and performance.
+
+Do not prioritize decoration over usability or working features.
+
+# 2. EXISTING REPOSITORY IS THE SOURCE OF TRUTH
+
+Repository: `https://github.com/Chandan3101/IndusLink.git`
+
+Before editing:
+
+- Inspect the project structure, dependencies, routes, page components, styles, database, APIs, authentication, and existing functionality.
+- Read the current implementation instead of assuming its architecture.
+- Inspect Git status and preserve uncommitted work.
+- Identify the existing animation libraries and reuse them appropriately.
+- Identify existing buyer/seller functionality and extend it rather than duplicating it.
+
+Mandatory rules:
+
+- Preserve the current IndusLink identity and black/graphite plus emerald-green theme.
+- Preserve existing working routes, API calls, authentication, integrations, and business logic.
+- Do not replace the project with a new starter template.
+- Do not create duplicate pages to imitate existing pages.
+- Do not discard existing user changes.
+- Do not fabricate metrics, transactions, industrial partnerships, verified savings, emissions reductions, or certifications.
+- Do not leave important buttons nonfunctional.
+- Do not claim an operation succeeded before it actually succeeds.
+- Do not report tests or builds as passing unless they were executed successfully.
+
+Make incremental changes and validate them as you proceed.
+
+# 3. THE NEW UX DIRECTION
+
+The website must feel like a modern industrial technology product, not a document, text reader, or long technical report.
+
+## Design principles
+
+- Less text, more visual communication.
+- Clear hierarchy and obvious next actions.
+- Short headlines and descriptions.
+- Compact, meaningful cards.
+- More useful diagrams, material-flow graphics, and data visualizations.
+- Generous spacing without excessive empty space.
+- Consistent alignment and typography.
+- Premium dark surfaces with restrained emerald highlights.
+- Simple navigation and understandable labels.
+- Advanced animation used selectively to reinforce interaction.
+- Readable dashboards with actionable information.
+
+Avoid:
+- Long explanatory paragraphs.
+- Repeating the same information in multiple sections.
+- Large walls of text.
+- Too many cards on one screen.
+- Oversized empty dashboard panels.
+- Decorative metrics without data.
+- Excessive glass effects or neon.
+- Animation on every element simultaneously.
+- Tiny labels, cramped tables, and illegible charts.
+
+**Text-reduction target:** Reduce the total landing-page prose by approximately 50% compared with the current version. This is a target for redundant and explanatory copy, not a reason to delete essential labels, instructions, evidence, safety warnings, or accessibility information.
+
+Keep detailed technical explanations inside contextual tooltips, expandable details, evidence panels, or report views when appropriate. Do not hide essential information behind unnecessary clicks.
+
+# 4. LANDING PAGE — FOUR COMPACT SECTIONS
+
+Keep the existing four-section structure, unless the actual code requires a minimal adjustment to preserve working navigation.
+
+## Section 1 — Hero
+
+Eyebrow:
+
+`INDUSTRIAL RESOURCE INTELLIGENCE`
+
+Headline:
+
+**Turn Industrial Byproducts Into Valuable Resources.**
+
+Supporting copy:
+
+Discover reuse opportunities. Compare real costs. Evaluate potential impact.
+
+Primary CTA: `Explore Platform`
+
+Secondary CTA: `Get Started`
+
+Include a premium industrial material-flow visualization connecting:
+
+- A material source.
+- A byproduct stream.
+- A potential receiving industry.
+
+Use animated particles or flowing paths where appropriate. Keep the visual meaningful rather than purely decorative.
+
+Layout:
+- Two-column desktop composition.
+- Clear text and visual alignment.
+- Responsive mobile stacking.
+- No clipped heading or buttons.
+- No excessive text around the hero.
+
+## Section 2 — The Problem
+
+Heading:
+
+**Potential Value. Hidden Complexity.**
+
+Three compact visual cards:
+
+- **Material Uncertainty** — Understand what a material contains.
+- **Hidden Costs** — Evaluate the full cost of reuse.
+- **Unverified Impact** — Compare outcomes against a documented baseline.
+
+Use simple icons or purposeful micro-illustrations.
+
+## Section 3 — How It Works
+
+Heading:
+
+**From Material Data to Better Decisions.**
+
+Show six compact steps:
+
+1. Register materials.
+2. Add evidence.
+3. Check compatibility.
+4. Compare cost and impact.
+5. Review requirements.
+6. Generate a report.
+
+Use a responsive process diagram or timeline instead of six lengthy explanations.
+
+## Section 4 — Platform Capabilities
+
+Heading:
+
+**Industrial Intelligence, Connected.**
+
+Present nine compact capabilities:
+
+- Explainable Matching.
+- True Cost Engine.
+- Net Environmental Impact.
+- Alternative-Use Discovery.
+- Supply Reliability.
+- Reuse Readiness Passport.
+- Evidence Trail.
+- What-If Simulator.
+- Industrial Cluster Optimizer.
+
+Finish with:
+
+**One organization. One account. Buy, sell, or both.**
+
+CTA: `Get Started`
+
+## Landing-page behavior
+
+- All CTAs must navigate to real destinations or working actions.
+- Navigation anchors must scroll to the correct sections.
+- Sticky headers must not obscure headings.
+- The mobile menu must open, close, and navigate correctly.
+- Avoid horizontal scrolling.
+- Keep the footer compact.
+- Do not repeat the full feature descriptions from the dashboard on the landing page.
+
+# 5. GLOBAL HEADING ANIMATION — SKEW IN
+
+Implement the specified **Skew In** animation for all appropriate headings from `h1` through `h6`.
+
+## Required library
+
+Install and pin the exact dependency versions:
+
+`npm i spring-text-engine@0.1.5 @react-spring/web`
+
+First inspect the existing package manager and dependency state. Use the appropriate equivalent command if the repository uses pnpm, yarn, or another package manager. Do not install duplicate copies unnecessarily.
+
+## Required component pattern
+
+Use the library's documented API with the following exact spring settings:
+
+```tsx
+import TextEngine from "spring-text-engine";
+
+<TextEngine
+  tag="h1"
+  mode="once"
+  letterOut={{ opacity: 0, skewX: 16, y: 14 }}
+  letterIn={{ opacity: 1, skewX: 0, y: 0 }}
+  letterConfig={{ tension: 240, friction: 20 }}
+  letterStagger={30}
+>
+  Turn Industrial Byproducts Into Valuable Resources.
+</TextEngine>
+```
+
+Adapt the tag, heading content, class names, and accessible behavior to the existing component.
+
+### Animation behavior
+
+- Each letter enters from an opacity of zero, a horizontal skew of 16, and a vertical offset of 14.
+- Each letter straightens and settles into its final position.
+- Apply a 30 ms per-letter stagger.
+- Use exactly `tension: 240` and `friction: 20`.
+- Use `mode="once"` for ordinary heading reveals.
+- Never use `mode="manual"`.
+- Keep every animated property type consistent between `letterOut` and `letterIn`.
+- Use numeric values for `opacity`, `skewX`, and `y` in both states.
+- Do not add CSS transitions, CSS keyframes, or Framer Motion to implement this heading effect.
+- All motion for this specific effect must be spring-driven through `spring-text-engine`.
+
+### Global application
+
+Create a reusable animated-heading wrapper or component and apply it to the actual existing page headings throughout the application:
+
+- Landing page.
+- Buyer dashboard.
+- Seller dashboard.
+- Material discovery.
+- Material registration.
+- Match assessment.
+- Cost intelligence.
+- Environmental intelligence.
+- Evidence center.
+- Reports.
+- Settings.
+- Other existing pages with headings.
+
+Use the correct semantic heading level and preserve heading hierarchy.
+
+Do not replace headings with generic divs. Avoid creating nested or duplicated headings.
+
+### Layout and accessibility
+
+- Use `className="justify-center"` only for headings that should be centered.
+- Without Tailwind, use the appropriate flex alignment style.
+- Do not use `text-align` as a substitute for the required flex-container alignment.
+- Preserve the original typography, responsive sizing, and alignment.
+- Avoid layout shifts while letters animate.
+- Ensure the complete heading remains readable and available to assistive technology.
+- Prevent screen readers from announcing each letter separately; use the library's accessible capabilities or an equivalent wrapper that exposes the full heading as a single semantic heading.
+- Avoid repeatedly animating the same heading on every small state change.
+- Respect reduced-motion preferences and use a readable static heading when motion is reduced.
+
+**Important:** Do not globally animate every paragraph, table cell, button label, or body-copy element. The Skew In effect is for headings only. Body copy remains static.
+
+# 6. CUSTOM EYES POINTER EFFECT
+
+Implement a small custom Eyes pointer-following pill using vanilla JavaScript and CSS. Do not introduce a separate animation library for this effect.
+
+The native browser cursor must remain visible at all times.
+
+## Appearance
+
+Use the following reference values:
+
+- Label: `Explore`
+- Font: `Georgia, serif`
+- Font weight: `500`
+- Width: `82px`
+- Height: `25px`
+- Border radius: `36px`
+- Background: `#000000`
+- Eye sclera: `#FFFFFF`
+- Pupil: `#000000`
+- Label: `#FFFFFF`
+- Eye diameter: `0.36 × pill height`
+- Pupil diameter: `0.5 × eye diameter`
+- Gap between eyes: `1px`
+- Maximum pupil travel factor: `0.75`
+- Gaze gain: `26px`
+- Blink interval: approximately `3s`
+- Blink duration: `170ms`
+- Blink randomness: `0.3`
+- Follow trail factor: `0.08`
+
+Derive all eye and pupil dimensions from the pill height rather than independently hardcoding every part.
+
+Treat the dimensions as a responsive starting point, not a fixed viewport or canvas size.
+
+## Behavior
+
+- The pill follows the pointer smoothly.
+- Both pupils track the pointer direction.
+- Clamp pupil movement within the eye boundaries.
+- The pill blinks at irregular intervals around the specified interval.
+- Preserve a subtle following trail.
+- Interactive hover reactions are triggered only when the element under the pointer matches `a, button, input` using `closest()`.
+- Keep the effect visually subtle and consistent with IndusLink's premium industrial design.
+
+## Accessibility and implementation constraints
+
+Mandatory:
+
+- Never use `cursor: none`.
+- Never replace the native cursor with `cursor: url(...)`.
+- Render the effect as an additive overlay using `position: fixed`.
+- Set `pointer-events: none`.
+- Set `aria-hidden="true"`.
+- Keep it above the page without intercepting clicks, hover events, focus, or text selection.
+- Disable the animated effect on touch and coarse-pointer devices.
+- Mount it only when `matchMedia("(hover: hover) and (pointer: fine)")` matches.
+- Recheck the media query when its state changes.
+- Respect `prefers-reduced-motion: reduce`; do not mount the animated effect or show a static, nonanimated alternative.
+- Track pointer updates using a single `requestAnimationFrame` loop.
+- Clean up pointer listeners, animation frames, timers, and media-query listeners on teardown.
+- Avoid unnecessary DOM updates or React renders on every pointer movement.
+
+If canvas is used for any visual portion, scale its backing store according to `devicePixelRatio`, capped at `2`, and recompute dimensions when the container changes size. A DOM-based implementation is acceptable and preferable for the small pill if it satisfies the behavior and cleanup requirements.
+
+Do not create an enormous full-screen cursor graphic. This is a small pointer-following UI accent.
+
+# 7. GLOBAL PREMIUM GLOW, LASER, PULSE AND AMBIENT ANIMATION SYSTEM
+
+Apply the supplied animation system throughout the existing website, including applicable navigation, cards, buttons, dashboards, charts, timelines, and footers.
+
+Do not restrict the effects to the hero.
+
+## Centralized tokens
+
+Create reusable design tokens for:
+- Emerald glow.
+- Secondary blue glow.
+- Multicolor laser gradients.
+- White laser highlights.
+- Card hover elevation.
+- Icon pulse.
+- Background drift.
+- Button feedback.
+- Transition duration and easing.
+
+Use the existing animation libraries where appropriate. Do not create multiple competing animation systems.
+
+### CTA buttons
+
+For existing primary CTA buttons:
+
+- Emerald-green primary gradient or surface.
+- Controlled glow pulse.
+- Soft shadow based on `0 0 15px var(--glow-color)`.
+- Hover brightness around `110%`.
+- Press feedback around `scale(0.95)`.
+- Clear focus and disabled states.
+
+Use blue only for suitable secondary actions. Never change button dimensions during an animation.
+
+### Navigation laser
+
+Apply a thin underline gradient to existing navigation tabs:
+
+- Blue: `#60a5fa`
+- Pink: `#ec4899`
+- Red: `#ef4444`
+
+Add a narrow white laser highlight and controlled glow.
+
+- Animate the laser along the underline approximately every `3.2s`.
+- Show the appropriate hover state.
+- Keep the active tab visibly active.
+- Clip the animation to the underline.
+- Never shift neighboring navigation items.
+- Preserve existing routes, keyboard navigation, and active-state logic.
+
+### Timeline laser
+
+Where an existing timeline or roadmap is present:
+
+- Preserve its structure and state.
+- Use a restrained multicolor track.
+- Animate a white laser packet approximately `50px` high.
+- Use an approximately `2.8s` cycle.
+- Add a subtle white glow.
+- Clip the effect to the timeline track.
+- Give active nodes a restrained pulsing halo.
+- Apply subtle hover feedback to existing nodes.
+
+Do not invent a roadmap just to use this animation.
+
+### Card and icon effects
+
+Apply selectively:
+- Hover elevation.
+- Subtle emerald edge glow.
+- Border illumination.
+- Icon breathing pulses.
+- Small interaction feedback.
+- Ambient background drift.
+
+Do not animate every icon continuously.
+
+### Reduced motion and performance
+
+- Respect `prefers-reduced-motion`.
+- Prefer transforms and opacity for lightweight motion.
+- Clean up animation contexts and listeners.
+- Prevent layout shifts.
+- Avoid blocking text or controls with overlays.
+- Simplify decorative effects on lower-performance devices where appropriate.
+
+# 8. COMPLETE BUYER DASHBOARD
+
+Build a real buyer workspace using the existing routes, authentication, backend, and data models.
+
+## Overview
+
+Show a compact actionable dashboard:
+- Material searches.
+- Potential matches requiring review.
+- Missing-evidence alerts.
+- Open enquiries.
+- Offers awaiting review.
+- Recent activity.
+- Recommended next actions.
+
+Use actual organization data or explicitly labeled demo data.
+
+## Material discovery
+
+Implement:
+- Search.
+- Filtering.
+- Sorting.
+- Material detail views.
+- Supplier and facility information subject to permissions.
+- Quantity and availability.
+- Physical and chemical properties.
+- Evidence status.
+- Location or estimated distance when supported.
+- Updated timestamps.
+
+## Buyer specification builder
+
+Allow buyers to define:
+- Material identity.
+- Required properties and acceptable ranges.
+- Critical contaminant limits.
+- Required quantity and unit.
+- Delivery location.
+- Schedule.
+- Maximum cost if applicable.
+- Required documents.
+
+Validate input ranges and units.
+
+## Candidate comparison
+
+Compare potential suppliers across:
+- Technical compatibility.
+- Hard-constraint outcomes.
+- Missing evidence.
+- Available quantity.
+- Delivered cost.
+- Environmental scenarios.
+- Transport assumptions.
+- Supply reliability.
+- Validation requirements.
+
+Clearly explain why each candidate passes, fails, or remains unresolved.
+
+## Enquiries and offers
+
+Implement the actual workflow:
+1. Select a candidate.
+2. Review its evidence.
+3. Submit an enquiry or request for quotation.
+4. Track the enquiry.
+5. Review seller responses.
+6. Compare offers.
+7. Record authorized decisions.
+8. Track supported milestones.
+
+Do not create real orders or commitments without the corresponding workflow and authorization.
+
+# 9. COMPLETE SELLER DASHBOARD
+
+## Overview
+
+Show:
+- Registered byproducts.
+- Active material batches.
+- Available quantities.
+- Missing-evidence alerts.
+- Incoming enquiries.
+- Pending offers.
+- Availability reminders.
+- Potential applications requiring review.
+
+## Material registration
+
+Support relevant fields for:
+- Material identity and form.
+- Generating process.
+- Facility.
+- Physical state.
+- Quantity and unit.
+- Supply frequency.
+- Batch variation.
+- Storage conditions.
+- Chemical composition.
+- Moisture.
+- Particle size.
+- Density.
+- Contaminant measurements.
+- Test dates and methods.
+- Supporting documents.
+
+Adapt the form to the actual material category.
+
+## Evidence management
+
+Allow authorized users to upload, review, and update supporting documents using the existing secure storage architecture.
+
+- Validate file types and sizes.
+- Protect documents from unauthorized access.
+- Extract data only where supported.
+- Allow review of extracted values before saving.
+- Track document dates and provenance.
+- Flag missing or outdated evidence.
+
+Display the status:
+
+**Document uploaded — authenticity not independently verified.**
+
+Uploading a file must not automatically certify its contents.
+
+## Material passport
+
+Track:
+- Material identity.
+- Batch history.
+- Measurements.
+- Evidence.
+- Validation state.
+- Availability.
+- Testing requirements.
+- Review decisions.
+- Relevant audit events.
+
+Keep batches distinct where their compositions differ.
+
+## Potential buyer discovery
+
+Show possible applications with:
+- Relevance rationale.
+- Required specifications.
+- Critical constraint failures.
+- Missing evidence.
+- Logistics assumptions.
+- Recommended validation steps.
+
+Do not present potential matches as confirmed customers.
+
+## Enquiries and offers
+
+Allow sellers to review enquiries, ask questions, prepare offers, specify quantity and price, update statuses, and track supported milestones.
+
+Protect confidential commercial information.
+
+# 10. THE TEN INDUSTRIAL INTELLIGENCE FEATURES
+
+Integrate these features into actual workflows instead of creating ten disconnected demo pages.
+
+### 1. Unknown Data Guard
+Identify missing, stale, conflicting, or incomplete critical properties. Unknown critical values must never count as passing evidence.
+
+### 2. Explainable Matching
+Evaluate hard constraints first. Explain which requirements pass, fail, or need additional testing. Separate eligibility from soft-preference ranking.
+
+### 3. True Cost Engine
+Calculate estimated delivered cost using available purchase, transport, handling, processing, testing, storage, and other relevant costs. Show formulas, units, assumptions, and breakdowns.
+
+### 4. Net Environmental Impact
+Compare a proposed reuse scenario against a documented baseline. Include relevant transport and processing burdens and justified displacement effects. Show system boundaries, functional units, factor sources, and uncertainty.
+
+### 5. Alternative-Use Discovery
+Evaluate plausible applications against material properties and buyer requirements. Do not infer suitability from names alone.
+
+### 6. Supply Reliability Monitor
+Track supported quantity, availability, quality variation, supply history, and known fulfilment issues. Show insufficient history when reliability cannot be established.
+
+### 7. Reuse Readiness Passport
+Track testing, technical evaluation, applicable regulatory checks, logistics, evidence, and human review. Do not fabricate approvals or certifications.
+
+### 8. Evidence Trail
+Trace important recommendations and calculations to their input values, sources, assumptions, document references, and calculation versions.
+
+### 9. What-If Simulator
+Allow changes to supported variables such as transport distance, processing cost, and quantity. Recalculate relevant outputs deterministically without overwriting the original assessment.
+
+### 10. Industrial Cluster Optimizer
+Evaluate supplier and buyer combinations subject to technical compatibility, quantity, capacity, logistics, and other documented constraints. Explain selected options and rejected alternatives.
+
+## Integrity rules
+
+- Deterministic code handles thresholds, eligibility, conversions, and calculations.
+- AI may assist with extraction and explanations but must not override hard constraints.
+- Missing critical data results in an unresolved state.
+- Rice husk and rice husk ash must remain distinct material identities.
+- Illustrative savings and emissions values must be labeled as sample scenarios.
+- A potential match is not a confirmed safe or commercially viable exchange.
+- Never invent transactions, verified savings, or verified emissions reductions.
+
+# 11. VISUALIZATION AND REPORTING
+
+Use the existing visualization library where practical. Add D3.js only if necessary.
+
+Implement suitable visualizations where they help users make decisions:
+
+- Industrial network graph.
+- Material-flow Sankey.
+- Material-property comparison.
+- Cost breakdown or waterfall.
+- Environmental scenario comparison.
+- Geographic opportunity map when data supports it.
+- Batch composition comparison.
+- Supply-demand matrix.
+- Supply reliability timeline.
+- Evidence completeness and uncertainty view.
+
+Do not put every chart on every page.
+
+All charts must:
+- Use real data or explicitly labeled sample data.
+- Show units and legends.
+- Provide understandable tooltips.
+- Support responsive sizing.
+- Avoid clipped labels.
+- Provide an accessible alternative.
+- Handle empty and incomplete data.
+
+Generate traceable reports where supported. Reports must distinguish measurements, estimates, assumptions, and independently verified outcomes.
+
+# 12. APPLICATION ARCHITECTURE
+
+Inspect the current stack before modifying it.
+
+Reuse the existing architecture wherever practical.
+
+If needed and compatible, use:
+- React and TypeScript for the frontend.
+- Existing CSS or Tailwind styling.
+- Existing Node.js server and API framework.
+- PostgreSQL or the current relational database.
+- Existing authentication and session infrastructure.
+- Private object storage for documents.
+- Server-side report generation.
+- Existing chart libraries and selectively D3.js.
+- Existing GSAP or other suitable installed animation infrastructure.
+
+Do not migrate the database or replace authentication without a demonstrated need.
+
+Keep UI, domain logic, persistence, and integrations separated according to project conventions.
+
+Suggested data entities, adapted to the existing schema:
+
+- Users.
+- Organizations.
+- Memberships and permissions.
+- Facilities.
+- Materials.
+- Material batches.
+- Measurements.
+- Documents.
+- Buyer specifications.
+- Assessments.
+- Assessment evidence.
+- Cost scenarios.
+- Environmental scenarios.
+- Matches.
+- Enquiries.
+- Offers.
+- Review decisions.
+- Reports.
+- Notifications.
+- Audit events.
+- Emission factors and sources.
+
+Use appropriate constraints, relationships, timestamps, indexes, units, and provenance.
+
+# 13. SECURITY AND ACCESS CONTROL
+
+Preserve existing security controls and improve them where necessary.
+
+- Enforce authorization on the server.
+- Scope private data to the correct organization.
+- Protect document access.
+- Validate all inputs.
+- Use secure session or authentication practices.
+- Keep secrets out of frontend bundles.
+- Handle API and database errors safely.
+- Protect sensitive endpoints appropriately.
+- Record important state changes in an audit trail.
+- Do not trust client-provided roles or calculated outcomes.
+- Do not leak private supplier or buyer details through searches or charts.
+
+# 14. FUNCTIONALITY AND EMPTY STATES
+
+Every visible control must have a real action.
+
+Support appropriate:
+- Loading states.
+- Empty states.
+- Validation errors.
+- Network failures.
+- Permission errors.
+- Successful operations.
+- Recovery and retry actions.
+
+Forms must validate and show clear messages.
+
+Do not display success before the operation completes.
+
+Do not present incomplete features as fully operational.
+
+If demo data is necessary, label it clearly and keep it separate from real records.
+
+# 15. RESPONSIVE LAYOUT AND ACCESSIBILITY
+
+Test at:
+
+`320, 375, 430, 768, 1024, 1440, 1920px`
+
+Verify:
+- No horizontal overflow.
+- No clipped headings.
+- No overlapping content.
+- No hidden buttons.
+- No sticky-header collisions.
+- Accessible menus and dialogs.
+- Keyboard navigation.
+- Visible focus states.
+- Readable charts.
+- Mobile-friendly tables.
+- Sufficient contrast.
+- Reduced-motion support.
+- Native cursor always visible.
+- No animated overlay intercepting interactions.
+- Headings remain semantic and accessible during letter animation.
+
+Use responsive grid and flex layouts, content-driven heights, and correctly sized SVGs.
+
+# 16. TESTING AND PERFORMANCE
+
+Use the existing project tooling.
+
+Run applicable:
+- Production build.
+- Type checking.
+- Linting.
+- Unit tests.
+- Integration tests.
+- Relevant authorization tests.
+- Calculation tests.
+- Responsive and browser checks where available.
+
+Specifically test:
+- Hard-constraint matching.
+- Missing-data handling.
+- Unit conversions.
+- Cost calculations.
+- Environmental calculations.
+- Buyer/seller permissions.
+- Document access.
+- Enquiry and offer state transitions.
+- What-if scenario recalculation.
+- Report integrity.
+- Heading animation on all supported pages.
+- Pointer-effect cleanup and accessibility.
+- Reduced-motion behavior.
+
+Fix defects introduced by your changes. If a check cannot run because a required service is unavailable, report that limitation accurately.
+
+# 17. IMPLEMENTATION ORDER
+
+Follow this order while adapting to the actual repository:
+
+**Phase 1 — Audit**
+Inspect existing code, Git state, dependencies, routes, and functionality.
+
+**Phase 2 — UX simplification**
+Reduce landing-page prose by approximately 50%, improve spacing, hierarchy, and navigation.
+
+**Phase 3 — Shared application foundation**
+Improve the app shell, organization context, responsive navigation, and reusable components.
+
+**Phase 4 — Buyer and seller workflows**
+Build complete material discovery, registration, evidence, comparison, enquiry, and offer workflows.
+
+**Phase 5 — Intelligence**
+Implement all ten features as reusable, testable domain services and connected UI workflows.
+
+**Phase 6 — Visualizations and reports**
+Integrate meaningful charts, scenario analysis, and evidence-backed reports.
+
+**Phase 7 — Heading animation**
+Install the pinned spring-text-engine dependencies and apply the specified Skew In effect to all existing page headings.
+
+**Phase 8 — Eyes pointer**
+Implement the responsive, accessible, native-cursor-preserving vanilla JS/CSS effect.
+
+**Phase 9 — Global animation**
+Apply refined glow buttons, laser navigation, applicable timeline motion, card interactions, and ambient effects.
+
+**Phase 10 — Quality assurance**
+Test functionality, accessibility, performance, responsiveness, build, and critical user journeys.
+
+Prioritize a complete end-to-end workflow over shallow implementations of many unrelated screens.
+
+# 18. FINAL ACCEPTANCE CRITERIA
+
+The completed application should demonstrate this workflow:
+
+1. Sign in using the actual authentication implementation.
+2. Enter a buyer or seller workspace.
+3. Register a material and attach evidence.
+4. Review the extracted or entered material properties.
+5. Define buyer requirements.
+6. Evaluate potential compatibility using deterministic rules.
+7. Identify missing critical information.
+8. Compare delivered cost and environmental scenarios.
+9. Explore alternative assumptions.
+10. Submit an enquiry.
+11. Review and respond from the other workspace.
+12. Trace decisions back to evidence.
+13. Generate a report where supported.
+14. Use the site comfortably on desktop and mobile.
+15. Experience the animations without loss of usability.
+
+The landing page must be substantially less text-heavy, visually engaging, and easy to understand within seconds.
+
+The dashboards must feel like usable industrial software, not long reports or static mockups.
+
+# 19. FINAL DELIVERY REPORT
+
+After implementation, report:
+
+1. Architecture found in the repository.
+2. Landing-page text and UX changes.
+3. Buyer dashboard features completed.
+4. Seller dashboard features completed.
+5. Intelligence engines completed.
+6. Database and API changes.
+7. Heading animation implementation.
+8. Eyes pointer implementation and accessibility checks.
+9. Global glow and laser effects.
+10. Build, type-check, lint, and test results.
+11. Remaining limitations.
+12. Exact local run instructions.
+
+Classify every major capability as:
+- Implemented and tested.
+- Implemented but not fully tested.
+- Partially implemented.
+- Not implemented.
+
+Never claim a deployment, push, or test result that has not actually happened.
+
+**FINAL INSTRUCTION:** Work directly on the existing IndusLink repository. Simplify the landing page by approximately 50%, make the complete application easier to use, build real buyer and seller workflows, implement the ten evidence-based intelligence features, add the specified spring-driven heading animation and accessible Eyes pointer, apply the premium global motion system, and verify the result. Preserve existing functionality and never substitute visual mockups for working behavior.

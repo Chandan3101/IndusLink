@@ -16,10 +16,10 @@ interface NavigationProps {
 }
 
 const SECTIONS: { id: SectionId; label: string }[] = [
-  { id: 'home', label: 'HOME' },
-  { id: 'evaluation', label: 'EVALUATION' },
-  { id: 'opportunities', label: 'OPPORTUNITIES' },
-  { id: 'explore', label: 'EXPLORE' },
+  { id: 'home', label: 'HERO' },
+  { id: 'problem', label: 'PROBLEM' },
+  { id: 'how-it-works', label: 'HOW IT WORKS' },
+  { id: 'platform', label: 'PLATFORM' },
 ];
 
 export const Navigation: React.FC<NavigationProps> = ({
@@ -112,9 +112,9 @@ export const Navigation: React.FC<NavigationProps> = ({
                   key={section.id}
                   onClick={() => onNavigate(section.id)}
                   aria-current={isActive ? 'true' : undefined}
-                  className={`relative px-3 py-1 rounded-full text-xs font-semibold tracking-wider transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#9D1738] whitespace-nowrap ${
+                  className={`relative px-3.5 py-1.5 rounded-full text-xs font-semibold tracking-wider transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 whitespace-nowrap ${
                     isActive
-                      ? 'bg-[#9D1738] text-[#F8FAFC] shadow-[0_0_15px_rgba(157,23,56,0.4)]'
+                      ? 'bg-emerald-600 text-[#F8FAFC] shadow-[0_0_15px_rgba(16,185,129,0.4)] nav-laser-underline'
                       : 'text-[#61646E] dark:text-[#94A3B8] hover:text-[#15161A] dark:hover:text-[#F8FAFC] hover:bg-black/5 dark:hover:bg-white/5'
                   }`}
                 >
@@ -125,14 +125,14 @@ export const Navigation: React.FC<NavigationProps> = ({
           </div>
 
           {/* Mobile Current Active Section Label */}
-          <div className="sm:hidden px-2 py-0.5 rounded-full text-[11px] font-bold tracking-wider bg-[#9D1738] text-[#F8FAFC] uppercase">
+          <div className="sm:hidden px-2.5 py-1 rounded-full text-[11px] font-bold tracking-wider bg-emerald-600 text-[#F8FAFC] uppercase">
             {SECTIONS[currentIndex]?.label || 'HOME'}
           </div>
 
           <button
             onClick={handleNext}
             disabled={currentIndex === SECTIONS.length - 1}
-            className="hidden sm:inline-flex min-h-10 min-w-10 items-center justify-center rounded-full hover:bg-black/5 dark:hover:bg-white/10 disabled:opacity-25 disabled:cursor-not-allowed transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#9D1738]"
+            className="hidden sm:inline-flex min-h-10 min-w-10 items-center justify-center rounded-full hover:bg-black/5 dark:hover:bg-white/10 disabled:opacity-25 disabled:cursor-not-allowed transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
             aria-label="Next section"
             title="Next section"
           >
@@ -146,7 +146,7 @@ export const Navigation: React.FC<NavigationProps> = ({
         {/* Theme Toggle */}
         <button
           onClick={onToggleTheme}
-          className="min-h-11 min-w-11 inline-flex items-center justify-center rounded-full hover:bg-black/5 dark:hover:bg-white/10 text-[#61646E] dark:text-[#94A3B8] hover:text-[#9D1738] dark:hover:text-[#F8FAFC] transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#9D1738] shrink-0"
+          className="min-h-11 min-w-11 inline-flex items-center justify-center rounded-full hover:bg-black/5 dark:hover:bg-white/10 text-[#61646E] dark:text-[#94A3B8] hover:text-emerald-500 dark:hover:text-[#F8FAFC] transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 shrink-0"
           aria-label={isDark ? 'Switch to light theme' : 'Switch to dark theme'}
           title={isDark ? 'Switch to light theme' : 'Switch to dark theme'}
         >
@@ -157,21 +157,22 @@ export const Navigation: React.FC<NavigationProps> = ({
           )}
         </button>
 
-        {/* Actions: Log In & Get Started */}
+        {/* Actions: Log In & Launch Platform */}
         <div className="hidden md:flex items-center gap-1.5 shrink-0 ml-1">
           <button
             onClick={() => onOpenAccess('login')}
-            className="px-3 py-1 text-xs font-medium text-[#61646E] dark:text-[#94A3B8] hover:text-[#15161A] dark:hover:text-[#F8FAFC] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#9D1738] whitespace-nowrap"
+            className="px-3 py-1 text-xs font-medium text-[#61646E] dark:text-[#94A3B8] hover:text-emerald-400 dark:hover:text-[#F8FAFC] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 whitespace-nowrap"
           >
-            Log In
+            Sign In
           </button>
 
           <button
+            id="nav-get-started"
             onClick={() => onOpenAccess('start')}
-            className="flex items-center gap-1 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-[#9D1738] hover:bg-[#BE185D] text-[#F8FAFC] shadow-sm hover:shadow-[0_0_15px_rgba(157,23,56,0.4)] active:scale-[0.98] transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#9D1738] whitespace-nowrap"
+            className="glow-button-emerald flex items-center gap-1 px-4 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap"
           >
-            <span>Get Started</span>
-            <ArrowUpRight className="w-3 h-3" />
+            <span>Launch Platform</span>
+            <ArrowUpRight className="w-3.5 h-3.5" />
           </button>
         </div>
 

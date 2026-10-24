@@ -1,0 +1,798 @@
+# INDUSLINK — STRICT 50% TEXT REDUCTION, DISTINCT INTELLIGENCE MODULES, PREMIUM DASHBOARD & GLOBAL ANIMATION MASTER PROMPT
+
+**Existing repository:** https://github.com/Chandan3101/IndusLink.git
+
+**UI reference repository:** https://github.com/Chandan3101/lifevault.git
+
+**Animation and interaction references:**
+- Lenis: https://github.com/darkroomengineering/lenis
+- GSAP: https://github.com/greensock/GSAP
+- Vanta: https://github.com/tengbao/vanta
+- React Bits: https://github.com/DavidHDev/react-bits
+
+## PRIMARY DIRECTIVE
+
+Act as a senior product designer, full-stack engineer, animation specialist, UX architect, and industrial intelligence systems engineer.
+
+**Redesign the existing IndusLink application directly. Remove at least 50% of unnecessary landing-page text. Eliminate repetitive intelligence cards. Make buyer and seller workflows visually distinct. Implement the animated collapsible sidebar inspired by the supplied LifeVault component. Add sophisticated GSAP-driven interactions throughout the actual application.**
+
+The result must be simple to navigate, visually impressive, and functional.
+
+Do not return a proposal, a mockup, or another long description of what you would change. Inspect the repository, edit the existing files, run the application checks, and report what actually works.
+
+---
+
+## 1. STRICT CONTENT REDUCTION — NON-NEGOTIABLE
+
+The current website is too text-heavy and resembles a document rather than a modern product.
+
+### Required reduction
+
+- Reduce landing-page prose by **at least 50%** compared with the current implementation.
+- Reduce repetitive explanatory text across dashboard cards, feature descriptions, and intelligence screens.
+- Remove redundant paragraphs, duplicate feature descriptions, repetitive section introductions, unnecessary subtitles, and repeated calls to action.
+- Replace long descriptions with clear headings, concise labels, visual diagrams, charts, icons, and contextual details.
+- Keep essential safety information, evidence provenance, validation requirements, and form instructions.
+- Do not simply shrink font sizes or hide existing text using CSS. Actually edit the content and component markup.
+
+Before editing, measure the current visible landing-page word count. After editing, measure it again using the same method. Record both counts and calculate the reduction percentage.
+
+Target:
+
+\[
+\text{Reduction}=\frac{\text{Original words}-\text{New words}}{\text{Original words}}\times100
+\]
+
+The final visible landing-page prose must be at least 50% shorter. Aim for approximately 60% where readability permits.
+
+### Strict landing-page content
+
+Keep the landing page to four compact sections.
+
+**Section 1 — Hero**
+
+Eyebrow: `INDUSTRIAL RESOURCE INTELLIGENCE`
+
+Headline: **Turn Industrial Byproducts Into Valuable Resources.**
+
+Description: `Find reuse opportunities. Compare costs. Evaluate impact.`
+
+Buttons:
+- `Explore Platform`
+- `Get Started`
+
+Add one premium material-flow visualization.
+
+**Section 2 — The Problem**
+
+Heading: `Potential Value. Hidden Complexity.`
+
+Three short cards:
+- Material uncertainty
+- Hidden logistics costs
+- Unverified environmental impact
+
+Each card gets one concise sentence at most.
+
+**Section 3 — How It Works**
+
+Heading: `From Material to Decision.`
+
+Show six visual steps with minimal text:
+
+`Register → Validate → Match → Compare → Review → Report`
+
+Use a process diagram rather than six large text cards.
+
+**Section 4 — Platform**
+
+Heading: `Industrial Intelligence. One Workspace.`
+
+Show six distinct, compact entry points:
+- Discover Materials
+- Assess Compatibility
+- Calculate Delivered Cost
+- Compare Environmental Impact
+- Review Evidence
+- Optimize Resource Flows
+
+CTA: `Explore Platform`
+
+End with a short line:
+
+`One organization. Buy, sell, or both.`
+
+### Content rules
+
+- No lengthy marketing paragraphs.
+- No repeated explanations of the same feature.
+- No huge text-heavy cards.
+- No extra landing-page sections added just to display more content.
+- No paragraphs repeated from dashboard pages.
+- Do not place all ten intelligence feature explanations on the landing page.
+- Move technical details into their relevant functional screens.
+- Prefer visual evidence and real data over decorative copy.
+
+The landing page must communicate the product's purpose within five seconds.
+
+---
+
+## 2. AUDIT THE EXISTING REPOSITORY FIRST
+
+Open the actual IndusLink project and inspect:
+
+- Current routes and page components.
+- Landing-page sections and visible copy.
+- Dashboard layout and sidebar.
+- Intelligence-related routes and cards.
+- Authentication and organization context.
+- Database schema and API endpoints.
+- Existing GSAP, Motion, React Bits, or other installed dependencies.
+- Existing charts, data visualizations, and animations.
+- Current responsive behavior.
+- Git status and uncommitted work.
+
+Create a concise internal implementation checklist based on the real code.
+
+Preserve all existing working functionality, API integrations, authentication, and user data.
+
+Do not recreate the application from scratch. Do not delete working components simply because a replacement would be easier.
+
+If the reference repository is accessible, inspect its actual implementation. If it is not accessible, use the provided sidebar code and specifications in this prompt as the design reference. Never claim that a repository has been inspected if it has not.
+
+---
+
+## 3. DISTINCT INTELLIGENCE MODULES — FIX REPETITIVE OPTIONS
+
+**Critical defect:** Six intelligence options currently look essentially identical. This must be fixed at the component and workflow level, not just through different colors or icons.
+
+First identify the six actual options and their existing routes, handlers, components, and data dependencies.
+
+Keep all six only if they provide six genuinely different capabilities. If they are entry points to the ten existing intelligence engines, map them to those engines without inventing new functionality.
+
+### Give every intelligence module a distinct identity
+
+<escape>1.</escape> **Material Compatibility**
+
+- Main purpose: determine whether a material meets a receiving application's requirements.
+- Visual: requirement checklist and property comparison.
+- Main action: `Assess Compatibility`
+- Output: pass, fail, or insufficient evidence for each relevant requirement.
+
+<escape>2.</escape> **Delivered Cost**
+
+- Main purpose: calculate the estimated full cost of reuse.
+- Visual: cost breakdown and waterfall chart.
+- Main action: `Calculate Cost`
+- Output: itemized purchase, transport, processing, testing, and handling costs when available.
+
+<escape>3.</escape> **Environmental Impact**
+
+- Main purpose: compare a reuse scenario with a documented baseline.
+- Visual: baseline-versus-scenario chart.
+- Main action: `Compare Scenarios`
+- Output: estimated net impact, assumptions, boundaries, and uncertainty.
+
+<escape>4.</escape> **Alternative Uses**
+
+- Main purpose: explore multiple possible applications for a material.
+- Visual: ranked application list with technical constraint indicators.
+- Main action: `Explore Uses`
+- Output: candidate applications and the requirements that need validation.
+
+<escape>5.</escape> **Evidence & Readiness**
+
+- Main purpose: identify missing documents, stale measurements, and outstanding approvals.
+- Visual: evidence completeness, missing-data list, and readiness checklist.
+- Main action: `Review Evidence`
+- Output: evidence-backed readiness state and required next steps.
+
+<escape>6.</escape> **Industrial Network Optimizer**
+
+- Main purpose: evaluate multiple supply-demand combinations.
+- Visual: industrial network graph or supply-demand matrix.
+- Main action: `Optimize Network`
+- Output: feasible candidate allocations with capacity, quantity, compatibility, and logistics constraints.
+
+These are suggested mappings. Reconcile them with the six existing options before implementation. Preserve existing functions and routes where possible.
+
+### Required differences
+
+Every module must have its own:
+
+- Clear purpose.
+- Appropriate input controls.
+- Relevant data.
+- Unique visual representation.
+- Primary action.
+- Output state.
+- Loading state.
+- Empty state.
+- Error state.
+- Evidence or assumptions panel where applicable.
+
+Do not render the same generic grid of six cards on every page.
+
+Do not show the same chart, same placeholder metrics, same generic description, and same CTA in all six modules.
+
+Reuse shared design components where appropriate, but give each module a genuinely different information architecture.
+
+When required data is unavailable, explain what is missing. Do not fabricate results just to make a module look populated.
+
+---
+
+## 4. PREMIUM APP SHELL AND LIFEVAULT-INSPIRED SIDEBAR
+
+Use the supplied LifeVault `Sidebar` component as a behavioral reference, adapting its implementation to IndusLink.
+
+The reference uses:
+- A collapsed icon-only sidebar.
+- Expansion on mouse enter.
+- Collapse on mouse leave.
+- Animated width changes.
+- Animated label appearance and disappearance.
+- Active navigation indicators.
+- Hover and press feedback.
+- A persistent account/settings area.
+
+Reproduce these interaction principles without copying unrelated LifeVault features or names.
+
+### Desktop sidebar behavior
+
+- Collapsed width: approximately `72px`.
+- Expanded width: approximately `220px`.
+- Rounded dark surface with a subtle border.
+- Smooth expansion and collapse.
+- Icon alignment remains consistent in both states.
+- Labels fade and slide in without clipping.
+- Badges appear only where useful.
+- Active page indicator moves smoothly between navigation items.
+- Hover effects never cause layout jumps.
+- Tooltips identify collapsed navigation items.
+- The sidebar must not cover or obstruct the dashboard content.
+- Respect keyboard focus and reduced-motion settings.
+
+Use the installed Motion library if it already exists and is appropriate. GSAP may be used for broader application transitions, but do not run competing animations on the same property.
+
+### Navigation structure
+
+Adapt the actual existing IndusLink routes to a clear hierarchy.
+
+Suggested navigation:
+
+**Workspace**
+- Overview
+- Material Intelligence
+- Material Discovery
+- Evidence Center
+- Cost & Sustainability
+- Reports
+
+**Business**
+- Buyer Workspace
+- Seller Workspace
+- Enquiries & Offers
+
+**Administration**
+- Facilities
+- Team & Permissions
+- Settings
+
+Do not create duplicate routes if equivalent pages already exist. Remove irrelevant items and use the existing router's actual route definitions.
+
+### Mobile behavior
+
+On mobile, replace the desktop hover-expanding sidebar with an accessible drawer or compact navigation pattern.
+
+- Open using a visible menu button.
+- Close on Escape.
+- Close after selecting a destination.
+- Support keyboard navigation.
+- Do not require hover on touchscreens.
+- Preserve the current route and authentication state.
+
+### Sidebar animation sequence
+
+Use a coherent interaction sequence:
+
+1. Sidebar surface expands.
+2. Labels fade and slide into place.
+3. Active indicator animates to the selected item.
+4. Hovered icons receive a subtle response.
+5. The account area expands or collapses cleanly.
+
+Animations must not make navigation slower or unpredictable.
+
+---
+
+## 5. COMPLETE BUYER WORKSPACE
+
+The buyer experience must answer one question:
+
+**What suitable material can I obtain, at what delivered cost, and with what evidence?**
+
+### Overview
+
+Show only actionable information:
+- Saved searches or material requests.
+- Candidate materials requiring review.
+- Missing evidence alerts.
+- Open enquiries.
+- Pending offers.
+- Recent activity.
+
+Use compact KPI cards only when real or explicitly labeled demo data is available.
+
+### Discovery
+
+Provide a useful searchable catalogue with:
+- Material identity.
+- Form and relevant properties.
+- Available quantity and unit.
+- Supplier or facility details, subject to permissions.
+- Evidence status.
+- Location and estimated distance when supported.
+- Updated date.
+
+Filters should use real available fields.
+
+### Buyer specification builder
+
+Allow buyers to define:
+- Required material.
+- Acceptable property ranges.
+- Critical contaminant thresholds.
+- Required quantity and unit.
+- Delivery location.
+- Schedule.
+- Applicable document requirements.
+
+Clearly distinguish mandatory constraints from preferences.
+
+### Comparison
+
+Use a comparison view instead of another set of identical cards.
+
+Compare:
+- Technical compatibility.
+- Failed constraints.
+- Unknown critical properties.
+- Available quantity.
+- Delivered-cost estimate.
+- Environmental scenario.
+- Supply reliability.
+- Required validation.
+
+### Enquiry workflow
+
+Implement:
+
+`Select Candidate → Review Evidence → Send Enquiry → Receive Offer → Compare → Decide`
+
+Connect each step to existing API/database functionality where available. Add backend support when required and compatible with the existing architecture.
+
+Never create a confirmed transaction merely because a candidate has been selected.
+
+---
+
+## 6. COMPLETE SELLER WORKSPACE
+
+The seller experience must answer:
+
+**What byproduct do I have, what evidence supports it, and which potential uses should I evaluate?**
+
+### Overview
+
+Show:
+- Registered materials.
+- Available batches.
+- Quantity and availability.
+- Missing evidence.
+- Incoming enquiries.
+- Offers awaiting action.
+- Supply updates required.
+
+### Material registration
+
+Provide a guided form for:
+- Material identity and form.
+- Generating process.
+- Facility.
+- Quantity and unit.
+- Supply frequency.
+- Physical and chemical properties.
+- Batch variation.
+- Storage and handling conditions.
+- Test dates and methods.
+- Supporting documents.
+
+Adapt the fields to the selected material type.
+
+Do not treat different material forms as interchangeable. For example, rice husk and rice husk ash are different materials.
+
+### Evidence and material passport
+
+Create a clear evidence panel showing:
+- Available documents.
+- Measurements and units.
+- Source and date.
+- Missing properties.
+- Expired or stale evidence.
+- Validation status.
+- Required next steps.
+
+Use this exact status when appropriate:
+
+`Document uploaded — authenticity not independently verified.`
+
+Uploading a document does not prove authenticity.
+
+### Potential uses
+
+Present possible applications in a distinct evaluation view. Explain technical constraints, missing data, logistics assumptions, and required validation.
+
+Never describe a possible buyer as a confirmed customer.
+
+### Offers and enquiries
+
+Allow sellers to:
+- Review enquiries.
+- Ask for clarification.
+- Create or update offers.
+- Specify quantity, price, delivery assumptions, and validity.
+- Track responses and supported milestones.
+
+Protect confidential business information with server-side authorization.
+
+---
+
+## 7. GLOBAL ANIMATION SYSTEM — GSAP FIRST
+
+Use GSAP as the main orchestration system for application-level animation.
+
+Reference:
+https://github.com/greensock/GSAP
+
+Use the existing installation if present. Install only what is required.
+
+### Shared animation utilities
+
+Create reusable animation utilities for:
+- Page entrance.
+- Heading reveal.
+- Card stagger.
+- Sidebar expansion.
+- Modal and drawer transitions.
+- Navigation indicators.
+- Button feedback.
+- Chart entrance.
+- Material-flow diagrams.
+- Scroll-triggered sections.
+
+Use GSAP contexts and cleanup patterns in React so animations do not leak between route changes or remounts.
+
+### Page transitions
+
+On navigation:
+- Transition the main content using a restrained opacity and vertical movement.
+- Avoid unnecessarily delaying access to new content.
+- Preserve focus management.
+- Do not animate the entire page if doing so causes visible flicker or accessibility problems.
+
+### Cards and panels
+
+Use meaningful animation patterns:
+- Stagger cards when a section first appears.
+- Elevate the hovered card slightly.
+- Illuminate its border subtly.
+- Reveal additional information when the user interacts.
+- Animate numbers only when the underlying values are real and the animation improves comprehension.
+- Keep the dashboard stable during data refreshes.
+
+### Buttons
+
+- Emerald primary actions.
+- Refined glow on hover.
+- Subtle press feedback.
+- Clear keyboard focus.
+- Disabled state without misleading glow.
+
+### Icons
+
+Animate selected icons only when their interaction benefits from feedback. Do not continuously pulse every icon.
+
+### Ambient background
+
+Use restrained movement behind the interface, not on top of important content.
+
+Never allow decorative elements to obstruct text, charts, buttons, or focus rings.
+
+---
+
+## 8. USE THE FOUR REFERENCE REPOSITORIES PURPOSEFULLY
+
+Do not install all four libraries automatically. Inspect their relevant features and choose the appropriate implementation.
+
+### A. Lenis — Smooth scrolling
+
+Repository: https://github.com/darkroomengineering/lenis
+
+Use for smooth landing-page scrolling if compatible with the current app.
+
+- Integrate with GSAP ScrollTrigger when needed.
+- Avoid duplicate scroll loops.
+- Preserve anchor navigation.
+- Respect reduced motion.
+- Do not interfere with scrolling inside modals, menus, or data tables.
+
+### B. GSAP — Main animation engine
+
+Repository: https://github.com/greensock/GSAP
+
+Use for:
+- Sidebar and navigation transitions.
+- Section reveals.
+- Card staggers.
+- Material-flow sequences.
+- Chart introductions.
+- Carefully controlled scroll-based animation.
+- Interaction transitions.
+
+Do not apply scroll-triggered animations indiscriminately to every dashboard row.
+
+### C. Vanta — Ambient background
+
+Repository: https://github.com/tengbao/vanta
+
+Use only where an ambient background adds meaningful visual depth, such as the landing hero or a small dedicated visualization surface.
+
+- Keep the emerald/graphite theme.
+- Use subtle density and motion.
+- Avoid excessive particle activity.
+- Keep dashboard data readable.
+- Clean up effects on unmount.
+- Check WebGL support and provide a static fallback.
+- Respect reduced motion and mobile performance.
+
+Do not use Vanta as a full-page distraction behind every dashboard card.
+
+### D. React Bits — Interactive UI references
+
+Repository: https://github.com/DavidHDev/react-bits
+
+Inspect and select a small number of appropriate effects for:
+- Hero interaction.
+- Buttons.
+- Navigation.
+- Card hover.
+- Pointer interaction.
+- Visual transitions.
+
+Adapt the selected components to the existing project and theme. Do not add a large collection of unrelated visual effects.
+
+### Integration rule
+
+The intended system is:
+
+- GSAP: primary motion orchestration.
+- Lenis: optional smooth scrolling.
+- Vanta: limited ambient visual effect.
+- React Bits: selectively adapted components.
+
+Avoid duplicate animation frameworks, redundant dependencies, and overlapping control of the same CSS property.
+
+---
+
+## 9. SPRING-DRIVEN HEADING ANIMATION
+
+Implement the specified Skew In effect for actual headings throughout the website.
+
+Install the pinned dependencies using the existing package manager:
+
+`spring-text-engine@0.1.5` and `@react-spring/web`
+
+Required animation configuration:
+
+```tsx
+import TextEngine from "spring-text-engine";
+
+<TextEngine
+  tag="h1"
+  mode="once"
+  letterOut={{ opacity: 0, skewX: 16, y: 14 }}
+  letterIn={{ opacity: 1, skewX: 0, y: 0 }}
+  letterConfig={{ tension: 240, friction: 20 }}
+  letterStagger={30}
+>
+  Turn Industrial Byproducts Into Valuable Resources.
+</TextEngine>
+```
+
+Requirements:
+- Preserve the specified spring configuration.
+- Use matching numeric types for each animated property.
+- Apply to existing `h1`–`h6` headings using the correct semantic level.
+- Do not apply this effect to body copy.
+- Do not implement this particular effect with CSS keyframes, CSS transitions, or Framer Motion.
+- Preserve accessible heading text.
+- Respect reduced motion.
+- Avoid clipping and layout shifts.
+- Keep headings readable on mobile.
+
+If the library's actual API or accessibility behavior differs from this specification, verify the installed package and adapt safely rather than shipping a broken implementation.
+
+Use GSAP for other motion, not to override the spring engine's letter animation.
+
+---
+
+## 10. OPTIONAL EYES POINTER EFFECT
+
+Implement the small `Explore` pill cursor only if it improves the experience and does not compete with the native cursor.
+
+Appearance:
+- Width: `82px`.
+- Height: `25px`.
+- Black pill with white eyes and label.
+- Georgia serif, weight `500`.
+- Eye diameter: `0.36 × height`.
+- Pupil diameter: `0.5 × eye diameter`.
+- Pupil travel factor: `0.75`.
+- Follow trail factor: `0.08`.
+- Approximate blink interval: `3s`.
+- Blink duration: `170ms`.
+
+Behavior:
+- Follow the pointer.
+- Make pupils track its direction.
+- Clamp pupil movement.
+- Blink at a slightly irregular interval.
+- React to `a, button, input` elements using `closest()`.
+
+Accessibility requirements:
+- Never use `cursor: none` or a replacement cursor URL.
+- Keep the native system cursor visible.
+- Render the pill as a fixed overlay with `pointer-events: none` and `aria-hidden="true"`.
+- Disable it for touch/coarse-pointer devices.
+- Recheck the hover/pointer media query when it changes.
+- Respect `prefers-reduced-motion`.
+- Use one `requestAnimationFrame` loop and clean up all listeners and timers.
+- Do not obstruct links, buttons, forms, or text selection.
+
+Do not prioritize this effect over dashboard usability. If it creates visual clutter, simplify or omit it.
+
+---
+
+## 11. VISUAL DESIGN SYSTEM
+
+Preserve the existing black/graphite and emerald-green identity.
+
+Suggested tokens, adapted to the actual theme:
+
+- Background: near-black graphite.
+- Surfaces: charcoal with subtle tonal separation.
+- Primary accent: emerald green.
+- Secondary accent: muted blue.
+- Laser highlight: blue, pink, and red only for specific decorative laser effects.
+- Text: high-contrast neutral white and gray.
+- Borders: restrained neutral tones.
+- Status colors: consistent success, warning, error, and unresolved states.
+
+### Component hierarchy
+
+Use:
+- A consistent spacing scale.
+- Consistent card radii.
+- Clear type hierarchy.
+- Compact page headers.
+- Strong primary actions.
+- Predictable input and table patterns.
+- Consistent empty/loading/error states.
+
+Avoid placing every element inside a glass card. Use visual hierarchy to distinguish navigation, data, actions, and decorative effects.
+
+---
+
+## 12. DATA INTEGRITY AND INTELLIGENCE RULES
+
+Preserve the evidence-based principles of IndusLink.
+
+- Missing critical properties must not be treated as passing.
+- Hard technical constraints must be evaluated before soft ranking.
+- Explain why a candidate passes, fails, or remains unresolved.
+- Cost calculations must show relevant assumptions and units.
+- Environmental comparisons must identify their baseline, boundary, factors, and uncertainty.
+- Potential savings and emissions reductions must not be presented as verified outcomes without supporting evidence.
+- Sample records must be visibly labeled as demo data.
+- AI-assisted extraction must be reviewed before critical properties are accepted.
+- An uploaded document is not automatically authentic.
+- A potential match is not a confirmed safe, legal, or commercially viable exchange.
+- Server-side logic must remain authoritative for calculations, permissions, and decisions.
+
+---
+
+## 13. PERFORMANCE, ACCESSIBILITY, AND RESPONSIVENESS
+
+Test at:
+
+`320, 375, 430, 768, 1024, 1440, 1920px`
+
+Verify:
+- No horizontal overflow.
+- No clipped headings or labels.
+- No overlapping sidebar or main content.
+- No invisible navigation controls.
+- No inaccessible hover-only functionality.
+- Keyboard-operable navigation and dialogs.
+- Visible focus states.
+- Correct semantic headings.
+- Screen-reader-readable animated headings.
+- Reduced-motion support.
+- Native cursor visibility.
+- No animation overlays intercepting input.
+- Proper animation cleanup on route changes.
+- No duplicate animation loops.
+- Smooth interaction on lower-performance devices.
+
+---
+
+## 14. REQUIRED IMPLEMENTATION ORDER
+
+Work directly in the existing repository.
+
+**Phase 1:** Audit the codebase, routes, dependencies, and Git state.
+
+**Phase 2:** Measure and reduce landing-page text by at least 50%.
+
+**Phase 3:** Inspect the six repetitive intelligence options and redesign each as a distinct functional workflow.
+
+**Phase 4:** Refactor the application shell and implement the LifeVault-inspired animated collapsible sidebar.
+
+**Phase 5:** Complete buyer and seller dashboards, including their actual workflows.
+
+**Phase 6:** Implement the intelligence calculations and evidence handling.
+
+**Phase 7:** Integrate GSAP interactions and selected effects from Lenis, Vanta, and React Bits.
+
+**Phase 8:** Implement spring-driven heading animation.
+
+**Phase 9:** Implement the optional Eyes pointer if appropriate.
+
+**Phase 10:** Run build, type-check, lint, tests, responsive checks, and critical user journeys. Fix regressions.
+
+Do not stop after producing a plan. Continue until the changes are implemented or a real blocker prevents progress.
+
+---
+
+## 15. FINAL ACCEPTANCE TEST
+
+The result is accepted only when:
+
+1. The landing page has at least 50% less visible prose than before.
+2. The landing page feels like a product website, not a text-heavy report.
+3. The six intelligence options no longer look or behave like copies of each other.
+4. Each intelligence workflow has a distinct purpose, input, visual, and result.
+5. The sidebar expands and collapses smoothly, following the LifeVault reference behavior.
+6. Buyer and seller workspaces have clear, different tasks.
+7. Navigation and CTAs work.
+8. GSAP animations are applied purposefully throughout the application.
+9. The specified heading effect works without breaking layout or accessibility.
+10. Lenis, Vanta, and React Bits are used selectively where they add value.
+11. Existing authentication, routes, APIs, and business logic are preserved.
+12. The application remains responsive and accessible.
+13. Tests and build checks are reported honestly.
+
+## FINAL RESPONSE REQUIRED
+
+When finished, provide:
+- Original and final landing-page word counts.
+- Calculated text reduction percentage.
+- The six intelligence options and how each differs.
+- Sidebar behavior implemented.
+- Animations and libraries actually integrated.
+- Buyer/seller functionality completed.
+- Build and test results.
+- Remaining limitations.
+
+Clearly distinguish implemented features from incomplete work.
+
+**Final instruction: Be strict about removing text. Do not solve a text-heavy website by adding more cards and paragraphs. Make IndusLink visually intuitive, reduce unnecessary content by at least 50%, make every intelligence module meaningfully different, and use polished animations to support the user experience rather than overwhelm it.**

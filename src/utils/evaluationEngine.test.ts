@@ -12,7 +12,7 @@ import {
   determineConnectionState,
   calculateScrollProgress,
   calculateWhatIfScenario,
-  PropertyEvaluationResult,
+  type PropertyEvaluationResult,
 } from './evaluationEngine.ts';
 
 test('evaluateProperty handles missing data as unknown', () => {
@@ -132,5 +132,57 @@ test('calculateWhatIfScenario computes delivered cost and break-even radius', ()
   assert.equal(result.isCarbonFavorable, true);
   assert.ok(result.breakEvenDistanceKm > 1000);
 });
+
+import {
+  calculateHaversineDistance,
+  evaluateCandidateAgainstSpec,
+  calculateSupplyReliability,
+  optimizeClusterSynergies,
+} from './evaluationEngine.ts';
+import {
+  INITIAL_REGISTERED_MATERIALS,
+  INITIAL_BUYER_SPECS,
+  CLUSTER_SYNERGY_NODES,
+} from '../data/mockData.ts';
+
+test('calculateHaversineDistance computes accurate geographic distance', () => {
+  // Grand Rapids to Chicago ~ 200 km
+  const dist = calculateHaversineDistance(42.9634, -85.6681, 41.8781, -87.6298);
+  assert.ok(dist >= 190 && dist <= 220);
+});
+
+test('evaluateCandidateAgainstSpec detects hard failure when contaminant limit exceeded', () => {
+  const phosphogypsum = INITIAL_REGISTERED_MATERIALS.find((m) => m.id === 'mat-pg-03')!;
+  const geopolymerSpec = INITIAL_BUYER_SPECS.find((s) => s.id === 'spec-geopolymer-03')!;
+  const assessment = evaluateCandidateAgainstSpec(phosphogypsum, geopolymerSpec, 85);
+
+  assert.equal(assessment.state, 'UNSUITABLE_HARD_FAIL');
+  assert.equal(assessment.isHardConstraintViolated, true);
+});
+
+test('evaluateCandidateAgainstSpec identifies missing critical assay', () => {
+  const foundrySand = INITIAL_REGISTERED_MATERIALS.find((m) => m.id === 'mat-sfs-04')!;
+  const asphaltSpec = INITIAL_BUYER_SPECS.find((s) => s.id === 'spec-asphalt-02')!;
+  const assessment = evaluateCandidateAgainstSpec(foundrySand, asphaltSpec, 60);
+
+  assert.equal(assessment.state, 'DATA_MISSING');
+  assert.ok(assessment.missingCriticalProperties.length > 0);
+});
+
+test('calculateSupplyReliability determines buffer sizing', () => {
+  const rha = INITIAL_REGISTERED_MATERIALS.find((m) => m.id === 'mat-rha-01')!;
+  const metrics = calculateSupplyReliability(rha.batches, 300, 'Continuous');
+
+  assert.ok(metrics.consistencyScore > 0);
+  assert.ok(metrics.recommendedBufferDays >= 30);
+  assert.ok(metrics.recommendedStorageCapacityTons > 0);
+});
+
+test('optimizeClusterSynergies discovers regional symbiosis links', () => {
+  const synergies = optimizeClusterSynergies(CLUSTER_SYNERGY_NODES);
+  assert.ok(synergies.length > 0);
+  assert.ok(synergies.some((s) => s.streamName.includes('Slag') || s.streamName.includes('Ash')));
+});
+
 
 

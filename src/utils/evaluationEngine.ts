@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { ConnectionState } from '../types/index.ts';
+import type { ConnectionState } from '../types/index.ts';
 
 export interface PropertyEvaluationInput {
   name: string;
@@ -192,7 +192,7 @@ export function calculateScrollProgress(scrollY: number, scrollHeight: number, c
   return Math.min(1, Math.max(0, scrollY / maxScroll));
 }
 
-import { WhatIfParameters, WhatIfResults } from '../types/index.ts';
+import type { WhatIfParameters, WhatIfResults } from '../types/index.ts';
 
 /**
  * Calculates What-If economic and carbon scenario metrics transparently.
@@ -236,5 +236,309 @@ export function calculateWhatIfScenario(params: WhatIfParameters): WhatIfResults
     isCarbonFavorable: netAvoidedCO2ePerTonKg > 0,
   };
 }
+
+import type {
+  RegisteredMaterial,
+  BuyerSpecification,
+  MaterialBatch,
+  ClusterNode,
+} from '../types/index.ts';
+
+/**
+ * Calculates straight-line great-circle distance between two geographic coordinates in kilometers.
+ */
+export function calculateHaversineDistance(
+  lat1: number,
+  lon1: number,
+  lat2: number,
+  lon2: number
+): number {
+  const R = 6371; // Earth radius in km
+  const dLat = ((lat2 - lat1) * Math.PI) / 180;
+  const dLon = ((lon2 - lon1) * Math.PI) / 180;
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos((lat1 * Math.PI) / 180) *
+      Math.cos((lat2 * Math.PI) / 180) *
+      Math.sin(dLon / 2) *
+      Math.sin(dLon / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  return Math.round(R * c);
+}
+
+export interface DetailedCandidateAssessment {
+  state: ConnectionState;
+  stateLabel: string;
+  isHardConstraintViolated: boolean;
+  missingCriticalProperties: string[];
+  pendingLabStandards: string[];
+  propertyEvaluations: PropertyEvaluationResult[];
+  economicDeliveredCost: DeliveredCostResult;
+  environmentalImpact: CarbonImpactResult;
+  decisionExplanation: string[];
+  actionRequired: string;
+}
+
+/**
+ * Evaluates candidate material against buyer specification using 7-step deterministic pipeline.
+ */
+export function evaluateCandidateAgainstSpec(
+  material: RegisteredMaterial,
+  spec: BuyerSpecification,
+  distanceKm: number
+): DetailedCandidateAssessment {
+  const propertyEvaluations: PropertyEvaluationResult[] = [];
+  const missingCritical: string[] = [];
+  const pendingStandards: string[] = [];
+  const explanation: string[] = [];
+
+  // Step 1: Evaluate required chemical and physical bounds
+  spec.requiredProperties.forEach((req) => {
+    const reqName = req.name.toLowerCase();
+    const matProp = material.properties.find((p) => {
+      const pName = p.name.toLowerCase();
+      return pName === reqName || pName.includes(reqName) || reqName.includes(pName);
+    });
+    const val = matProp?.value ?? null;
+    const isLabPending =
+      matProp?.value === null &&
+      matProp.testStandard.toLowerCase().includes('xrd');
+
+    const result = evaluateProperty({
+      name: req.name,
+      min: req.min,
+      max: req.max,
+      val,
+      isHardRequirement: req.isHardRequirement,
+      requiresLabVerification: isLabPending,
+    });
+
+    propertyEvaluations.push(result);
+
+    if (result.status === 'unknown') {
+      missingCritical.push(`${req.name} (${req.requiredStandard || 'Assay needed'})`);
+    } else if (result.status === 'lab_needed') {
+      pendingStandards.push(`${req.name} (${req.requiredStandard || 'Laboratory proof required'})`);
+    }
+  });
+
+  // Step 2: Evaluate critical contaminants
+  spec.criticalContaminantLimits.forEach((contaminant) => {
+    const cName = contaminant.name.toLowerCase();
+    const matProp = material.properties.find((p) => {
+      const pName = p.name.toLowerCase();
+      return (
+        (pName.includes('radium') && cName.includes('rad')) ||
+        (pName.includes('chloride') && cName.includes('chlor')) ||
+        (pName.includes('lead') && cName.includes('lead')) ||
+        (pName.includes('cadmium') && cName.includes('cad')) ||
+        pName === cName ||
+        pName.includes(cName) ||
+        cName.includes(pName)
+      );
+    });
+    const val = matProp?.value ?? null;
+    if (val !== null && val > contaminant.maxLimit) {
+      propertyEvaluations.push({
+        name: contaminant.name,
+        status: 'failed',
+        isHardRequirement: true,
+        message: `Contaminant value ${val} ${contaminant.unit} exceeds statutory/technical limit of ${contaminant.maxLimit} ${contaminant.unit}.`,
+      });
+    }
+  });
+
+  // Step 3: Compute Delivered Economics
+  const economicDeliveredCost = calculateDeliveredCost({
+    baseMaterialPricePerTon: material.basePricePerTon,
+    distanceKm,
+    freightRatePerTonKm: 0.18,
+    preprocessingCostPerTon: 12,
+    qaTestingCostPerBatch: 400,
+    batchSizeTons: 100,
+    baselinePrimaryMaterialCostPerTon: spec.virginBaselineCostPerTon,
+  });
+
+  // Step 4: Compute Environmental Scenario
+  const environmentalImpact = calculateCarbonImpact({
+    baselineEmissionsKgCO2e: spec.virginBaselineEmissionsKgCO2e,
+    reuseProcessingEmissionsKgCO2e: 45,
+    transportEmissionFactorKgPerTonKm: 0.082,
+    distanceKm,
+  });
+
+  // Step 5: Determine Connection State
+  const state = determineConnectionState(propertyEvaluations);
+
+  let stateLabel = 'Potential Application Identified';
+  let actionRequired = 'Proceed with commercial sampling protocol and logistics scheduling.';
+
+  if (state === 'UNSUITABLE_HARD_FAIL') {
+    stateLabel = 'Application Unsuitable (Hard Requirement Failed)';
+    actionRequired = 'Hard barrier breached; reject candidate or evaluate alternative low-spec applications.';
+    explanation.push('Critical chemical ceiling or safety boundary exceeded; disqualifies usage without major beneficiation.');
+  } else if (state === 'DATA_MISSING') {
+    stateLabel = 'Critical Material Data Missing';
+    actionRequired = `Dossier incomplete: ${missingCritical.join(', ')}. Upload accredited assays before re-evaluating.`;
+    explanation.push('Unknown Data Guard engaged: Algorithmic approval frozen because essential engineering bounds lack assay evidence.');
+  } else if (state === 'TESTING_REQUIRED') {
+    stateLabel = 'Additional Laboratory Testing Required';
+    actionRequired = `Pending physical standard testing: ${pendingStandards.join(', ')}.`;
+    explanation.push('Preliminary parameters comply with ranges, but certified lab verification (e.g. XRD crystalline scan) is pending.');
+  } else if (state === 'COMPATIBILITY_UNVERIFIED') {
+    stateLabel = 'Compatibility Not Yet Verified';
+    actionRequired = 'Verify non-critical property tolerances with facility process engineer.';
+    explanation.push('Minor tolerance deviations noted; secondary parameter verification required.');
+  } else {
+    explanation.push('All documented parameters satisfy engineering limits with positive delivered economic and carbon savings.');
+  }
+
+  return {
+    state,
+    stateLabel,
+    isHardConstraintViolated: state === 'UNSUITABLE_HARD_FAIL',
+    missingCriticalProperties: missingCritical,
+    pendingLabStandards: pendingStandards,
+    propertyEvaluations,
+    economicDeliveredCost,
+    environmentalImpact,
+    decisionExplanation: explanation,
+    actionRequired,
+  };
+}
+
+export interface SupplyReliabilityMetrics {
+  consistencyScore: number; // 0-100%
+  meanBatchQuantity: number;
+  variationCoefficient: number; // std dev / mean
+  monthlyCoverageRatio: number; // available / demand
+  recommendedBufferDays: number;
+  recommendedStorageCapacityTons: number;
+  seasonalityRisk: 'Low (Continuous Baseload)' | 'Medium (Batch Campaign)' | 'High (Weather Dependent)';
+}
+
+/**
+ * Calculates supply reliability and storage buffering from recorded production batches.
+ */
+export function calculateSupplyReliability(
+  batches: MaterialBatch[],
+  monthlyDemandTons: number,
+  frequency: 'Continuous' | 'Batch Campaign' | 'Seasonal Campaign'
+): SupplyReliabilityMetrics {
+  if (batches.length === 0) {
+    return {
+      consistencyScore: 50,
+      meanBatchQuantity: 0,
+      variationCoefficient: 0,
+      monthlyCoverageRatio: 0,
+      recommendedBufferDays: 45,
+      recommendedStorageCapacityTons: Math.round(monthlyDemandTons * 1.5),
+      seasonalityRisk: 'High (Weather Dependent)',
+    };
+  }
+
+  const quantities = batches.map((b) => b.quantityTons);
+  const sum = quantities.reduce((a, b) => a + b, 0);
+  const mean = sum / quantities.length;
+  const variance =
+    quantities.reduce((acc, q) => acc + Math.pow(q - mean, 2), 0) / quantities.length;
+  const stdDev = Math.sqrt(variance);
+  const cv = mean > 0 ? stdDev / mean : 0;
+
+  let bufferDays = 30;
+  let seasonalityRisk: SupplyReliabilityMetrics['seasonalityRisk'] = 'Low (Continuous Baseload)';
+
+  if (frequency === 'Seasonal Campaign') {
+    bufferDays = 60;
+    seasonalityRisk = 'High (Weather Dependent)';
+  } else if (frequency === 'Batch Campaign') {
+    bufferDays = 45;
+    seasonalityRisk = 'Medium (Batch Campaign)';
+  }
+
+  const consistencyScore = Math.max(10, Math.min(100, Math.round((1 - cv * 0.5) * 100)));
+  const monthlyCoverageRatio = monthlyDemandTons > 0 ? Math.round((sum / monthlyDemandTons) * 100) / 100 : 1;
+  const recommendedStorageCapacityTons = Math.round((monthlyDemandTons / 30) * bufferDays);
+
+  return {
+    consistencyScore,
+    meanBatchQuantity: Math.round(mean),
+    variationCoefficient: Math.round(cv * 100) / 100,
+    monthlyCoverageRatio,
+    recommendedBufferDays: bufferDays,
+    recommendedStorageCapacityTons,
+    seasonalityRisk,
+  };
+}
+
+export interface ClusterSynergyOpportunity {
+  sourceNodeId: string;
+  sourceNodeName: string;
+  targetNodeId: string;
+  targetNodeName: string;
+  streamName: string;
+  distanceKm: number;
+  annualExchangeTonnage: number;
+  estAnnualLogisticsSavingsUSD: number;
+  avoidedVirginCO2eTons: number;
+  synergyType: 'Bilateral Mineral Reuse' | 'Industrial Steam Symbiosis' | 'Aggregated Secondary Logistics';
+}
+
+/**
+ * Computes localized industrial cluster synergy exchanges to minimize regional transport.
+ */
+export function optimizeClusterSynergies(nodes: ClusterNode[]): ClusterSynergyOpportunity[] {
+  const opportunities: ClusterSynergyOpportunity[] = [];
+
+  for (let i = 0; i < nodes.length; i++) {
+    for (let j = 0; j < nodes.length; j++) {
+      if (i === j) continue;
+      const generator = nodes[i];
+      const receiver = nodes[j];
+
+      // Check if generator produces what receiver demands
+      generator.byproductsGenerated.forEach((byproduct) => {
+        const matchingFeedstock = receiver.feedstocksDemanded.find((demand) =>
+          demand.toLowerCase().includes(byproduct.toLowerCase().split(' ')[0]) ||
+          byproduct.toLowerCase().includes(demand.toLowerCase().split(' ')[0])
+        );
+
+        if (matchingFeedstock) {
+          const dist = calculateHaversineDistance(
+            generator.lat,
+            generator.lng,
+            receiver.lat,
+            receiver.lng
+          );
+
+          // Only consider viable regional proximity <= 350 km
+          if (dist <= 350) {
+            const annualTonnage = 4200;
+            // Baseline long-haul 450 km virgin vs localized short-haul
+            const savedKm = Math.max(40, 450 - dist);
+            const savedLogistics = Math.round(savedKm * 0.18 * annualTonnage);
+            const avoidedCO2e = Math.round((savedKm * 0.082 * annualTonnage) / 1000);
+
+            opportunities.push({
+              sourceNodeId: generator.id,
+              sourceNodeName: generator.name,
+              targetNodeId: receiver.id,
+              targetNodeName: receiver.name,
+              streamName: byproduct,
+              distanceKm: dist,
+              annualExchangeTonnage: annualTonnage,
+              estAnnualLogisticsSavingsUSD: savedLogistics,
+              avoidedVirginCO2eTons: avoidedCO2e,
+              synergyType: 'Bilateral Mineral Reuse',
+            });
+          }
+        }
+      });
+    }
+  }
+
+  return opportunities;
+}
+
 
 

@@ -27,6 +27,7 @@ import {
   Building2,
   Sparkles,
 } from 'lucide-react';
+import { AnimatedHeading } from './AnimatedHeading.tsx';
 
 const SECTORS: ('All' | IndustrialSector)[] = [
   'All',
@@ -98,9 +99,12 @@ export const OpportunitiesSection: React.FC = () => {
             <Network className="w-3.5 h-3.5" />
             <span>Cross-Industry Resource Intelligence</span>
           </div>
-          <h2 className="font-serif text-3xl sm:text-5xl lg:text-5xl font-medium tracking-tight text-[#15161A] dark:text-[#F8FAFC] leading-tight mb-4">
+          <AnimatedHeading
+            tag="h2"
+            className="font-serif text-3xl sm:text-5xl lg:text-5xl font-medium tracking-tight text-[#15161A] dark:text-[#F8FAFC] leading-tight mb-4"
+          >
             “Resources can connect industries. Evidence determines what proceeds.”
-          </h2>
+          </AnimatedHeading>
           <p className="text-base sm:text-lg text-[#61646E] dark:text-[#94A3B8] leading-relaxed">
             Byproducts and secondary minerals create viable industrial symbiosis pathways only when physical assays, transportation economics, and regulatory bounds align.
           </p>
@@ -286,9 +290,12 @@ export const OpportunitiesSection: React.FC = () => {
             <span className="text-xs font-mono uppercase tracking-widest text-[#9D1738] dark:text-[#E899AA] block mb-2 font-semibold">
               Regional Ecosystem Synergy
             </span>
-            <h3 className="font-serif text-2xl sm:text-3xl font-semibold text-[#15161A] dark:text-[#F8FAFC] mb-3 leading-tight">
+            <AnimatedHeading
+              tag="h3"
+              className="font-serif text-2xl sm:text-3xl font-semibold text-[#15161A] dark:text-[#F8FAFC] mb-3 leading-tight"
+            >
               Physical co-location reduces the delivered cost penalty.
-            </h3>
+            </AnimatedHeading>
             <p className="text-xs sm:text-sm text-[#61646E] dark:text-[#94A3B8] leading-relaxed mb-6">
               Haulage emissions and transportation rates often determine whether an environmentally beneficial exchange is economically viable. IndusLink calculates the precise break-even radius for every material pair.
             </p>

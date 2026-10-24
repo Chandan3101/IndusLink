@@ -131,9 +131,156 @@ body {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(157, 23, 56, 0.25);
+  background: rgba(16, 185, 129, 0.25);
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(157, 23, 56, 0.5);
+  background: rgba(16, 185, 129, 0.5);
 }
+
+/* =========================================================================
+   INDUSLINK PREMIUM LASER, GLOW & PULSE ANIMATION SYSTEM
+   ========================================================================= */
+
+@keyframes laser-cycle {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes laser-sweep {
+  0% {
+    left: -20%;
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  85% {
+    opacity: 1;
+  }
+  100% {
+    left: 120%;
+    opacity: 0;
+  }
+}
+
+@keyframes timeline-packet {
+  0% {
+    top: -10%;
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    top: 110%;
+    opacity: 0;
+  }
+}
+
+@keyframes emerald-pulse {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(16, 185, 129, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 24px rgba(16, 185, 129, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  }
+}
+
+/* Primary Glowing Button Token */
+.glow-button-emerald {
+  position: relative;
+  background-color: #059669;
+  color: #F8FAFC;
+  box-shadow: 0 0 15px rgba(16, 185, 129, 0.35);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.glow-button-emerald:hover {
+  filter: brightness(110%);
+  background-color: #10b981;
+  box-shadow: 0 0 24px rgba(16, 185, 129, 0.55);
+}
+.glow-button-emerald:active {
+  transform: scale(0.95);
+}
+
+/* Secondary Glowing Button Token (Blue) */
+.glow-button-blue {
+  position: relative;
+  background-color: #2563eb;
+  color: #F8FAFC;
+  box-shadow: 0 0 15px rgba(96, 165, 250, 0.35);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.glow-button-blue:hover {
+  filter: brightness(110%);
+  background-color: #3b82f6;
+  box-shadow: 0 0 24px rgba(96, 165, 250, 0.55);
+}
+.glow-button-blue:active {
+  transform: scale(0.95);
+}
+
+/* Navigation Laser Underline with ~3.2s cycle */
+.nav-laser-underline {
+  position: relative;
+}
+.nav-laser-underline::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  border-radius: 9999px;
+  background: linear-gradient(90deg, #60a5fa, #ec4899, #ef4444, #60a5fa);
+  background-size: 300% 100%;
+  animation: laser-cycle 3.2s linear infinite;
+  box-shadow: 0 0 10px rgba(96, 165, 250, 0.6), 0 0 20px rgba(236, 72, 153, 0.4);
+}
+.nav-laser-underline::before {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  width: 24px;
+  height: 2px;
+  background: #ffffff;
+  border-radius: 9999px;
+  box-shadow: 0 0 8px #ffffff, 0 0 14px rgba(255, 255, 255, 0.8);
+  animation: laser-sweep 3.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  z-index: 1;
+}
+
+/* Timeline Laser Track with 2.8s packet */
+.timeline-laser-track {
+  position: relative;
+  background: linear-gradient(180deg, rgba(96, 165, 250, 0.3), rgba(236, 72, 153, 0.3), rgba(239, 68, 68, 0.3));
+  overflow: hidden;
+}
+.timeline-laser-track::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 50px;
+  background: linear-gradient(180deg, transparent, #ffffff, transparent);
+  box-shadow: 0 0 12px #ffffff, 0 0 20px rgba(96, 165, 250, 0.8);
+  animation: timeline-packet 2.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+/* Responsive Table Scroll Container */
+.data-table-container {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
