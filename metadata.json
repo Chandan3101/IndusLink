@@ -1,0 +1,6 @@
+{
+  "name": "IndusLink",
+  "description": "Industrial Resource Intelligence — Evaluate potential industrial byproduct exchanges through material compatibility, delivered cost, and traceable environmental evidence.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
