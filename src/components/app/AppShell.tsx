@@ -137,7 +137,7 @@ export const AppShell: React.FC<AppShellProps> = ({
   };
 
   return (
-    <div className="min-h-screen bg-[var(--bg-page)] text-[var(--text-primary)] flex overflow-x-hidden">
+    <div className="min-h-screen bg-transparent text-[var(--text-primary)] flex overflow-x-hidden relative z-10">
       {/* LifeVault-Inspired Collapsible Animated Sidebar */}
       <LifeVaultSidebar
         activeTab={activeTab}
@@ -152,12 +152,12 @@ export const AppShell: React.FC<AppShellProps> = ({
 
       {/* Main Content Viewport */}
       <div className="flex-1 flex flex-col min-w-0">
-        {/* Top Header Bar */}
-        <header className="sticky top-0 z-30 glass-surface-elevated border-b border-black/8 dark:border-white/10 px-4 sm:px-6 py-3 flex items-center justify-between gap-4">
+        {/* Floating Rounded Top Header Bar */}
+        <header className="sticky top-2 sm:top-3 z-30 mx-3 sm:mx-6 my-2 rounded-2xl glass-surface-elevated border border-slate-200/80 dark:border-white/10 px-4 sm:px-6 py-2.5 flex items-center justify-between gap-4 shadow-lg backdrop-blur-2xl transition-all duration-300">
           <div className="flex items-center gap-3">
             <button
               onClick={() => setSidebarOpen(true)}
-              className="md:hidden p-2 rounded-xl glass-surface text-zinc-400 hover:text-white"
+              className="md:hidden p-2 rounded-xl glass-surface text-slate-500 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-white"
             >
               <Menu className="w-4 h-4" />
             </button>
@@ -169,7 +169,7 @@ export const AppShell: React.FC<AppShellProps> = ({
                 className={`px-3 py-1 rounded-lg transition-all ${
                   workspaceMode === 'buyer'
                     ? 'bg-emerald-600 text-white shadow-sm'
-                    : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
+                    : 'text-slate-600 dark:text-[var(--text-secondary)] hover:text-slate-950 dark:hover:text-[var(--text-primary)]'
                 }`}
               >
                 Buyer View
@@ -179,7 +179,7 @@ export const AppShell: React.FC<AppShellProps> = ({
                 className={`px-3 py-1 rounded-lg transition-all ${
                   workspaceMode === 'seller'
                     ? 'bg-emerald-600 text-white shadow-sm'
-                    : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
+                    : 'text-slate-600 dark:text-[var(--text-secondary)] hover:text-slate-950 dark:hover:text-[var(--text-primary)]'
                 }`}
               >
                 Seller View
@@ -189,7 +189,7 @@ export const AppShell: React.FC<AppShellProps> = ({
                 className={`hidden sm:inline-block px-3 py-1 rounded-lg transition-all ${
                   workspaceMode === 'both'
                     ? 'bg-emerald-600 text-white shadow-sm'
-                    : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
+                    : 'text-slate-600 dark:text-[var(--text-secondary)] hover:text-slate-950 dark:hover:text-[var(--text-primary)]'
                 }`}
               >
                 Dual Symbiosis
@@ -198,16 +198,16 @@ export const AppShell: React.FC<AppShellProps> = ({
           </div>
 
           {/* Quick Actions & Demo Account Switcher */}
-          <div className="flex items-center gap-2.5">
+          <div className="flex items-center gap-2 sm:gap-2.5">
             {/* Demo Account Quick Switcher */}
             <select
               value={currentUser.id}
               onChange={(e) => onSwitchUser(e.target.value)}
-              className="hidden lg:block px-3 py-1.5 rounded-xl glass-surface text-xs font-medium text-[var(--text-primary)] border border-black/10 dark:border-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
+              className="hidden lg:block px-3 py-1.5 rounded-xl glass-surface text-xs font-medium text-slate-800 dark:text-[var(--text-primary)] border border-slate-200/80 dark:border-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
               title="Switch demo persona"
             >
               {allUsers.map((u) => (
-                <option key={u.id} value={u.id} className="bg-zinc-900 text-white">
+                <option key={u.id} value={u.id} className="bg-white text-slate-900 dark:bg-zinc-900 dark:text-white">
                   Demo Org: {u.organization} ({u.organizationType})
                 </option>
               ))}
@@ -216,7 +216,7 @@ export const AppShell: React.FC<AppShellProps> = ({
             {/* Quick Search */}
             <button
               onClick={() => setSearchOpen(true)}
-              className="p-2 rounded-xl glass-surface text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-black/5 dark:hover:bg-white/5"
+              className="p-2 rounded-xl glass-surface text-slate-600 dark:text-[var(--text-secondary)] hover:text-slate-950 dark:hover:text-[var(--text-primary)] hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
               title="Search Materials & Specifications (Cmd+K)"
             >
               <Search className="w-4 h-4" />
@@ -225,17 +225,17 @@ export const AppShell: React.FC<AppShellProps> = ({
             {/* Notifications */}
             <button
               onClick={() => setNotificationsOpen(!notificationsOpen)}
-              className="p-2 rounded-xl glass-surface text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-black/5 dark:hover:bg-white/5 relative"
+              className="p-2 rounded-xl glass-surface text-slate-600 dark:text-[var(--text-secondary)] hover:text-slate-950 dark:hover:text-[var(--text-primary)] hover:bg-black/5 dark:hover:bg-white/5 relative transition-colors"
               title="Notifications"
             >
               <Bell className="w-4 h-4" />
-              <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-emerald-400" />
+              <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-emerald-500" />
             </button>
 
             {/* Theme Toggle */}
             <button
               onClick={onToggleTheme}
-              className="p-2 rounded-xl glass-surface text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-black/5 dark:hover:bg-white/5"
+              className="p-2 rounded-xl glass-surface text-slate-600 dark:text-[var(--text-secondary)] hover:text-slate-950 dark:hover:text-[var(--text-primary)] hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
               title="Toggle Theme"
             >
               {isDark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
@@ -243,66 +243,66 @@ export const AppShell: React.FC<AppShellProps> = ({
           </div>
         </header>
 
-        {/* Notifications Drawer */}
+        {/* Notifications Drawer with Pop Animation */}
         {notificationsOpen && (
-          <div className="absolute top-16 right-4 sm:right-6 w-80 glass-surface-floating rounded-2xl p-4 shadow-2xl z-50 space-y-3 animate-in fade-in slide-in-from-top-2 duration-150 text-left">
+          <div className="absolute top-16 right-4 sm:right-6 w-80 glass-surface-floating rounded-2xl p-4 shadow-2xl z-50 space-y-3 dropdown-pop-animation text-left border border-slate-200/80 dark:border-white/10">
             <div className="flex items-center justify-between pb-2 border-b border-black/5 dark:border-white/5">
               <span className="font-semibold text-xs text-[var(--text-primary)]">Notifications</span>
-              <button onClick={() => setNotificationsOpen(false)} className="text-zinc-400 hover:text-white">
+              <button onClick={() => setNotificationsOpen(false)} className="text-slate-400 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-white">
                 <X className="w-3.5 h-3.5" />
               </button>
             </div>
             <div className="space-y-2 text-xs">
-              <div className="p-2 rounded-lg bg-blue-500/10 text-blue-300">
+              <div className="p-2.5 rounded-xl bg-blue-500/10 border border-blue-500/20 text-blue-800 dark:text-blue-300">
                 <strong>New Formal Quotation:</strong> Prairie Horizon issued quote for Class F Fly Ash.
               </div>
-              <div className="p-2 rounded-lg bg-amber-500/10 text-amber-300">
+              <div className="p-2.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-800 dark:text-amber-300">
                 <strong>Unknown Data Guard:</strong> Lab XRD verification pending on Rice Husk Ash.
               </div>
             </div>
           </div>
         )}
 
-        {/* Quick Search Modal */}
+        {/* Quick Search Modal with Pop Animation */}
         {searchOpen && (
-          <div className="fixed inset-0 z-50 flex items-start justify-center pt-20 p-4 bg-black/75 backdrop-blur-sm">
-            <div className="glass-surface-floating rounded-2xl max-w-xl w-full p-4 space-y-4 shadow-2xl">
-              <div className="flex items-center gap-2">
-                <Search className="w-4 h-4 text-zinc-400" />
+          <div className="fixed inset-0 z-50 flex items-start justify-center pt-20 p-4 bg-black/50 dark:bg-black/75 backdrop-blur-md">
+            <div className="glass-surface-floating rounded-3xl max-w-xl w-full p-5 space-y-4 shadow-2xl dialog-pop-animation border border-slate-200/90 dark:border-white/10">
+              <div className="flex items-center gap-2.5 pb-2 border-b border-black/5 dark:border-white/5">
+                <Search className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
                 <input
                   type="text"
                   autoFocus
                   placeholder="Type to search materials, specifications, facilities, or standards..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full bg-transparent text-sm text-[var(--text-primary)] focus-visible:outline-none"
+                  className="w-full bg-transparent text-sm text-slate-900 dark:text-[var(--text-primary)] placeholder:text-slate-400 dark:placeholder:text-zinc-500 focus-visible:outline-none"
                 />
-                <button onClick={() => setSearchOpen(false)} className="text-zinc-400 hover:text-white">
+                <button onClick={() => setSearchOpen(false)} className="text-slate-400 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-white">
                   <X className="w-4 h-4" />
                 </button>
               </div>
 
-              <div className="space-y-2 pt-2 border-t border-black/5 dark:border-white/5 text-xs">
-                <span className="text-[10px] font-mono text-[var(--text-secondary)] uppercase">Quick Links</span>
+              <div className="space-y-2 pt-1 text-xs">
+                <span className="text-[10px] font-mono text-slate-400 dark:text-[var(--text-secondary)] uppercase tracking-wider font-semibold">Quick Links</span>
                 <div
                   onClick={() => {
                     setActiveTab('discover');
                     setSearchOpen(false);
                   }}
-                  className="p-2 rounded-lg hover:bg-white/5 cursor-pointer flex items-center justify-between"
+                  className="p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-white/5 cursor-pointer flex items-center justify-between transition-colors"
                 >
-                  <span>Rice Husk Ash (Biomass Combustion Ash)</span>
-                  <span className="font-mono text-emerald-400 text-[10px]">Material</span>
+                  <span className="font-medium text-slate-800 dark:text-zinc-200">Rice Husk Ash (Biomass Combustion Ash)</span>
+                  <span className="font-mono text-emerald-600 dark:text-emerald-400 text-[10px] font-semibold">Material</span>
                 </div>
                 <div
                   onClick={() => {
                     setActiveTab('matching');
                     setSearchOpen(false);
                   }}
-                  className="p-2 rounded-lg hover:bg-white/5 cursor-pointer flex items-center justify-between"
+                  className="p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-white/5 cursor-pointer flex items-center justify-between transition-colors"
                 >
-                  <span>Marine Infrastructure SCM Specification</span>
-                  <span className="font-mono text-blue-400 text-[10px]">Specification</span>
+                  <span className="font-medium text-slate-800 dark:text-zinc-200">Marine Infrastructure SCM Specification</span>
+                  <span className="font-mono text-blue-600 dark:text-blue-400 text-[10px] font-semibold">Specification</span>
                 </div>
               </div>
             </div>

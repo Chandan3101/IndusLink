@@ -1,0 +1,821 @@
+# INDUSLINK — COMPLETE WEBSITE TRANSFORMATION MASTER PROMPT
+## Premium Industrial Intelligence Platform · UX Simplification · Dashboard Redesign · Motion System
+
+### ROLE
+
+Act as a principal product designer, senior React/TypeScript engineer, frontend architect, data-visualization specialist, and GSAP animation engineer.
+
+Work directly on my EXISTING IndusLink codebase:
+
+**GitHub repository:** https://github.com/Chandan3101/IndusLink
+
+Transform the entire application into a premium, intuitive, modern industrial intelligence platform that looks and feels like a real production SaaS product—not a long text document, a collection of oversized cards, or a static prototype.
+
+The website is already built. I need a substantial refinement of its existing implementation, not a new project.
+
+**Think deeply about the entire product before changing code. Inspect the repository, understand the current architecture, identify duplicated UI and broken interactions, plan the changes, and then implement and verify them.**
+
+Do not stop after producing a plan, screenshot, mockup, or recommendations. Modify the actual application files.
+
+---
+
+# 1. NON-NEGOTIABLE OBJECTIVES
+
+Prioritize these outcomes in order:
+
+1. Reduce landing-page text and unnecessary descriptive content by approximately 50% or more.
+2. Remove redundant cards, repeated explanations, unnecessary borders, and oversized empty containers.
+3. Make every page feel like an intuitive application rather than a text-heavy information reader.
+4. Redesign the entire dashboard with consistent rounded corners, restrained transparency, improved spacing, and polished interactions.
+5. Fix the Industrial Intelligence section so its six modules perform six genuinely different functions.
+6. Implement a coherent, premium animation system throughout the website.
+7. Improve the sidebar's expanding, collapsing, active-state, and mobile-navigation behavior.
+8. Preserve all existing working functionality, authentication, routing, APIs, business rules, and real data.
+9. Verify responsive behavior, accessibility, performance, and production builds.
+
+Do not claim the project is complete until the actual implementation has been inspected and tested.
+
+# 2. PRESERVE THE EXISTING PRODUCT
+
+Before editing:
+
+- Inspect the repository, package.json, application entry points, routes, shared components, stylesheets, API clients, state management, database integration, and tests.
+- Identify the actual framework and installed animation libraries.
+- Locate the existing landing page, buyer workspace, seller workspace, dual-symbiosis workspace, Industrial Intelligence section, sidebar, dialogs, forms, tables, charts, and settings.
+- Map every requested change to the real implementation.
+- Reuse existing components when practical.
+- Preserve current authentication, authorization, backend integrations, API contracts, navigation destinations, data models, and business logic.
+- Do not create duplicate routes, replacement dashboards, mock login flows, or parallel implementations.
+- Do not remove a feature merely because its interface is complicated. Simplify its presentation while preserving its underlying capability.
+- Do not fabricate verified companies, material transactions, laboratory results, savings, emission reductions, or environmental claims.
+
+If repository access is unavailable, work on the files already present in the active project environment. Never pretend that you inspected or modified the GitHub repository if you could not access it.
+
+# 3. LANDING PAGE — REDUCE TEXT BY AT LEAST 50%
+
+The current landing page contains too much text. It resembles a document that visitors must read instead of a product website they can understand quickly.
+
+Conduct a content audit across the entire public landing page.
+
+### Strict content rules
+
+- Target approximately 50–60% less visible explanatory copy than the current landing page.
+- Remove duplicated descriptions, repeated value propositions, lengthy paragraphs, redundant section introductions, and unnecessary technical explanations.
+- Do not merely shrink the font to fit more text.
+- Keep useful headings, short descriptions, essential proof points, and clear actions.
+- Move detailed technical explanations into the relevant application modules, contextual help, expandable details, or documentation.
+- Preserve important qualifications concerning technical suitability, missing evidence, and estimated environmental benefits.
+- Never remove essential warnings or evidence limitations to achieve a shorter page.
+- Do not add extra sections just to make the landing page longer.
+
+### Use this four-section structure
+
+**Section 1 — Hero**
+
+Eyebrow: `INDUSTRIAL RESOURCE INTELLIGENCE`
+
+Headline: `Turn Industrial Byproducts Into Valuable Resources.`
+
+Supporting copy: `Discover reuse opportunities. Validate material compatibility. Compare delivered costs and environmental impact.`
+
+Primary action: `Explore Platform`
+
+Secondary action: `Sign In`
+
+Use a sophisticated industrial visual, material-flow graphic, or restrained ambient background. The headline and actions must be immediately visible without requiring scrolling.
+
+**Section 2 — The Problem**
+
+Use three compact cards:
+
+- Material Uncertainty
+- Hidden Logistics Costs
+- Unverified Environmental Benefits
+
+Give each card one short explanatory sentence. Do not add long paragraphs.
+
+**Section 3 — How It Works**
+
+Use one concise, visually connected sequence:
+
+`Register Material → Validate Evidence → Assess Compatibility → Compare Cost & Impact → Review Opportunity`
+
+Each step receives a short label and, where needed, one short supporting phrase.
+
+**Section 4 — Platform Capabilities and CTA**
+
+Show only the most important capabilities:
+
+- Explainable Material Matching
+- Technical Evidence Review
+- Delivered-Cost Analysis
+- Environmental Scenario Analysis
+- Supply Reliability
+- Industrial Network Optimization
+
+Finish with:
+
+**One organization. Buy, sell, or both.**
+
+Supporting copy: `Evaluate opportunities through one connected workspace.`
+
+CTA: `Launch Platform`
+
+Do not repeat the same feature descriptions elsewhere on the landing page.
+
+### Landing-page acceptance criteria
+
+- A visitor can understand the product in approximately 10 seconds.
+- Important content appears above the fold or in the next logical section.
+- No oversized explanatory paragraphs.
+- No redundant cards with nearly identical messages.
+- No unnecessary empty sections or oversized CTA containers.
+- The landing page feels like a premium software product, not a long report.
+
+# 4. GLOBAL DESIGN SYSTEM
+
+Use the existing IndusLink brand as the source of truth.
+
+### Visual direction
+
+- Background: deep graphite or near-black, approximately `#0B0D0F`.
+- Primary accent: emerald green, approximately `#00C896` or the existing brand green.
+- Secondary accent: restrained cool blue for technical information.
+- Warm white for primary text.
+- Muted slate for supporting text.
+- Thin, low-contrast borders.
+- Subtle translucent surfaces.
+- Refined typography combining a suitable editorial display face with a readable sans-serif interface font, provided existing typography can be preserved or safely improved.
+
+Do not turn the entire application into glowing neon.
+
+### Rounded-corner system
+
+Eliminate inconsistent sharp, square-looking UI surfaces where rounding is appropriate.
+
+Establish reusable radius tokens:
+
+- Main panels: 20–24px.
+- Cards: 14–18px.
+- Buttons and inputs: 10–14px.
+- Compact badges: pill-shaped.
+- Sidebar shell: 18–22px.
+- Dialogs and drawers: 20–24px.
+
+Apply these consistently across the landing page, buyer dashboard, seller dashboard, dual-symbiosis workspace, tables, dropdowns, modals, tooltips, notifications, and settings.
+
+Do not add unnecessary containers just to apply rounded corners. Remove redundant wrappers when they contribute no structural or functional value.
+
+### Transparency requirement
+
+The supplied reference indicates translucent surfaces. Treat **80% opacity** as the starting target for major card surfaces where the background can show through.
+
+For example, use a dark surface with approximately 0.80–0.90 alpha depending on contrast requirements.
+
+Important distinction: 80% opacity is not the same as 80% transparency.
+
+- Keep important dashboard panels readable.
+- Use stronger opacity for forms, tables, financial values, technical results, and accessibility-sensitive content.
+- Use backdrop blur selectively.
+- Avoid stacking several translucent layers that reduce text contrast.
+- Do not apply opacity to an entire parent container if it makes its text, icons, and controls translucent too.
+- Do not make buttons, form controls, charts, or modal content difficult to read.
+
+Use consistent CSS variables rather than individually styling every component.
+
+# 5. REMOVE UNNECESSARY BOXES
+
+Audit the whole website for excessive cards, bordered wrappers, repeated panels, and decorative containers.
+
+Remove or consolidate a box when it:
+
+- Repeats information already visible nearby.
+- Contains only a heading and a sentence that could be part of the surrounding layout.
+- Adds no interaction, hierarchy, or meaningful grouping.
+- Wraps another card without a clear reason.
+- Uses a large amount of space for very little information.
+- Duplicates an existing statistic, chart, action, or navigation item.
+
+Use cards where they genuinely help compare items, organize a workflow, display a metric, or represent an actionable object.
+
+Use simpler layouts elsewhere: section headers, compact rows, inline status indicators, tabs, grouped controls, and clean data tables.
+
+Do not replace every card with another card. The goal is fewer, more meaningful visual containers.
+
+# 6. DASHBOARD REDESIGN
+
+Use the supplied seller-dashboard screenshot as a reference for density, structure, and the dark industrial aesthetic—not as a requirement to copy its current oversized boxes.
+
+Redesign the entire dashboard and all existing workspace pages, including Buyer View, Seller View, and Dual Symbiosis.
+
+## A. Application shell
+
+Create a consistent layout containing:
+
+- Rounded collapsible sidebar.
+- Compact top navigation bar.
+- Current organization selector.
+- Buyer / Seller / Dual Symbiosis workspace switcher.
+- Search, notifications, and theme controls where these already exist.
+- Responsive content area.
+- Consistent page padding and maximum content width.
+
+Do not make the dashboard look like a public marketing page. It should feel like an operational business application.
+
+## B. Overview
+
+Display the most useful operational metrics in a compact row or responsive grid.
+
+Possible metrics, only where supported by existing data:
+
+- Registered Material Streams.
+- Available Inventory.
+- Monthly Generation.
+- Inbound Enquiries.
+- Evidence Completeness.
+- Opportunities Requiring Review.
+
+Use compact metric cards with a clear label, prominent value, and one concise contextual detail.
+
+Do not display fabricated statistics as real. Label seeded demonstration data clearly.
+
+Avoid excessive icons, decorative labels, duplicate subtitles, and four lines of text inside every metric card.
+
+## C. Seller workspace
+
+Organize seller functions around actual producer workflows:
+
+1. Register and manage byproduct streams.
+2. Track batches, quantities, and availability.
+3. Upload and review technical evidence.
+4. Manage material passports.
+5. Review buyer enquiries and quotations.
+6. Track fulfilment and supply reliability.
+
+Provide a clear primary action such as `Register Byproduct`.
+
+Material cards should display only essential information at a glance:
+
+- Material name.
+- Material category.
+- Available quantity and unit.
+- Key evidence status.
+- Relevant batch or updated date.
+- One clear next action.
+
+Place secondary technical details inside the material detail view or expandable panel.
+
+## D. Buyer workspace
+
+Organize buyer functions around procurement decisions:
+
+1. Define material requirements.
+2. Discover candidate materials.
+3. Review technical compatibility.
+4. Compare delivered cost.
+5. Compare environmental scenarios.
+6. Request quotations and track enquiries.
+
+Provide a clear primary action such as `Define Material Requirement`.
+
+Do not use identical generic cards for every result. Use a meaningful comparison table, compact result rows, filters, and detail panels when appropriate.
+
+## E. Dual Symbiosis
+
+Provide one integrated workspace for organizations that buy and sell.
+
+- Show inbound and outbound opportunities separately.
+- Allow switching between procurement and supply activities.
+- Show shared material records and evidence where permissions allow.
+- Avoid duplicating the same information in two parallel dashboards.
+- Preserve the existing single-organization account model and existing role-switching logic.
+
+# 7. INDUSTRIAL INTELLIGENCE — FIX DUPLICATED MODULES
+
+The current Industrial Intelligence section displays six options that appear to do essentially the same thing. This must be fixed.
+
+Inspect the actual route handlers, module components, buttons, state updates, API calls, and calculations behind every existing intelligence option.
+
+Do not simply change the labels while retaining the same output.
+
+Implement or repair six genuinely distinct capabilities:
+
+### 1. Discover Materials
+
+Purpose: Search available material streams using material category, quantity, location, and relevant properties.
+
+Output: Filtered candidate materials with clear source and availability information.
+
+### 2. Assess Compatibility
+
+Purpose: Evaluate a selected source material against a buyer's actual requirements.
+
+Output: A requirement-by-requirement assessment identifying passes, failures, unknowns, and required tests.
+
+### 3. Calculate Delivered Cost
+
+Purpose: Compare the real cost of an exchange.
+
+Consider available inputs for material price, transport, handling, testing, processing, and other applicable costs.
+
+Output: An itemized cost breakdown and comparable delivered cost per unit.
+
+### 4. Compare Environmental Impact
+
+Purpose: Compare a reuse scenario against a documented baseline.
+
+Consider relevant transport and processing emissions and other supported lifecycle factors.
+
+Output: Baseline versus proposed scenario, assumptions, included factors, excluded factors, and uncertainty.
+
+Do not claim a positive environmental benefit when the available evidence does not support it.
+
+### 5. Review Evidence
+
+Purpose: Inspect uploaded technical documents, test results, source dates, missing measurements, and review status.
+
+Output: An evidence checklist showing what is present, missing, expired, unverified, or awaiting review.
+
+An uploaded document is not automatically authentic or independently verified.
+
+### 6. Optimize Resource Flows
+
+Purpose: Evaluate multiple potential suppliers and buyers under technical, capacity, quantity, distance, and other applicable constraints.
+
+Output: A ranked set of feasible candidates or allocation scenarios with explanations.
+
+Do not return the same static result for every input.
+
+## Required intelligence-module behavior
+
+- Each module must have its own appropriate interface and workflow.
+- Each must accept relevant user inputs.
+- Each must produce output appropriate to its purpose.
+- Changing inputs must update calculations or results where the implementation supports them.
+- Reuse shared calculation utilities where appropriate, but never reuse one generic output as the result of all six modules.
+- Show validation errors and missing-input states.
+- Include loading, empty, error, and success states where applicable.
+- Ensure every `Launch Module` button opens the correct existing route, drawer, or page.
+- If a capability cannot yet be computed reliably, explicitly show the limitation rather than pretending it is implemented.
+- Never bypass a hard technical constraint to produce a match.
+
+# 8. PREMIUM ROUNDED SIDEBAR
+
+Use the supplied LifeVault sidebar code and repository as a behavioral reference:
+
+https://github.com/Chandan3101/lifevault
+
+Adapt the interaction patterns to IndusLink's actual components and existing framework. Do not copy LifeVault branding, its unrelated functionality, or its data model.
+
+## Desktop behavior
+
+- A compact, rounded, icon-first sidebar.
+- Smooth expansion on pointer hover.
+- Smooth collapse when the pointer leaves.
+- Keep the main content from jumping or changing width unpredictably.
+- Use consistent icon sizes, spacing, and alignment.
+- Reveal navigation labels with a restrained opacity and horizontal movement.
+- Highlight the active route with a subtle emerald surface and slim accent indicator.
+- Keep badges compact.
+- Use clear hover, focus, active, and disabled states.
+- Add a tooltip to collapsed navigation icons.
+- Preserve all existing destinations and authorization rules.
+
+If the current application already uses Motion or another suitable library, reuse it for sidebar transitions. Do not introduce a conflicting animation system solely for this component.
+
+## Mobile behavior
+
+- Replace the desktop hover interaction with a proper mobile drawer or compact navigation pattern.
+- Provide a visible open/close control.
+- Close the drawer after navigation.
+- Support keyboard operation and appropriate focus behavior.
+- Prevent accidental page scrolling behind an open modal drawer.
+- Do not rely on hover on touch devices.
+
+# 9. GLOBAL BOX, DIALOG, DRAWER AND NOTIFICATION ANIMATIONS
+
+Apply a consistent motion system throughout the application.
+
+### Cards and panels
+
+- Subtle entrance reveal when appropriate.
+- Small hover elevation.
+- Gentle border or glow emphasis.
+- Smooth state changes when content updates.
+- No large movements that make dashboards difficult to use.
+
+### Dialogs and drawers
+
+- Fade in with a small upward movement.
+- Use a refined scale-and-opacity entrance for dialogs.
+- Animate the backdrop independently.
+- Reverse the entrance on closing.
+- Keep focus management, escape-to-close behavior, and outside-click behavior consistent with the existing dialog's intended interaction.
+- Never animate a dialog in a way that blocks its controls or clips its content.
+
+### Buttons
+
+- Brief press feedback.
+- Restrained emerald glow for primary actions.
+- Clear focus-visible outline.
+- No pulsing on every button simultaneously.
+- Disabled controls must remain visibly disabled.
+
+### Tables and lists
+
+- Use subtle row-hover feedback.
+- Avoid animating every table cell or every numeric value continuously.
+- Animate only meaningful state transitions.
+
+### Notifications
+
+- Use consistent, compact toast transitions.
+- Keep notifications readable and dismissible.
+- Preserve existing notification logic.
+
+# 10. ANIMATION LIBRARIES AND RESPONSIBILITIES
+
+Audit the existing dependencies before installing anything.
+
+Use these reference repositories where appropriate:
+
+- Lenis: https://github.com/darkroomengineering/lenis
+- GSAP: https://github.com/greensock/GSAP
+- Vanta: https://github.com/tengbao/vanta
+- React Bits: https://github.com/DavidHDev/react-bits
+
+Each library has a distinct role.
+
+**GSAP**
+- Landing-page section reveals.
+- Hero and headline entrances.
+- Scroll-triggered transitions.
+- Navigation indicator movement.
+- Selected card and panel transitions.
+- Timeline and material-flow storytelling.
+
+**Lenis**
+- Smooth page scrolling on suitable public landing-page experiences.
+- Correct synchronization with GSAP ScrollTrigger if both are used.
+- Proper teardown and reduced-motion handling.
+
+Do not apply aggressive smooth scrolling to dense dashboard workflows where native scrolling is more usable.
+
+**Vanta**
+- Optional, restrained ambient background in the public hero only if the existing stack and performance budget support it.
+- Keep it behind content and non-interactive.
+- Do not use it on every dashboard page.
+- Avoid heavy effects on low-powered devices.
+
+**React Bits**
+- Reuse suitable components or effects only when their implementation, licensing, dependencies, and accessibility fit the project.
+- Adapt the components to the emerald industrial design system.
+
+Do not install all four libraries blindly. Inspect the current code first and avoid redundant packages.
+
+# 11. GLOBAL HEADING ANIMATION SYSTEM
+
+Use the pinned library:
+
+`spring-text-engine@0.1.5` and its peer dependency `@react-spring/web`.
+
+Install only if compatible with the actual project and not already installed.
+
+All animated heading effects in this section must use spring-text-engine and its spring-driven behavior. Do not recreate these specific text effects with CSS keyframes, CSS transitions, or Framer Motion.
+
+Apply a suitable effect to existing headings from `h1` through `h6`, including public pages and application pages, without changing their semantic heading level.
+
+**Important:** Do not run multiple text animations on the same heading. Choose one appropriate effect based on the heading's role. Keep headings readable, accessible, and stable during route changes.
+
+### A. Hero headline — Skew In
+
+Use the Skew In effect for the main public hero headline.
+
+```tsx
+import TextEngine from "spring-text-engine";
+
+<TextEngine
+  tag="h1"
+  mode="once"
+  letterOut={{ opacity: 0, skewX: 16, y: 14 }}
+  letterIn={{ opacity: 1, skewX: 0, y: 0 }}
+  letterConfig={{ tension: 240, friction: 20 }}
+  letterStagger={30}
+>
+  Turn Industrial Byproducts Into Valuable Resources.
+</TextEngine>
+```
+
+Preserve the exact numeric spring configuration. Ensure the animated element does not overflow its layout or produce horizontal scrolling.
+
+### B. Major section headings — Unblur Lines
+
+For appropriate major section headings, use the line-based effect:
+
+```tsx
+<TextEngine
+  tag="h2"
+  mode="once"
+  lineOut={{ opacity: 0, filter: "blur(10px)" }}
+  lineIn={{ opacity: 1, filter: "blur(0px)" }}
+  lineConfig={{ tension: 190, friction: 26 }}
+  lineStagger={90}
+>
+  Industrial Resource Intelligence
+</TextEngine>
+```
+
+### C. Selected dashboard and module headings — Soft Focus
+
+Use the word-based effect selectively on high-value module headings:
+
+```tsx
+<TextEngine
+  tag="h2"
+  mode="once"
+  wordOut={{ opacity: 0, filter: "blur(10px)" }}
+  wordIn={{ opacity: 1, filter: "blur(0px)" }}
+  wordConfig={{ tension: 180, friction: 24 }}
+  wordStagger={60}
+>
+  Assess Material Compatibility
+</TextEngine>
+```
+
+### D. Small card and dialog headings — Fade Letters
+
+Use a subtle letter fade for selected short headings:
+
+```tsx
+<TextEngine
+  tag="h3"
+  mode="once"
+  letterOut={{ opacity: 0 }}
+  letterIn={{ opacity: 1 }}
+  letterConfig={{ tension: 150, friction: 24 }}
+  letterStagger={34}
+>
+  Evidence Review
+</TextEngine>
+```
+
+### Text-engine requirements
+
+- Match the animated property value types between `Out` and `In`.
+- Never use `mode="manual"`.
+- Use the library's correct centering behavior when centering is needed.
+- Preserve the original semantic heading level.
+- Preserve stable layout dimensions and avoid cumulative layout shift.
+- Respect reduced-motion preferences; provide an immediate or static equivalent where appropriate.
+- Prevent animation replays on every minor state update.
+- Avoid animating every heading simultaneously in a large dashboard.
+- Keep body copy static, as requested.
+- Do not apply blur animation to form labels, table cells, technical measurements, accessibility text, or frequently changing status messages.
+- If the installed package API differs from the supplied examples, inspect the pinned version's documentation and implement the supported API instead of guessing.
+
+# 12. CUSTOM EYES POINTER OVERLAY
+
+Create the small, playful “Explore” eyes pill as an optional desktop pointer-following overlay, inspired by the supplied reference.
+
+This is decorative and must never replace the native operating-system cursor.
+
+### Appearance
+
+- Label: `Explore`
+- Font: Georgia, serif.
+- Font weight: 500.
+- Width: approximately 82px.
+- Height: approximately 25px.
+- Border radius: 36px.
+- Black pill background.
+- White eyes and label.
+- Black pupils.
+- Eye size: 0.36 times the pill height.
+- Pupil size: 0.5 times eye size.
+- Eye gap: 1px.
+- Clamped pupil travel: 0.75.
+- Gaze gain: 26px.
+- Blink interval: approximately 3 seconds.
+- Blink duration: approximately 170ms.
+- Subtle motion trail: 0.08.
+
+Derive eye and pupil dimensions from the pill height rather than using unrelated hard-coded dimensions.
+
+### Interaction
+
+- The pill follows pointer position with a subtle lag.
+- The pupils track pointer direction within their travel limit.
+- The eyes blink at an irregular but restrained interval.
+- React to interactive elements matching `a, button, input` using `closest()`.
+- Keep the native cursor fully visible and functional.
+- Ensure the overlay never captures pointer events or blocks clicks.
+
+### Technical and accessibility requirements
+
+- Implement with vanilla JavaScript and CSS, without a new cursor library.
+- Use `position: fixed`, `pointer-events: none`, and `aria-hidden="true"`.
+- Do not use `cursor: none` or `cursor: url(...)` anywhere to replace the system cursor.
+- Only mount the animated overlay when `(hover: hover) and (pointer: fine)` matches.
+- Recheck the media query when it changes.
+- Do not mount the animated version when `prefers-reduced-motion: reduce` is enabled.
+- Use one requestAnimationFrame loop and clean up event listeners, animation frames, and timers when the component unmounts.
+- Avoid unnecessary canvas usage for this simple pill. If a canvas is actually required, scale its backing store to device pixel ratio capped at 2.
+- Keep it visually subordinate to the application.
+- Disable or simplify the effect in contexts where it could distract from forms, text selection, technical analysis, or precision interactions.
+
+# 13. AMBIENT GLOW, LASER UNDERLINES AND TIMELINE MOTION
+
+Build a reusable global animation token system using CSS custom properties for colors, shadow strengths, timing, and easing.
+
+Emerald remains the primary brand accent.
+
+### CTA buttons
+
+- Refined emerald glow.
+- Subtle box-shadow pulse where appropriate.
+- Slight hover brightness increase.
+- Brief press feedback.
+- No layout shifts.
+
+Use blue only for appropriate secondary actions or technical visualizations.
+
+### Navigation
+
+- Add a thin animated underline to suitable navigation items.
+- Use a restrained gradient of `#60a5fa`, `#ec4899`, and `#ef4444` for the laser effect.
+- Add a narrow white moving highlight.
+- The laser may cycle approximately every 3.2 seconds.
+- Keep the active route visually clear.
+- Never move neighboring navigation items during hover.
+
+### Timelines and roadmap components
+
+If an actual timeline exists:
+
+- Preserve its existing data and progression logic.
+- Add a subtle vertical laser packet approximately 50px high.
+- Use a roughly 2.8-second travel cycle.
+- Add a restrained active-node halo.
+- Keep the laser clipped to the track.
+- Do not create a fake roadmap simply to demonstrate the animation.
+
+### Ambient backgrounds
+
+- Use restrained gradient drift or particles in selected public sections.
+- Keep charts, text, forms, and important interactions visually stable.
+- Never animate all elements continuously.
+- Keep animation density lower in analytical and data-heavy dashboard views.
+
+# 14. DATA VISUALIZATION AND INDUSTRIAL MATERIAL FLOW
+
+Make the intelligence dashboard visually informative without adding unnecessary cards.
+
+Where the relevant real data exists, prioritize:
+
+- Material source-to-destination network.
+- Material quantity flow.
+- Technical compatibility comparison.
+- Delivered-cost breakdown.
+- Baseline-versus-reuse environmental comparison.
+- Evidence completeness and uncertainty.
+- Supply reliability.
+- Multi-supplier allocation scenarios.
+
+Use existing charting libraries where suitable. If D3 is already installed or genuinely required, use it for specialized visualizations.
+
+Avoid decorative charts with no relationship to real application data.
+
+### Visualization requirements
+
+- Label all units.
+- Explain assumptions and missing data.
+- Distinguish measured, user-entered, estimated, and illustrative values.
+- Provide accessible labels and nonvisual equivalents where practical.
+- Keep legends, tooltips, labels, and controls visible at all responsive sizes.
+- Use appropriate empty states instead of misleading zero-value charts.
+- Ensure charts respond to relevant input changes.
+
+# 15. INDUSTRIAL DATA INTEGRITY
+
+The platform evaluates potential industrial resource exchanges. Technical safety and environmental credibility are more important than visual polish.
+
+Implement or preserve these rules:
+
+1. Missing critical data must produce an explicit unknown or validation-required state.
+2. Hard compatibility failures must block an otherwise attractive match.
+3. Distinguish materials with similar names but different properties, such as rice husk and rice husk ash.
+4. Never treat an uploaded document as independently verified without a genuine verification process.
+5. Calculate delivered cost using transparent input values and explicit units.
+6. Calculate environmental impact against a defined baseline and include relevant reuse-related emissions where supported.
+7. Never present illustrative demo savings or emissions reductions as real outcomes.
+8. Show calculation assumptions, exclusions, and uncertainty.
+9. Keep calculations in deterministic, testable application logic.
+10. Use AI only where appropriate for document extraction, search assistance, or explanation; validate extracted values before relying on them.
+
+# 16. RESPONSIVE DESIGN AND ACCESSIBILITY
+
+Test at:
+
+`320px, 375px, 430px, 768px, 1024px, 1440px, 1920px`
+
+Requirements:
+
+- No horizontal page overflow.
+- No clipped headings, labels, dialogs, cards, charts, or buttons.
+- No text hidden behind sticky navigation.
+- No overlapping cards.
+- No fixed-height containers that crop content.
+- Use responsive grid layouts and content-driven heights.
+- Use sensible `minmax()`, `clamp()`, and flexible layout constraints.
+- Preserve keyboard navigation and visible focus indicators.
+- Respect `prefers-reduced-motion`.
+- Maintain readable contrast on translucent surfaces.
+- Ensure dialogs and mobile drawers manage focus correctly.
+- Avoid hover-only access to essential functionality.
+- Keep touch targets appropriately sized.
+- Do not use animation to communicate status without another visible indicator.
+
+# 17. PERFORMANCE AND ENGINEERING QUALITY
+
+- Reuse installed dependencies wherever possible.
+- Avoid installing redundant animation libraries.
+- Do not run Lenis and other smooth-scroll implementations simultaneously.
+- Register and clean up GSAP ScrollTrigger instances correctly.
+- Clean up event listeners, observers, timers, and requestAnimationFrame loops.
+- Lazy-load heavy visuals when appropriate.
+- Use efficient React rendering and stable keys.
+- Avoid unnecessary global state updates from pointer movement.
+- Avoid layout thrashing and excessive blur filters.
+- Keep animations smooth on ordinary laptops.
+- Never place secret API keys in client-side code.
+- Preserve server-side authorization and input validation.
+
+# 18. TESTING AND ACCEPTANCE CRITERIA
+
+After implementation, run the appropriate available checks:
+
+- TypeScript checks.
+- ESLint or existing lint scripts.
+- Unit tests.
+- Production build.
+- Existing integration tests.
+- Tests for the six distinct intelligence modules.
+- Tests for cost calculations and environmental calculations.
+- Tests for hard compatibility constraints and missing-data behavior.
+- Tests for sidebar navigation and workspace switching.
+- Tests for dialog opening and closing.
+- Responsive and keyboard-interaction checks.
+
+Fix errors introduced by your changes.
+
+### Final acceptance checklist
+
+- [ ] Landing-page explanatory text reduced by approximately 50% or more.
+- [ ] Public landing page contains four concise sections rather than repetitive explanations.
+- [ ] Existing brand identity and working routes are preserved.
+- [ ] Unnecessary boxes and redundant wrappers are removed.
+- [ ] Consistent rounded corners are applied across the application.
+- [ ] Translucent surfaces remain readable.
+- [ ] Buyer, Seller, and Dual Symbiosis workflows remain functional.
+- [ ] The six Industrial Intelligence modules perform distinct tasks and do not return the same generic output.
+- [ ] Sidebar expansion, collapse, active state, and mobile behavior work correctly.
+- [ ] Dialogs, drawers, cards, and buttons have polished but restrained animations.
+- [ ] Spring-driven heading effects use the correct package API and configuration.
+- [ ] Body copy remains static.
+- [ ] The Eyes overlay never hides the native cursor or blocks interaction.
+- [ ] Reduced-motion preferences are respected.
+- [ ] Responsive layouts do not clip content or create horizontal overflow.
+- [ ] No unsupported environmental claims or fabricated verified metrics are introduced.
+- [ ] Existing tests pass, and the production build succeeds.
+
+# 19. EXECUTION INSTRUCTIONS
+
+Work in this order:
+
+**Phase 1 — Audit:** Inspect the actual project and identify redundant UI, duplicated intelligence modules, existing dependencies, and broken interactions.
+
+**Phase 2 — Architecture:** Define shared design tokens, reusable rounded surfaces, animation utilities, and consistent layout primitives.
+
+**Phase 3 — Simplification:** Reduce landing-page copy and remove redundant boxes and repeated content.
+
+**Phase 4 — Dashboard:** Refine the application shell, sidebar, top bar, buyer workspace, seller workspace, and dual-symbiosis workspace.
+
+**Phase 5 — Intelligence:** Make the six modules genuinely distinct and connect each to its appropriate existing data, calculations, and workflow.
+
+**Phase 6 — Motion:** Add GSAP transitions, spring-driven heading effects, restrained ambient effects, button feedback, and dialog/sidebar animations.
+
+**Phase 7 — Verification:** Run checks, fix regressions, and verify responsive layouts and accessibility.
+
+Do not stop after any intermediate phase. Continue until the available implementation and verification work is complete.
+
+At the end, provide a concise engineering summary containing:
+
+1. Files and components actually changed.
+2. Landing-page content removed or consolidated.
+3. Dashboard and sidebar changes.
+4. How each of the six intelligence modules differs.
+5. Animation libraries and effects implemented.
+6. Tests and production-build results.
+7. Remaining limitations or features that still require real backend data.
+
+**Final design principle:** Less text, fewer boxes, more meaningful data, distinct workflows, consistent rounded surfaces, purposeful animation, and an interface that feels like a premium industrial intelligence product.

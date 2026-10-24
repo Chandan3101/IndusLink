@@ -94,36 +94,36 @@ export const SellerOverview: React.FC<
 
         {/* 4 Stats */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mt-6 pt-6 border-t border-black/5 dark:border-white/5">
-          <div className="p-3.5 rounded-2xl bg-black/10 dark:bg-white/5 border border-black/5 dark:border-white/5">
+          <div className="p-3.5 rounded-2xl bg-slate-100/80 dark:bg-white/5 border border-slate-200/60 dark:border-white/5">
             <span className="text-xs text-[var(--text-secondary)] block">Registered Streams</span>
             <span className="font-mono text-2xl font-bold text-[var(--text-primary)] mt-1 block">
               {materials.length}
             </span>
-            <span className="text-[10px] text-emerald-400 mt-1 block">Catalogued byproduct streams</span>
+            <span className="text-[10px] text-emerald-600 dark:text-emerald-400 mt-1 block font-medium">Catalogued byproduct streams</span>
           </div>
 
-          <div className="p-3.5 rounded-2xl bg-black/10 dark:bg-white/5 border border-black/5 dark:border-white/5">
+          <div className="p-3.5 rounded-2xl bg-slate-100/80 dark:bg-white/5 border border-slate-200/60 dark:border-white/5">
             <span className="text-xs text-[var(--text-secondary)] block">Monthly Generation</span>
-            <span className="font-mono text-2xl font-bold text-emerald-400 mt-1 block">
+            <span className="font-mono text-2xl font-bold text-emerald-600 dark:text-emerald-400 mt-1 block">
               {totalVolumeTons.toLocaleString()} t
             </span>
             <span className="text-[10px] text-[var(--text-secondary)] mt-1 block">Steady-state monthly generation</span>
           </div>
 
-          <div className="p-3.5 rounded-2xl bg-black/10 dark:bg-white/5 border border-black/5 dark:border-white/5">
+          <div className="p-3.5 rounded-2xl bg-slate-100/80 dark:bg-white/5 border border-slate-200/60 dark:border-white/5">
             <span className="text-xs text-[var(--text-secondary)] block">Available Silo Inventory</span>
-            <span className="font-mono text-2xl font-bold text-blue-400 mt-1 block">
+            <span className="font-mono text-2xl font-bold text-blue-600 dark:text-blue-400 mt-1 block">
               {totalAvailableTons.toLocaleString()} t
             </span>
             <span className="text-[10px] text-[var(--text-secondary)] mt-1 block">Ready for immediate dispatch</span>
           </div>
 
-          <div className="p-3.5 rounded-2xl bg-black/10 dark:bg-white/5 border border-black/5 dark:border-white/5">
+          <div className="p-3.5 rounded-2xl bg-slate-100/80 dark:bg-white/5 border border-slate-200/60 dark:border-white/5">
             <span className="text-xs text-[var(--text-secondary)] block">Inbound Enquiries</span>
-            <span className="font-mono text-2xl font-bold text-amber-400 mt-1 block">
+            <span className="font-mono text-2xl font-bold text-amber-600 dark:text-amber-400 mt-1 block">
               {pendingInquiries.length}
             </span>
-            <span className="text-[10px] text-amber-400/80 mt-1 block">Awaiting technical quote</span>
+            <span className="text-[10px] text-amber-600/90 dark:text-amber-400/80 mt-1 block font-medium">Awaiting technical quote</span>
           </div>
         </div>
       </div>

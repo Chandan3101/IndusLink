@@ -104,36 +104,36 @@ export const BuyerOverview: React.FC<
 
         {/* 4 Key Metrics */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mt-6 pt-6 border-t border-black/5 dark:border-white/5">
-          <div className="p-3.5 rounded-2xl bg-black/10 dark:bg-white/5 border border-black/5 dark:border-white/5">
+          <div className="p-3.5 rounded-2xl bg-slate-100/80 dark:bg-white/5 border border-slate-200/60 dark:border-white/5">
             <span className="text-xs text-[var(--text-secondary)] block">Active Specifications</span>
             <span className="font-mono text-2xl font-bold text-[var(--text-primary)] mt-1 block">
               {buyerSpecs.length}
             </span>
-            <span className="text-[10px] text-emerald-400 mt-1 block">Active receiving criteria</span>
+            <span className="text-[10px] text-emerald-600 dark:text-emerald-400 mt-1 block font-medium">Active receiving criteria</span>
           </div>
 
-          <div className="p-3.5 rounded-2xl bg-black/10 dark:bg-white/5 border border-black/5 dark:border-white/5">
+          <div className="p-3.5 rounded-2xl bg-slate-100/80 dark:bg-white/5 border border-slate-200/60 dark:border-white/5">
             <span className="text-xs text-[var(--text-secondary)] block">Available Streams</span>
-            <span className="font-mono text-2xl font-bold text-emerald-400 mt-1 block">
+            <span className="font-mono text-2xl font-bold text-emerald-600 dark:text-emerald-400 mt-1 block">
               {materials.length}
             </span>
             <span className="text-[10px] text-[var(--text-secondary)] mt-1 block">Registered industrial candidates</span>
           </div>
 
-          <div className="p-3.5 rounded-2xl bg-black/10 dark:bg-white/5 border border-black/5 dark:border-white/5">
+          <div className="p-3.5 rounded-2xl bg-slate-100/80 dark:bg-white/5 border border-slate-200/60 dark:border-white/5">
             <span className="text-xs text-[var(--text-secondary)] block">Active Enquiries</span>
-            <span className="font-mono text-2xl font-bold text-blue-400 mt-1 block">
+            <span className="font-mono text-2xl font-bold text-blue-600 dark:text-blue-400 mt-1 block">
               {activeEnquiries.length}
             </span>
             <span className="text-[10px] text-[var(--text-secondary)] mt-1 block">Under technical & supplier review</span>
           </div>
 
-          <div className="p-3.5 rounded-2xl bg-black/10 dark:bg-white/5 border border-black/5 dark:border-white/5">
+          <div className="p-3.5 rounded-2xl bg-slate-100/80 dark:bg-white/5 border border-slate-200/60 dark:border-white/5">
             <span className="text-xs text-[var(--text-secondary)] block">Pending Quotations</span>
-            <span className="font-mono text-2xl font-bold text-amber-400 mt-1 block">
+            <span className="font-mono text-2xl font-bold text-amber-600 dark:text-amber-400 mt-1 block">
               {pendingOffers.length}
             </span>
-            <span className="text-[10px] text-amber-400/80 mt-1 block">Awaiting commercial decision</span>
+            <span className="text-[10px] text-amber-600/90 dark:text-amber-400/80 mt-1 block font-medium">Awaiting commercial decision</span>
           </div>
         </div>
       </div>
@@ -694,18 +694,18 @@ export const MatchAssessmentModal: React.FC<{
   const assessment = evaluateCandidateAgainstSpec(material, spec, distanceKm);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md overflow-y-auto animate-in fade-in duration-200">
-      <div className="glass-surface-floating rounded-3xl max-w-4xl w-full max-h-[90vh] overflow-y-auto p-6 sm:p-8 space-y-6 relative text-left">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 dark:bg-black/80 backdrop-blur-md overflow-y-auto animate-in fade-in duration-200">
+      <div className="glass-surface-floating rounded-3xl max-w-4xl w-full max-h-[90vh] overflow-y-auto p-6 sm:p-8 space-y-6 relative text-left dialog-pop-animation border border-slate-200/90 dark:border-white/10">
         <button
           onClick={onClose}
-          className="absolute top-5 right-5 p-2 rounded-full hover:bg-white/10 text-zinc-400 hover:text-white"
+          className="absolute top-5 right-5 p-2 rounded-full hover:bg-black/5 dark:hover:bg-white/10 text-slate-400 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-white"
         >
           <X className="w-5 h-5" />
         </button>
 
         {/* Header */}
         <div>
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 mb-2">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-semibold bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-500/20 mb-2">
             <span>Explainable Deterministic Assessment</span>
             <span>•</span>
             <span>7-Step Verification</span>
@@ -722,22 +722,22 @@ export const MatchAssessmentModal: React.FC<{
         <div
           className={`p-4 rounded-2xl border ${
             assessment.state === 'POTENTIAL_IDENTIFIED'
-              ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-300'
+              ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-800 dark:text-emerald-300'
               : assessment.state === 'TESTING_REQUIRED'
-              ? 'bg-blue-500/10 border-blue-500/30 text-blue-300'
+              ? 'bg-blue-500/10 border-blue-500/30 text-blue-800 dark:text-blue-300'
               : assessment.state === 'DATA_MISSING'
-              ? 'bg-orange-500/10 border-orange-500/30 text-orange-300'
-              : 'bg-red-500/10 border-red-500/30 text-red-300'
+              ? 'bg-orange-500/10 border-orange-500/30 text-orange-800 dark:text-orange-300'
+              : 'bg-red-500/10 border-red-500/30 text-red-800 dark:text-red-300'
           }`}
         >
           <div className="flex items-center gap-2 font-bold text-sm">
-            {assessment.state === 'POTENTIAL_IDENTIFIED' && <CheckCircle2 className="w-5 h-5 text-emerald-400" />}
-            {assessment.state === 'TESTING_REQUIRED' && <HelpCircle className="w-5 h-5 text-blue-400" />}
-            {assessment.state === 'DATA_MISSING' && <AlertTriangle className="w-5 h-5 text-orange-400" />}
-            {assessment.state === 'UNSUITABLE_HARD_FAIL' && <XCircle className="w-5 h-5 text-red-400" />}
+            {assessment.state === 'POTENTIAL_IDENTIFIED' && <CheckCircle2 className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />}
+            {assessment.state === 'TESTING_REQUIRED' && <HelpCircle className="w-5 h-5 text-blue-600 dark:text-blue-400" />}
+            {assessment.state === 'DATA_MISSING' && <AlertTriangle className="w-5 h-5 text-orange-600 dark:text-orange-400" />}
+            {assessment.state === 'UNSUITABLE_HARD_FAIL' && <XCircle className="w-5 h-5 text-red-600 dark:text-red-400" />}
             <span>Verdict: {assessment.stateLabel}</span>
           </div>
-          <p className="text-xs mt-1 leading-relaxed opacity-90">{assessment.actionRequired}</p>
+          <p className="text-xs mt-1 leading-relaxed opacity-95">{assessment.actionRequired}</p>
         </div>
 
         {/* Property Comparison Table */}

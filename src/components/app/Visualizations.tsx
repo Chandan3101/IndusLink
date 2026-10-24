@@ -47,7 +47,7 @@ export const IndustrialNetworkGraph: React.FC<{
         </span>
       </div>
 
-      <div className="relative w-full aspect-[16/9] min-h-[260px] bg-black/20 rounded-xl overflow-hidden flex items-center justify-center">
+      <div className="relative w-full aspect-[16/9] min-h-[260px] bg-slate-900/90 dark:bg-black/40 border border-slate-800/40 dark:border-white/5 rounded-xl overflow-hidden flex items-center justify-center">
         <svg viewBox="0 0 480 360" className="w-full h-full select-none">
           <defs>
             <linearGradient id="laserGrad" x1="0%" y1="0%" x2="100%" y2="0%">

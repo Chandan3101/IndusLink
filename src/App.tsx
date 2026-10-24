@@ -220,7 +220,10 @@ export default function App() {
 
   return (
     <MotionConfig reducedMotion="user">
-      <div className="min-h-screen bg-[var(--bg-page)] text-[var(--text-primary)] transition-colors duration-300 relative">
+      <div className="min-h-screen bg-[var(--bg-page)]/75 text-[var(--text-primary)] transition-colors duration-300 relative">
+        {/* Continuous 3D Ribbed Structure (Fixed Global WebGL Layer visible across landing and authenticated app) */}
+        <RibbedStructureCanvas className={viewMode === 'app' ? 'opacity-80 transition-opacity duration-700' : 'opacity-100 transition-opacity duration-700'} />
+
         {/* Pointer eyes tracking effect (disabled on touch/reduced-motion, native cursor preserved) */}
         <EyesPointer />
         {viewMode === 'app' ? (
@@ -252,9 +255,6 @@ export default function App() {
              PUBLIC 4-SECTION LANDING PAGE & WEBSITE
              ========================================================================= */
           <>
-            {/* Continuous 4-Section 3D Ribbed Structure (Fixed Global WebGL Layer) */}
-            <RibbedStructureCanvas />
-
             {/* Subtle Top Viewport Scroll Progress Bar */}
             <ScrollProgressBar />
 

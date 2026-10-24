@@ -19,38 +19,38 @@
   --color-text-primary-dark: #F8FAFC;
   --color-text-secondary-dark: #94A3B8;
   --color-text-primary-light: #0F172A;
-  --color-text-secondary-light: #475569;
+  --color-text-secondary-light: #334155;
 }
 
 :root {
-  --bg-page: #F7F5F0;
-  --bg-glass-base: rgba(255, 255, 255, 0.82);
-  --bg-glass-card: rgba(255, 255, 255, 0.90);
-  --bg-glass-elevated: rgba(255, 255, 255, 0.96);
-  --glass-border: rgba(15, 23, 42, 0.08);
-  --glass-border-strong: rgba(15, 23, 42, 0.14);
+  --bg-page: #F6F8FA;
+  --bg-glass-base: rgba(255, 255, 255, 0.78);
+  --bg-glass-card: rgba(255, 255, 255, 0.86);
+  --bg-glass-elevated: rgba(255, 255, 255, 0.94);
+  --glass-border: rgba(15, 23, 42, 0.10);
+  --glass-border-strong: rgba(15, 23, 42, 0.18);
   --text-primary: #0F172A;
-  --text-secondary: #475569;
+  --text-secondary: #334155;
   --text-muted: #64748B;
   --accent-emerald: #059669;
   --accent-emerald-hover: #10B981;
-  --accent-cool: #3B82F6;
-  --glass-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.06);
+  --accent-cool: #2563EB;
+  --glass-shadow: 0 12px 32px -4px rgba(15, 23, 42, 0.08), 0 4px 12px -2px rgba(15, 23, 42, 0.04);
 
   /* Radius Tokens */
   --radius-panel: 22px;
   --radius-card: 16px;
   --radius-btn: 12px;
   --radius-badge: 9999px;
-  --radius-sidebar: 20px;
+  --radius-sidebar: 22px;
   --radius-dialog: 24px;
 }
 
 .dark {
   --bg-page: #0B0D0F;
-  --bg-glass-base: rgba(18, 22, 29, 0.80);
-  --bg-glass-card: rgba(22, 27, 36, 0.85);
-  --bg-glass-elevated: rgba(26, 32, 42, 0.92);
+  --bg-glass-base: rgba(18, 22, 29, 0.72);
+  --bg-glass-card: rgba(22, 27, 36, 0.80);
+  --bg-glass-elevated: rgba(26, 32, 42, 0.88);
   --glass-border: rgba(255, 255, 255, 0.08);
   --glass-border-strong: rgba(255, 255, 255, 0.14);
   --text-primary: #F8FAFC;
@@ -99,29 +99,29 @@ body {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Glassmorphism Surface Utility Classes with 80-90% Opacity Target */
+/* Glassmorphism Surface Utility Classes with Liquid Translucent Effect */
 .glass-surface {
   background-color: var(--bg-glass-base);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border: 1px solid var(--glass-border);
-  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.12);
 }
 
 .glass-surface-elevated {
   background-color: var(--bg-glass-card);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
   border: 1px solid var(--glass-border-strong);
-  box-shadow: var(--glass-shadow), inset 0 1px 0 0 rgba(255, 255, 255, 0.12);
+  box-shadow: var(--glass-shadow), inset 0 1px 0 0 rgba(255, 255, 255, 0.16);
 }
 
 .glass-surface-floating {
   background-color: var(--bg-glass-elevated);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
   border: 1px solid var(--glass-border-strong);
-  box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.4), inset 0 1px 0 0 rgba(255, 255, 255, 0.18);
+  box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.25), inset 0 1px 0 0 rgba(255, 255, 255, 0.22);
 }
 
 /* Custom delicate scrollbar */
@@ -132,11 +132,49 @@ body {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(16, 185, 129, 0.25);
+  background: rgba(16, 185, 129, 0.3);
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(16, 185, 129, 0.5);
+  background: rgba(16, 185, 129, 0.6);
+}
+
+/* =========================================================================
+   INDUSLINK POP & SMOOTH DIALOG ANIMATIONS
+   ========================================================================= */
+
+@keyframes dialog-pop {
+  0% {
+    opacity: 0;
+    transform: scale(0.92) translateY(12px);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.015) translateY(-2px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.dialog-pop-animation {
+  animation: dialog-pop 0.32s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes dropdown-pop {
+  0% {
+    opacity: 0;
+    transform: scale(0.94) translateY(-8px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.dropdown-pop-animation {
+  animation: dropdown-pop 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 /* =========================================================================

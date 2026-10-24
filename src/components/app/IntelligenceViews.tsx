@@ -307,7 +307,7 @@ export const IntelligenceHub: React.FC<IntelligenceViewsProps> = ({
           ========================================================================= */}
       {activeEngine === 'discover' && (
         <div className="glass-surface-elevated rounded-3xl p-6 sm:p-8 space-y-6">
-          <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 border-b border-white/10 pb-4">
+          <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 border-b border-black/8 dark:border-white/10 pb-4">
             <div>
               <span className="text-[10px] font-mono text-emerald-400 uppercase tracking-wider block">
                 Module 01 • Qualified Stream Discovery
@@ -469,7 +469,7 @@ export const IntelligenceHub: React.FC<IntelligenceViewsProps> = ({
           ========================================================================= */}
       {activeEngine === 'compatibility' && (
         <div className="glass-surface-elevated rounded-3xl p-6 sm:p-8 space-y-6">
-          <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 border-b border-white/10 pb-4">
+          <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 border-b border-black/8 dark:border-white/10 pb-4">
             <div>
               <span className="text-[10px] font-mono text-cyan-400 uppercase tracking-wider block">
                 Module 02 • Technical Boundary Evaluation
@@ -636,7 +636,7 @@ export const IntelligenceHub: React.FC<IntelligenceViewsProps> = ({
           ========================================================================= */}
       {activeEngine === 'delivered_cost' && (
         <div className="glass-surface-elevated rounded-3xl p-6 sm:p-8 space-y-6">
-          <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 border-b border-white/10 pb-4">
+          <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 border-b border-black/8 dark:border-white/10 pb-4">
             <div>
               <span className="text-[10px] font-mono text-blue-400 uppercase tracking-wider block">
                 Module 03 • Economics & Haulage Breakdown
@@ -789,7 +789,7 @@ export const IntelligenceHub: React.FC<IntelligenceViewsProps> = ({
           ========================================================================= */}
       {activeEngine === 'environmental' && (
         <div className="glass-surface-elevated rounded-3xl p-6 sm:p-8 space-y-6">
-          <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 border-b border-white/10 pb-4">
+          <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 border-b border-black/8 dark:border-white/10 pb-4">
             <div>
               <span className="text-[10px] font-mono text-teal-400 uppercase tracking-wider block">
                 Module 04 • Carbon Accounting & LCA Baseline
@@ -915,7 +915,7 @@ export const IntelligenceHub: React.FC<IntelligenceViewsProps> = ({
           ========================================================================= */}
       {activeEngine === 'evidence' && (
         <div className="glass-surface-elevated rounded-3xl p-6 sm:p-8 space-y-6">
-          <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 border-b border-white/10 pb-4">
+          <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 border-b border-black/8 dark:border-white/10 pb-4">
             <div>
               <span className="text-[10px] font-mono text-indigo-400 uppercase tracking-wider block">
                 Module 05 • Laboratory & Regulatory Proof
@@ -1054,7 +1054,7 @@ export const IntelligenceHub: React.FC<IntelligenceViewsProps> = ({
           ========================================================================= */}
       {activeEngine === 'network_optimizer' && (
         <div className="glass-surface-elevated rounded-3xl p-6 sm:p-8 space-y-6">
-          <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 border-b border-white/10 pb-4">
+          <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 border-b border-black/8 dark:border-white/10 pb-4">
             <div>
               <span className="text-[10px] font-mono text-amber-400 uppercase tracking-wider block">
                 Module 06 • Regional Industrial Symbiosis

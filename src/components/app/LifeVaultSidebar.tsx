@@ -116,7 +116,7 @@ export const LifeVaultSidebar: React.FC<LifeVaultSidebarProps> = ({
         />
       )}
 
-      {/* LifeVault-Inspired Animated Sidebar */}
+      {/* LifeVault-Inspired Floating Rounded Animated Sidebar */}
       <aside
         ref={sidebarRef}
         onMouseEnter={() => setIsHovered(true)}
@@ -124,7 +124,7 @@ export const LifeVaultSidebar: React.FC<LifeVaultSidebarProps> = ({
           setIsHovered(false);
           setUserDropdownOpen(false);
         }}
-        className={`fixed md:sticky top-0 left-0 h-screen z-50 flex flex-col justify-between bg-[#0e1014]/95 backdrop-blur-xl border-r border-white/10 transition-all duration-300 ease-in-out shadow-2xl ${
+        className={`fixed md:sticky top-0 md:top-3 left-0 md:left-3 h-screen md:h-[calc(100vh-1.5rem)] z-50 flex flex-col justify-between bg-white/85 dark:bg-[#0e1014]/90 backdrop-blur-2xl rounded-none md:rounded-[24px] border-r md:border border-slate-200/80 dark:border-white/10 transition-all duration-300 ease-in-out shadow-xl dark:shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden ${
           // Desktop: 72px collapsed, 220px expanded
           isExpanded ? 'md:w-[220px]' : 'md:w-[72px]'
         } ${
@@ -134,7 +134,7 @@ export const LifeVaultSidebar: React.FC<LifeVaultSidebarProps> = ({
       >
         {/* Top: Brand Header */}
         <div className="flex flex-col flex-1 overflow-hidden">
-          <div className="h-16 px-4 border-b border-white/10 flex items-center justify-between shrink-0">
+          <div className="h-16 px-4 border-b border-black/8 dark:border-white/10 flex items-center justify-between shrink-0">
             <div className="flex items-center gap-3 overflow-hidden">
               <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-700 text-[#F8FAFC] flex items-center justify-center font-bold text-xs shrink-0 shadow-[0_0_12px_rgba(16,185,129,0.35)]">
                 IL
@@ -146,10 +146,10 @@ export const LifeVaultSidebar: React.FC<LifeVaultSidebarProps> = ({
                   isExpanded || isMobileOpen ? 'opacity-100 translate-x-0 max-w-[150px]' : 'opacity-0 -translate-x-2 max-w-0 md:hidden'
                 }`}
               >
-                <span className="font-serif font-bold text-sm text-[#F8FAFC] block leading-none">
+                <span className="font-serif font-bold text-sm text-slate-900 dark:text-[#F8FAFC] block leading-none">
                   IndusLink
                 </span>
-                <span className="font-mono text-[9px] text-emerald-400 uppercase tracking-wider block mt-1">
+                <span className="font-mono text-[9px] text-emerald-600 dark:text-emerald-400 uppercase tracking-wider block mt-1 font-semibold">
                   Intelligence
                 </span>
               </div>
@@ -158,7 +158,7 @@ export const LifeVaultSidebar: React.FC<LifeVaultSidebarProps> = ({
             {/* Mobile Close Button */}
             <button
               onClick={onCloseMobile}
-              className="md:hidden p-1.5 rounded-lg hover:bg-white/10 text-zinc-400"
+              className="md:hidden p-1.5 rounded-lg hover:bg-black/5 dark:hover:bg-white/10 text-slate-500 dark:text-zinc-400"
               aria-label="Close navigation"
             >
               <X className="w-5 h-5" />
@@ -172,7 +172,7 @@ export const LifeVaultSidebar: React.FC<LifeVaultSidebarProps> = ({
                 {/* Group label: Visible on expanded, subtle dot on collapsed */}
                 <div className="h-4 px-2.5 flex items-center overflow-hidden">
                   <span
-                    className={`font-mono text-[9px] uppercase tracking-wider text-zinc-500 transition-opacity duration-200 whitespace-nowrap ${
+                    className={`font-mono text-[9px] uppercase tracking-wider text-slate-400 dark:text-zinc-500 font-semibold transition-opacity duration-200 whitespace-nowrap ${
                       isExpanded || isMobileOpen ? 'opacity-100' : 'opacity-0 md:hidden'
                     }`}
                   >
@@ -194,23 +194,23 @@ export const LifeVaultSidebar: React.FC<LifeVaultSidebarProps> = ({
                       title={!isExpanded ? item.label : undefined}
                       className={`w-full group relative flex items-center h-10 px-3 rounded-xl transition-all duration-200 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 ${
                         isActive
-                          ? 'bg-emerald-500/15 text-emerald-300 font-semibold shadow-[inset_0_0_12px_rgba(16,185,129,0.15)] border border-emerald-500/30'
-                          : 'text-zinc-400 hover:text-[#F8FAFC] hover:bg-white/5 border border-transparent'
+                          ? 'bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 font-semibold shadow-[inset_0_0_12px_rgba(16,185,129,0.15)] border border-emerald-500/30'
+                          : 'text-slate-600 dark:text-zinc-400 hover:text-slate-950 dark:hover:text-[#F8FAFC] hover:bg-black/5 dark:hover:bg-white/5 border border-transparent'
                       }`}
                     >
                       {/* Active indicator bar */}
                       {isActive && (
-                        <div className="absolute left-0 top-1.5 bottom-1.5 w-1 rounded-r-full bg-emerald-400 shadow-[0_0_8px_rgba(16,185,129,0.8)]" />
+                        <div className="absolute left-0 top-1.5 bottom-1.5 w-1 rounded-r-full bg-emerald-500 dark:bg-emerald-400 shadow-[0_0_8px_rgba(16,185,129,0.8)]" />
                       )}
 
                       {/* Icon with consistent alignment */}
                       <div className="w-5 h-5 flex items-center justify-center shrink-0">
-                        <Icon className={`w-4 h-4 transition-transform group-hover:scale-110 ${isActive ? 'text-emerald-400' : 'text-zinc-400 group-hover:text-zinc-200'}`} />
+                        <Icon className={`w-4 h-4 transition-transform group-hover:scale-110 ${isActive ? 'text-emerald-600 dark:text-emerald-400' : 'text-slate-500 dark:text-zinc-400 group-hover:text-slate-900 dark:group-hover:text-zinc-200'}`} />
                       </div>
 
                       {/* Animated Label */}
                       <span
-                        className={`ml-3 whitespace-nowrap overflow-hidden transition-all duration-200 text-xs ${
+                        className={`ml-3 whitespace-nowrap overflow-hidden transition-all duration-200 text-xs font-medium ${
                           isExpanded || isMobileOpen ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-2 pointer-events-none md:hidden'
                         }`}
                       >
@@ -219,7 +219,7 @@ export const LifeVaultSidebar: React.FC<LifeVaultSidebarProps> = ({
 
                       {/* Optional Badge */}
                       {item.badge && (isExpanded || isMobileOpen) && (
-                        <span className="ml-auto px-1.5 py-0.5 rounded-full text-[9px] font-mono font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+                        <span className="ml-auto px-1.5 py-0.5 rounded-full text-[9px] font-mono font-bold bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30">
                           {item.badge}
                         </span>
                       )}
@@ -232,10 +232,10 @@ export const LifeVaultSidebar: React.FC<LifeVaultSidebarProps> = ({
         </div>
 
         {/* Bottom: Persistent Account & Persona Area */}
-        <div className="p-2 border-t border-white/10 shrink-0 relative bg-black/20">
+        <div className="p-2 border-t border-black/8 dark:border-white/10 shrink-0 relative bg-slate-100/60 dark:bg-black/25">
           {userDropdownOpen && (
-            <div className="absolute bottom-full left-2 right-2 mb-2 p-2 rounded-2xl bg-[#14171d] border border-white/15 shadow-2xl z-50 space-y-1.5">
-              <span className="text-[10px] font-mono text-zinc-400 uppercase tracking-wider block px-2 py-1">
+            <div className="absolute bottom-full left-2 right-2 mb-2 p-2 rounded-2xl bg-white/95 dark:bg-[#14171d]/95 backdrop-blur-2xl border border-slate-200/90 dark:border-white/15 shadow-2xl z-50 space-y-1.5 dropdown-pop-animation">
+              <span className="text-[10px] font-mono text-slate-500 dark:text-zinc-400 uppercase tracking-wider block px-2 py-1 font-semibold">
                 Switch Demo Persona
               </span>
               {allUsers.map((user) => (
@@ -247,23 +247,23 @@ export const LifeVaultSidebar: React.FC<LifeVaultSidebarProps> = ({
                   }}
                   className={`w-full p-2 rounded-xl text-left flex items-center gap-2 text-xs transition-colors ${
                     user.id === currentUser.id
-                      ? 'bg-emerald-500/15 text-emerald-300 font-semibold border border-emerald-500/30'
-                      : 'hover:bg-white/5 text-zinc-300'
+                      ? 'bg-emerald-500/15 text-emerald-800 dark:text-emerald-300 font-semibold border border-emerald-500/30'
+                      : 'hover:bg-black/5 dark:hover:bg-white/5 text-slate-700 dark:text-zinc-300'
                   }`}
                 >
-                  <div className="w-6 h-6 rounded-lg bg-zinc-800 text-[10px] font-bold flex items-center justify-center text-white shrink-0">
+                  <div className="w-6 h-6 rounded-lg bg-slate-200 dark:bg-zinc-800 text-[10px] font-bold flex items-center justify-center text-slate-800 dark:text-white shrink-0">
                     {user.avatarInitials}
                   </div>
                   <div className="overflow-hidden">
-                    <div className="truncate font-medium">{user.name}</div>
-                    <div className="text-[10px] text-zinc-400 truncate">{user.organizationType}</div>
+                    <div className="truncate font-semibold">{user.name}</div>
+                    <div className="text-[10px] text-slate-500 dark:text-zinc-400 truncate">{user.organizationType}</div>
                   </div>
                 </button>
               ))}
-              <div className="pt-1 border-t border-white/10">
+              <div className="pt-1 border-t border-black/8 dark:border-white/10">
                 <button
                   onClick={onExitToLanding}
-                  className="w-full p-2 rounded-xl text-left flex items-center gap-2 text-xs text-rose-400 hover:bg-rose-500/10 transition-colors"
+                  className="w-full p-2 rounded-xl text-left flex items-center gap-2 text-xs text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-500/10 transition-colors"
                 >
                   <LogOut className="w-4 h-4" />
                   <span>Exit to Public Landing</span>
@@ -275,10 +275,10 @@ export const LifeVaultSidebar: React.FC<LifeVaultSidebarProps> = ({
           {/* User Profile Mini Bar */}
           <button
             onClick={() => setUserDropdownOpen((prev) => !prev)}
-            className="w-full flex items-center p-2 rounded-xl hover:bg-white/5 transition-all text-left group overflow-hidden"
+            className="w-full flex items-center p-2 rounded-xl hover:bg-black/5 dark:hover:bg-white/5 transition-all text-left group overflow-hidden"
             title={`${currentUser.name} (${currentUser.title})`}
           >
-            <div className="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center justify-center font-bold text-xs shrink-0">
+            <div className="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-700 dark:text-emerald-400 border border-emerald-500/30 flex items-center justify-center font-bold text-xs shrink-0">
               {currentUser.avatarInitials}
             </div>
 
@@ -287,16 +287,16 @@ export const LifeVaultSidebar: React.FC<LifeVaultSidebarProps> = ({
                 isExpanded || isMobileOpen ? 'opacity-100 max-w-[130px]' : 'opacity-0 max-w-0 md:hidden'
               }`}
             >
-              <span className="font-semibold text-xs text-[#F8FAFC] block truncate leading-tight">
+              <span className="font-semibold text-xs text-slate-900 dark:text-[#F8FAFC] block truncate leading-tight">
                 {currentUser.name}
               </span>
-              <span className="text-[10px] text-zinc-400 block truncate leading-tight">
+              <span className="text-[10px] text-slate-500 dark:text-zinc-400 block truncate leading-tight">
                 {currentUser.organization}
               </span>
             </div>
 
             {(isExpanded || isMobileOpen) && (
-              <ChevronRight className="w-3.5 h-3.5 text-zinc-500 ml-auto group-hover:text-zinc-200 shrink-0" />
+              <ChevronRight className="w-3.5 h-3.5 text-slate-400 dark:text-zinc-500 ml-auto group-hover:text-slate-800 dark:group-hover:text-zinc-200 shrink-0" />
             )}
           </button>
         </div>

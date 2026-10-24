@@ -190,7 +190,7 @@ export const Navigation: React.FC<NavigationProps> = ({
 
       {/* Animated Mobile Glass Menu Dropdown */}
       {mobileMenuOpen && (
-        <div id="mobile-navigation-menu" className="md:hidden fixed top-20 left-4 right-4 pointer-events-auto glass-surface-floating rounded-2xl p-5 shadow-2xl z-50 animate-in fade-in slide-in-from-top-4 duration-200">
+        <div id="mobile-navigation-menu" className="md:hidden fixed top-20 left-4 right-4 pointer-events-auto glass-surface-floating rounded-3xl p-5 shadow-2xl z-50 dropdown-pop-animation border border-slate-200/90 dark:border-white/10">
           <div className="flex flex-col gap-2 mb-4">
             {SECTIONS.map((section) => (
               <button

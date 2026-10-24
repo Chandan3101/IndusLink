@@ -67,15 +67,15 @@ export const AccessModal: React.FC<AccessModalProps> = ({
       role="dialog"
       aria-modal="true"
       aria-labelledby="access-modal-title"
-      className="fixed inset-0 z-50 flex items-start sm:items-center justify-center overflow-y-auto p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200"
+      className="fixed inset-0 z-50 flex items-start sm:items-center justify-center overflow-y-auto p-4 bg-black/50 dark:bg-black/80 backdrop-blur-md animate-in fade-in duration-200"
     >
-      <div className="glass-surface-floating rounded-3xl max-w-lg w-full max-h-[calc(100dvh-2rem)] overflow-y-auto overscroll-contain p-6 sm:p-8 shadow-2xl relative text-left">
+      <div className="glass-surface-floating rounded-3xl max-w-lg w-full max-h-[calc(100dvh-2rem)] overflow-y-auto overscroll-contain p-6 sm:p-8 shadow-2xl relative text-left dialog-pop-animation border border-slate-200/90 dark:border-white/10">
         {/* Top emerald accent line */}
         <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#10b981] to-transparent opacity-90" />
 
         <button
           onClick={onClose}
-          className="absolute top-5 right-5 min-h-11 min-w-11 inline-flex items-center justify-center rounded-full hover:bg-black/5 dark:hover:bg-white/10 text-[#61646E] dark:text-[#94A3B8] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
+          className="absolute top-5 right-5 min-h-11 min-w-11 inline-flex items-center justify-center rounded-full hover:bg-black/5 dark:hover:bg-white/10 text-slate-500 dark:text-[#94A3B8] hover:text-slate-900 dark:hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
           aria-label="Close dialog"
         >
           <X className="w-5 h-5" />
@@ -89,7 +89,7 @@ export const AccessModal: React.FC<AccessModalProps> = ({
           </div>
           <h3
             id="access-modal-title"
-            className="font-serif text-2xl sm:text-3xl font-semibold text-[#15161A] dark:text-[#F8FAFC]"
+            className="font-serif text-2xl sm:text-3xl font-semibold text-slate-900 dark:text-[#F8FAFC]"
           >
             {tab === 'signin' ? 'Sign In / Workspace Access' : 'Quick Organization Onboarding'}
           </h3>
@@ -101,8 +101,8 @@ export const AccessModal: React.FC<AccessModalProps> = ({
             onClick={() => setTab('signin')}
             className={`min-h-11 py-2 px-3 rounded-lg transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 ${
               tab === 'signin'
-                ? 'bg-emerald-600 text-[#F8FAFC] shadow-sm'
-                : 'text-[#61646E] dark:text-[#94A3B8]'
+                ? 'bg-emerald-600 text-white shadow-sm'
+                : 'text-slate-600 dark:text-[#94A3B8] hover:text-slate-900 dark:hover:text-white'
             }`}
           >
             Sign In / Quick Demo
@@ -111,8 +111,8 @@ export const AccessModal: React.FC<AccessModalProps> = ({
             onClick={() => setTab('onboard')}
             className={`min-h-11 py-2 px-3 rounded-lg transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 ${
               tab === 'onboard'
-                ? 'bg-emerald-600 text-[#F8FAFC] shadow-sm'
-                : 'text-[#61646E] dark:text-[#94A3B8]'
+                ? 'bg-emerald-600 text-white shadow-sm'
+                : 'text-slate-600 dark:text-[#94A3B8] hover:text-slate-900 dark:hover:text-white'
             }`}
           >
             New Organization
@@ -121,7 +121,7 @@ export const AccessModal: React.FC<AccessModalProps> = ({
 
         {tab === 'signin' ? (
           <div className="space-y-4 text-xs">
-            <p className="text-[#61646E] dark:text-[#94A3B8] leading-relaxed">
+            <p className="text-slate-600 dark:text-[#94A3B8] leading-relaxed">
               Launch directly into an authenticated enterprise workspace with pre-configured facilities, dossiers, and active commercial opportunities:
             </p>
 
@@ -130,43 +130,43 @@ export const AccessModal: React.FC<AccessModalProps> = ({
                 <button
                   key={user.id}
                   onClick={() => handleLaunchWithDemo(user.id)}
-                  className="w-full p-3.5 rounded-2xl glass-surface-elevated hover:border-emerald-500/50 text-left transition-all group flex items-center justify-between"
+                  className="w-full p-3.5 rounded-2xl glass-surface-elevated hover:border-emerald-500/50 text-left transition-all group flex items-center justify-between border border-slate-200/60 dark:border-white/10"
                 >
                   <div>
                     <div className="flex items-center gap-2">
-                      <span className="font-semibold text-sm text-[var(--text-primary)] group-hover:text-emerald-400 transition-colors">
+                      <span className="font-semibold text-sm text-slate-900 dark:text-[var(--text-primary)] group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
                         {user.name}
                       </span>
-                      <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-emerald-500/10 text-emerald-400">
+                      <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 border border-emerald-500/20">
                         {user.workspace.toUpperCase()}
                       </span>
                     </div>
-                    <span className="text-[11px] text-[var(--text-secondary)] block mt-0.5">
+                    <span className="text-[11px] text-slate-600 dark:text-[var(--text-secondary)] block mt-0.5">
                       {user.title} • {user.organization}
                     </span>
-                    <span className="text-[10px] text-zinc-500 block">
+                    <span className="text-[10px] text-slate-500 dark:text-zinc-500 block">
                       Facility: {user.facility}
                     </span>
                   </div>
-                  <ArrowRight className="w-4 h-4 text-zinc-400 group-hover:text-emerald-400 group-hover:translate-x-1 transition-all" />
+                  <ArrowRight className="w-4 h-4 text-slate-400 dark:text-zinc-400 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 group-hover:translate-x-1 transition-all" />
                 </button>
               ))}
             </div>
           </div>
         ) : (
           <form onSubmit={handleSubmitCustom} className="space-y-4 text-xs">
-            <p className="text-[#61646E] dark:text-[#94A3B8] leading-relaxed">
+            <p className="text-slate-600 dark:text-[#94A3B8] leading-relaxed">
               One organization. One account. Configure whether your facilities generate byproducts, purchase feedstocks, or both:
             </p>
 
             {error && (
-              <div className="p-2.5 rounded-lg border border-red-500/40 bg-red-500/10 text-red-300">
+              <div className="p-2.5 rounded-lg border border-red-500/40 bg-red-500/10 text-red-700 dark:text-red-300">
                 {error}
               </div>
             )}
 
             <div>
-              <label className="block font-semibold text-[#15161A] dark:text-[#F8FAFC] mb-1">
+              <label className="block font-semibold text-slate-900 dark:text-[#F8FAFC] mb-1">
                 Work Email Address *
               </label>
               <input
@@ -175,12 +175,12 @@ export const AccessModal: React.FC<AccessModalProps> = ({
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="engineer@facility.com"
                 required
-                className="w-full px-3.5 py-2.5 rounded-xl glass-surface text-[#15161A] dark:text-[#F8FAFC] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
+                className="w-full px-3.5 py-2.5 rounded-xl glass-surface text-slate-900 dark:text-[#F8FAFC] border border-slate-200/90 dark:border-white/10 placeholder:text-slate-400 dark:placeholder:text-zinc-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
               />
             </div>
 
             <div>
-              <label className="block font-semibold text-[#15161A] dark:text-[#F8FAFC] mb-1">
+              <label className="block font-semibold text-slate-900 dark:text-[#F8FAFC] mb-1">
                 Organization / Facility Name
               </label>
               <input
@@ -188,12 +188,12 @@ export const AccessModal: React.FC<AccessModalProps> = ({
                 value={company}
                 onChange={(e) => setCompany(e.target.value)}
                 placeholder="e.g. Apex Industrial Minerals"
-                className="w-full px-3.5 py-2.5 rounded-xl glass-surface text-[#15161A] dark:text-[#F8FAFC] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
+                className="w-full px-3.5 py-2.5 rounded-xl glass-surface text-slate-900 dark:text-[#F8FAFC] border border-slate-200/90 dark:border-white/10 placeholder:text-slate-400 dark:placeholder:text-zinc-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
               />
             </div>
 
             <div>
-              <label className="block font-semibold text-[#15161A] dark:text-[#F8FAFC] mb-1">
+              <label className="block font-semibold text-slate-900 dark:text-[#F8FAFC] mb-1">
                 Primary Organization Focus
               </label>
               <div className="grid grid-cols-3 gap-2">
@@ -205,7 +205,7 @@ export const AccessModal: React.FC<AccessModalProps> = ({
                     className={`py-2 px-3 rounded-xl border font-semibold text-center uppercase tracking-wider text-[10px] transition-all ${
                       workspaceSelection === role
                         ? 'bg-emerald-600 border-emerald-500 text-white'
-                        : 'glass-surface text-[var(--text-secondary)] border-black/5 dark:border-white/5'
+                        : 'glass-surface text-slate-600 dark:text-[var(--text-secondary)] border-slate-200/80 dark:border-white/10 hover:text-slate-900'
                     }`}
                   >
                     {role === 'both' ? 'Buy & Sell' : role}
