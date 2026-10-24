@@ -40,6 +40,17 @@ export const Navigation: React.FC<NavigationProps> = ({
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  useEffect(() => {
+    if (!mobileMenuOpen) return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setMobileMenuOpen(false);
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [mobileMenuOpen]);
+
   const currentIndex = SECTIONS.findIndex((s) => s.id === activeSection);
 
   const handlePrev = () => {
@@ -69,10 +80,10 @@ export const Navigation: React.FC<NavigationProps> = ({
           className="flex items-center gap-2 px-2 py-1 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors shrink-0 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#9D1738]"
           title="IndusLink — Home"
         >
-          <div className="w-6 h-6 rounded-full bg-gradient-to-br from-[#9D1738] to-[#680C23] text-[#F4F1EC] flex items-center justify-center font-bold text-[10px] tracking-tight shadow-sm ring-1 ring-white/20">
+          <div className="w-6 h-6 rounded-full bg-gradient-to-br from-[#9D1738] to-[#680C23] text-[#F8FAFC] flex items-center justify-center font-bold text-[10px] tracking-tight shadow-sm ring-1 ring-white/20">
             IL
           </div>
-          <span className="font-serif font-bold text-sm tracking-wider text-[#15161A] dark:text-[#F4F1EC] hidden min-[440px]:inline">
+          <span className="font-serif font-bold text-sm tracking-wider text-[#15161A] dark:text-[#F8FAFC] hidden min-[440px]:inline">
             IndusLink
           </span>
         </button>
@@ -85,11 +96,11 @@ export const Navigation: React.FC<NavigationProps> = ({
           <button
             onClick={handlePrev}
             disabled={currentIndex === 0}
-            className="p-1.5 rounded-full hover:bg-black/5 dark:hover:bg-white/10 disabled:opacity-25 disabled:cursor-not-allowed transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#9D1738]"
+            className="hidden sm:inline-flex min-h-10 min-w-10 items-center justify-center rounded-full hover:bg-black/5 dark:hover:bg-white/10 disabled:opacity-25 disabled:cursor-not-allowed transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#9D1738]"
             aria-label="Previous section"
             title="Previous section"
           >
-            <ChevronLeft className="w-3.5 h-3.5 text-[#61646E] dark:text-[#A6A8B0]" />
+            <ChevronLeft className="w-3.5 h-3.5 text-[#61646E] dark:text-[#94A3B8]" />
           </button>
 
           {/* Desktop Section Selector */}
@@ -103,8 +114,8 @@ export const Navigation: React.FC<NavigationProps> = ({
                   aria-current={isActive ? 'true' : undefined}
                   className={`relative px-3 py-1 rounded-full text-xs font-semibold tracking-wider transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#9D1738] whitespace-nowrap ${
                     isActive
-                      ? 'bg-[#9D1738] text-[#F4F1EC] shadow-[0_0_15px_rgba(157,23,56,0.4)]'
-                      : 'text-[#61646E] dark:text-[#A6A8B0] hover:text-[#15161A] dark:hover:text-[#F4F1EC] hover:bg-black/5 dark:hover:bg-white/5'
+                      ? 'bg-[#9D1738] text-[#F8FAFC] shadow-[0_0_15px_rgba(157,23,56,0.4)]'
+                      : 'text-[#61646E] dark:text-[#94A3B8] hover:text-[#15161A] dark:hover:text-[#F8FAFC] hover:bg-black/5 dark:hover:bg-white/5'
                   }`}
                 >
                   {section.label}
@@ -114,18 +125,18 @@ export const Navigation: React.FC<NavigationProps> = ({
           </div>
 
           {/* Mobile Current Active Section Label */}
-          <div className="sm:hidden px-2 py-0.5 rounded-full text-[11px] font-bold tracking-wider bg-[#9D1738] text-[#F4F1EC] uppercase">
+          <div className="sm:hidden px-2 py-0.5 rounded-full text-[11px] font-bold tracking-wider bg-[#9D1738] text-[#F8FAFC] uppercase">
             {SECTIONS[currentIndex]?.label || 'HOME'}
           </div>
 
           <button
             onClick={handleNext}
             disabled={currentIndex === SECTIONS.length - 1}
-            className="p-1.5 rounded-full hover:bg-black/5 dark:hover:bg-white/10 disabled:opacity-25 disabled:cursor-not-allowed transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#9D1738]"
+            className="hidden sm:inline-flex min-h-10 min-w-10 items-center justify-center rounded-full hover:bg-black/5 dark:hover:bg-white/10 disabled:opacity-25 disabled:cursor-not-allowed transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#9D1738]"
             aria-label="Next section"
             title="Next section"
           >
-            <ChevronRight className="w-3.5 h-3.5 text-[#61646E] dark:text-[#A6A8B0]" />
+            <ChevronRight className="w-3.5 h-3.5 text-[#61646E] dark:text-[#94A3B8]" />
           </button>
         </div>
 
@@ -135,7 +146,7 @@ export const Navigation: React.FC<NavigationProps> = ({
         {/* Theme Toggle */}
         <button
           onClick={onToggleTheme}
-          className="p-1.5 rounded-full hover:bg-black/5 dark:hover:bg-white/10 text-[#61646E] dark:text-[#A6A8B0] hover:text-[#9D1738] dark:hover:text-[#F4F1EC] transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#9D1738] shrink-0"
+          className="min-h-11 min-w-11 inline-flex items-center justify-center rounded-full hover:bg-black/5 dark:hover:bg-white/10 text-[#61646E] dark:text-[#94A3B8] hover:text-[#9D1738] dark:hover:text-[#F8FAFC] transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#9D1738] shrink-0"
           aria-label={isDark ? 'Switch to light theme' : 'Switch to dark theme'}
           title={isDark ? 'Switch to light theme' : 'Switch to dark theme'}
         >
@@ -150,14 +161,14 @@ export const Navigation: React.FC<NavigationProps> = ({
         <div className="hidden md:flex items-center gap-1.5 shrink-0 ml-1">
           <button
             onClick={() => onOpenAccess('login')}
-            className="px-3 py-1 text-xs font-medium text-[#61646E] dark:text-[#A6A8B0] hover:text-[#15161A] dark:hover:text-[#F4F1EC] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#9D1738] whitespace-nowrap"
+            className="px-3 py-1 text-xs font-medium text-[#61646E] dark:text-[#94A3B8] hover:text-[#15161A] dark:hover:text-[#F8FAFC] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#9D1738] whitespace-nowrap"
           >
             Log In
           </button>
 
           <button
             onClick={() => onOpenAccess('start')}
-            className="flex items-center gap-1 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-[#9D1738] hover:bg-[#B81D43] text-[#F4F1EC] shadow-sm hover:shadow-[0_0_15px_rgba(157,23,56,0.4)] active:scale-[0.98] transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#9D1738] whitespace-nowrap"
+            className="flex items-center gap-1 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-[#9D1738] hover:bg-[#BE185D] text-[#F8FAFC] shadow-sm hover:shadow-[0_0_15px_rgba(157,23,56,0.4)] active:scale-[0.98] transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#9D1738] whitespace-nowrap"
           >
             <span>Get Started</span>
             <ArrowUpRight className="w-3 h-3" />
@@ -167,9 +178,10 @@ export const Navigation: React.FC<NavigationProps> = ({
         {/* Mobile Menu Hamburger */}
         <button
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="md:hidden p-1.5 rounded-full hover:bg-black/5 dark:hover:bg-white/10 text-[#61646E] dark:text-[#A6A8B0] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#9D1738]"
+          className="md:hidden min-h-11 min-w-11 inline-flex items-center justify-center rounded-full hover:bg-black/5 dark:hover:bg-white/10 text-[#61646E] dark:text-[#94A3B8] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#9D1738]"
           aria-label="Toggle mobile menu"
           aria-expanded={mobileMenuOpen}
+          aria-controls="mobile-navigation-menu"
         >
           {mobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
         </button>
@@ -177,7 +189,7 @@ export const Navigation: React.FC<NavigationProps> = ({
 
       {/* Animated Mobile Glass Menu Dropdown */}
       {mobileMenuOpen && (
-        <div className="md:hidden fixed top-20 left-4 right-4 pointer-events-auto glass-surface-floating rounded-2xl p-5 shadow-2xl z-50 animate-in fade-in slide-in-from-top-4 duration-200">
+        <div id="mobile-navigation-menu" className="md:hidden fixed top-20 left-4 right-4 pointer-events-auto glass-surface-floating rounded-2xl p-5 shadow-2xl z-50 animate-in fade-in slide-in-from-top-4 duration-200">
           <div className="flex flex-col gap-2 mb-4">
             {SECTIONS.map((section) => (
               <button
@@ -186,10 +198,10 @@ export const Navigation: React.FC<NavigationProps> = ({
                   onNavigate(section.id);
                   setMobileMenuOpen(false);
                 }}
-                className={`text-left px-4 py-2.5 rounded-xl text-xs font-semibold tracking-wider transition-colors ${
+                className={`min-h-11 text-left px-4 py-2.5 rounded-xl text-xs font-semibold tracking-wider transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#9D1738] ${
                   activeSection === section.id
-                    ? 'bg-[#9D1738] text-[#F4F1EC]'
-                    : 'text-[#61646E] dark:text-[#A6A8B0] hover:bg-black/5 dark:hover:bg-white/5'
+                    ? 'bg-[#9D1738] text-[#F8FAFC]'
+                    : 'text-[#61646E] dark:text-[#94A3B8] hover:bg-black/5 dark:hover:bg-white/5'
                 }`}
               >
                 {section.label}
@@ -203,7 +215,7 @@ export const Navigation: React.FC<NavigationProps> = ({
                 onOpenAccess('login');
                 setMobileMenuOpen(false);
               }}
-              className="py-2 rounded-xl text-xs font-medium text-center border border-black/10 dark:border-white/10 text-[#15161A] dark:text-[#F4F1EC]"
+              className="min-h-11 py-2 rounded-xl text-xs font-medium text-center border border-black/10 dark:border-white/10 text-[#15161A] dark:text-[#F8FAFC] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#9D1738]"
             >
               Log In
             </button>
@@ -212,7 +224,7 @@ export const Navigation: React.FC<NavigationProps> = ({
                 onOpenAccess('start');
                 setMobileMenuOpen(false);
               }}
-              className="py-2 rounded-xl text-xs font-semibold text-center bg-[#9D1738] text-[#F4F1EC]"
+              className="min-h-11 py-2 rounded-xl text-xs font-semibold text-center bg-[#9D1738] text-[#F8FAFC] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#9D1738]"
             >
               Get Started
             </button>

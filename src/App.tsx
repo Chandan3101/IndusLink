@@ -4,9 +4,11 @@
  */
 
 import React, { useState, useEffect } from 'react';
+import { MotionConfig } from 'motion/react';
 import { SectionId } from './types/index.ts';
 import { Navigation } from './components/Navigation.tsx';
 import { ScrollProgressBar } from './components/ScrollProgressBar.tsx';
+import { RibbedStructureCanvas } from './components/RibbedStructureCanvas.tsx';
 import { HeroSection } from './components/HeroSection.tsx';
 import { EvaluationSection } from './components/EvaluationSection.tsx';
 import { OpportunitiesSection } from './components/OpportunitiesSection.tsx';
@@ -64,7 +66,9 @@ export default function App() {
     setActiveSection(sectionId);
     const target = document.getElementById(sectionId);
     if (target) {
-      target.scrollIntoView({ behavior: 'smooth' });
+      target.scrollIntoView({
+        behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
+      });
     }
   };
 
@@ -78,33 +82,38 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[var(--bg-page)] text-[var(--text-primary)] transition-colors duration-300">
-      {/* Subtle Top Viewport Scroll Progress Bar */}
-      <ScrollProgressBar />
+    <MotionConfig reducedMotion="user">
+      <div className="min-h-screen bg-[var(--bg-page)] text-[var(--text-primary)] transition-colors duration-300 relative">
+        {/* Continuous 4-Section 3D Ribbed Structure (Fixed Global WebGL Layer) */}
+        <RibbedStructureCanvas />
 
-      {/* Floating Pill Navigation */}
-      <Navigation
-        activeSection={activeSection}
-        onNavigate={handleNavigate}
-        isDark={isDark}
-        onToggleTheme={handleToggleTheme}
-        onOpenAccess={handleOpenAccess}
-      />
+        {/* Subtle Top Viewport Scroll Progress Bar */}
+        <ScrollProgressBar />
 
-      {/* Connected 4-Section Narrative */}
-      <main>
-        <HeroSection onNavigate={handleNavigate} onOpenAccess={handleOpenAccess} />
-        <EvaluationSection />
-        <OpportunitiesSection />
-        <ExploreSection onNavigate={handleNavigate} onOpenAccess={handleOpenAccess} />
-      </main>
+        {/* Floating Pill Navigation */}
+        <Navigation
+          activeSection={activeSection}
+          onNavigate={handleNavigate}
+          isDark={isDark}
+          onToggleTheme={handleToggleTheme}
+          onOpenAccess={handleOpenAccess}
+        />
 
-      {/* Access & Early Evaluation Portal Dialog */}
-      <AccessModal
-        isOpen={isAccessModalOpen}
-        onClose={() => setIsAccessModalOpen(false)}
-        initialMode={accessMode}
-      />
-    </div>
+        {/* Connected 4-Section Narrative */}
+        <main>
+          <HeroSection onNavigate={handleNavigate} onOpenAccess={handleOpenAccess} />
+          <EvaluationSection />
+          <OpportunitiesSection />
+          <ExploreSection onNavigate={handleNavigate} onOpenAccess={handleOpenAccess} />
+        </main>
+
+        {/* Access & Early Evaluation Portal Dialog */}
+        <AccessModal
+          isOpen={isAccessModalOpen}
+          onClose={() => setIsAccessModalOpen(false)}
+          initialMode={accessMode}
+        />
+      </div>
+    </MotionConfig>
   );
 }

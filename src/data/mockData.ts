@@ -188,7 +188,7 @@ export const PRODUCT_CAPABILITIES: ProductCapability[] = [
 export const STATE_DEFINITIONS: Record<ConnectionState, { label: string; badge: string; desc: string }> = {
   POTENTIAL_IDENTIFIED: {
     label: 'Potential Application Identified',
-    badge: 'border-[#7F011F] text-[#7F011F] bg-[#7F011F]/5 dark:border-[#C21841] dark:text-[#F5EBD0] dark:bg-[#7F011F]/20',
+    badge: 'border-[#9D1738] text-[#9D1738] bg-[#9D1738]/5 dark:border-[#BE185D] dark:text-[#F8FAFC] dark:bg-[#9D1738]/20',
     desc: 'Preliminary requirements satisfied based on available documentation. Detailed technical validation must follow.',
   },
   COMPATIBILITY_UNVERIFIED: {

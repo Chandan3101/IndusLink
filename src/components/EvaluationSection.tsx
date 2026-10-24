@@ -4,7 +4,7 @@
  */
 
 import React, { useState } from 'react';
-import { motion, AnimatePresence, type Variants } from 'motion/react';
+import { motion, AnimatePresence, useReducedMotion, type Variants } from 'motion/react';
 import {
   EVALUATION_DIMENSIONS,
   PRODUCT_CAPABILITIES,
@@ -26,6 +26,8 @@ import {
   Sliders,
   Database,
   BarChart3,
+  Factory,
+  FileSpreadsheet,
 } from 'lucide-react';
 
 type TelemetryMode = 'chemistry' | 'logistics' | 'carbon' | 'evidence';
@@ -109,6 +111,7 @@ const cardVariants: Variants = {
 };
 
 export const EvaluationSection: React.FC = () => {
+  const prefersReducedMotion = useReducedMotion();
   const [activeDimensionId, setActiveDimensionId] = useState(EVALUATION_DIMENSIONS[0].id);
   const [selectedCapabilityId, setSelectedCapabilityId] = useState(PRODUCT_CAPABILITIES[0].id);
   const [telemetryMode, setTelemetryMode] = useState<TelemetryMode>('chemistry');
@@ -125,14 +128,125 @@ export const EvaluationSection: React.FC = () => {
     <section
       id="evaluation"
       aria-label="Evaluation section"
-      className="relative min-h-screen py-28 md:py-36 border-t border-black/5 dark:border-white/5 transition-colors overflow-hidden"
+      className="relative min-h-screen py-28 md:py-36 border-t border-black/5 dark:border-white/5 transition-colors overflow-hidden scroll-mt-24 md:scroll-mt-32"
     >
       {/* Background Volumetric Glows */}
       <div className="absolute top-1/4 left-1/10 w-[480px] h-[480px] bg-[#9D1738]/8 dark:bg-[#9D1738]/14 blur-[130px] rounded-full pointer-events-none" />
       <div className="absolute bottom-1/4 right-1/10 w-[420px] h-[420px] bg-[#C9AA79]/6 dark:bg-[#C9AA79]/10 blur-[110px] rounded-full pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header with Staggered Fade */}
+        {/* SECTION 02: The Industrial Resource Problem */}
+        <div className="mb-24">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            className="max-w-3xl mb-12"
+          >
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full glass-surface text-xs font-semibold tracking-widest text-[#9D1738] dark:text-[#E899AA] uppercase mb-3">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#9D1738] dark:bg-[#E899AA]" aria-hidden="true" />
+              <span>The Industrial Resource Problem</span>
+            </div>
+            <h2 className="font-serif text-3xl sm:text-5xl lg:text-5xl font-medium tracking-tight text-[#15161A] dark:text-[#F8FAFC] leading-tight mb-4">
+              “Why millions of tons of reusable byproducts still end up in landfills.”
+            </h2>
+            <p className="text-base sm:text-lg text-[#61646E] dark:text-[#94A3B8] leading-relaxed">
+              Industrial facilities generate vast streams of secondary minerals and mineralized ash, yet valuable exchanges stall because desk claims lack rigorous technical, economic, and regulatory proof.
+            </p>
+          </motion.div>
+
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.15 }}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+          >
+            {/* Card 1: Material Uncertainty */}
+            <motion.div
+              variants={cardVariants}
+              whileHover={{ y: -4, transition: { duration: 0.25 } }}
+              className="glass-surface-elevated rounded-3xl p-6 sm:p-7 flex flex-col justify-between relative overflow-hidden transition-all duration-300 hover:border-[#9D1738]/50 hover:shadow-xl"
+            >
+              <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#9D1738] to-transparent opacity-80" />
+              <div>
+                <div className="w-10 h-10 rounded-2xl bg-[#9D1738]/10 text-[#9D1738] dark:text-[#E899AA] flex items-center justify-center mb-5 ring-1 ring-[#9D1738]/20">
+                  <Shield className="w-5 h-5" />
+                </div>
+                <span className="font-mono text-xs font-bold text-[#9D1738] dark:text-[#E899AA] block mb-1">
+                  CHALLENGE 01
+                </span>
+                <h3 className="font-serif text-xl sm:text-2xl font-semibold text-[#15161A] dark:text-[#F8FAFC] mb-3">
+                  Material Uncertainty
+                </h3>
+                <p className="text-xs sm:text-sm text-[#61646E] dark:text-[#94A3B8] leading-relaxed mb-4">
+                  Chemical assays, mineralogical phases, and particle distributions are often unverified. Without certified lab data, recipient kilns and batching plants risk process contamination or catastrophic structural failures.
+                </p>
+              </div>
+              <div className="pt-4 border-t border-black/5 dark:border-white/5 flex items-center gap-2 text-[11px] font-mono text-[#8E919B]">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#9D1738]" />
+                <span>Requires XRF/XRD assay verification</span>
+              </div>
+            </motion.div>
+
+            {/* Card 2: Hidden Logistics Costs */}
+            <motion.div
+              variants={cardVariants}
+              whileHover={{ y: -4, transition: { duration: 0.25 } }}
+              className="glass-surface-elevated rounded-3xl p-6 sm:p-7 flex flex-col justify-between relative overflow-hidden transition-all duration-300 hover:border-[#C9AA79]/50 hover:shadow-xl"
+            >
+              <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#C9AA79] to-transparent opacity-80" />
+              <div>
+                <div className="w-10 h-10 rounded-2xl bg-[#C9AA79]/10 text-[#C9AA79] flex items-center justify-center mb-5 ring-1 ring-[#C9AA79]/20">
+                  <Scale className="w-5 h-5" />
+                </div>
+                <span className="font-mono text-xs font-bold text-[#C9AA79] block mb-1">
+                  CHALLENGE 02
+                </span>
+                <h3 className="font-serif text-xl sm:text-2xl font-semibold text-[#15161A] dark:text-[#F8FAFC] mb-3">
+                  Hidden Logistics Costs
+                </h3>
+                <p className="text-xs sm:text-sm text-[#61646E] dark:text-[#94A3B8] leading-relaxed mb-4">
+                  A byproduct free at the origin gate is rarely free delivered. Point-to-point freight, moisture weight penalties, thermal drying, and mandatory QA testing often eliminate apparent economic advantages.
+                </p>
+              </div>
+              <div className="pt-4 border-t border-black/5 dark:border-white/5 flex items-center gap-2 text-[11px] font-mono text-[#8E919B]">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#C9AA79]" />
+                <span>Calculates true delivered freight waterfall</span>
+              </div>
+            </motion.div>
+
+            {/* Card 3: Unverified Environmental Benefits */}
+            <motion.div
+              variants={cardVariants}
+              whileHover={{ y: -4, transition: { duration: 0.25 } }}
+              className="glass-surface-elevated rounded-3xl p-6 sm:p-7 flex flex-col justify-between relative overflow-hidden transition-all duration-300 hover:border-[#91AAB8]/50 hover:shadow-xl"
+            >
+              <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#91AAB8] to-transparent opacity-80" />
+              <div>
+                <div className="w-10 h-10 rounded-2xl bg-[#91AAB8]/10 text-[#91AAB8] flex items-center justify-center mb-5 ring-1 ring-[#91AAB8]/20">
+                  <TrendingDown className="w-5 h-5" />
+                </div>
+                <span className="font-mono text-xs font-bold text-[#91AAB8] block mb-1">
+                  CHALLENGE 03
+                </span>
+                <h3 className="font-serif text-xl sm:text-2xl font-semibold text-[#15161A] dark:text-[#F8FAFC] mb-3">
+                  Unverified Environmental Benefits
+                </h3>
+                <p className="text-xs sm:text-sm text-[#61646E] dark:text-[#94A3B8] leading-relaxed mb-4">
+                  Circularity claims are frequently unsubstantiated without explicit ISO 14044 lifecycle boundaries. Long haulage distances and intensive pre-processing can completely negate carbon abatement compared to virgin benchmarks.
+                </p>
+              </div>
+              <div className="pt-4 border-t border-black/5 dark:border-white/5 flex items-center gap-2 text-[11px] font-mono text-[#8E919B]">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#91AAB8]" />
+                <span>ISO 14044 baseline carbon accounting</span>
+              </div>
+            </motion.div>
+          </motion.div>
+        </div>
+
+        {/* Four-Dimensional Verification Framework */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -144,10 +258,10 @@ export const EvaluationSection: React.FC = () => {
             <span className="w-1.5 h-1.5 rounded-full bg-[#9D1738] dark:bg-[#E899AA]" aria-hidden="true" />
             <span>Four-Dimensional Verification Framework</span>
           </div>
-          <h2 className="font-serif text-3xl sm:text-5xl lg:text-5xl font-medium tracking-tight text-[#15161A] dark:text-[#F4F1EC] leading-tight mb-4">
+          <h2 className="font-serif text-3xl sm:text-5xl lg:text-5xl font-medium tracking-tight text-[#15161A] dark:text-[#F8FAFC] leading-tight mb-4">
             “From material data to informed decisions.”
           </h2>
-          <p className="text-base sm:text-lg text-[#61646E] dark:text-[#A6A8B0] leading-relaxed">
+          <p className="text-base sm:text-lg text-[#61646E] dark:text-[#94A3B8] leading-relaxed">
             Every potential exchange must stand up to technical, economic, and environmental scrutiny.
           </p>
         </motion.div>
@@ -202,11 +316,11 @@ export const EvaluationSection: React.FC = () => {
                     </span>
                   </div>
 
-                  <h3 className="font-serif text-lg sm:text-xl font-semibold text-[#15161A] dark:text-[#F4F1EC] mb-1">
+                  <h3 className="font-serif text-lg sm:text-xl font-semibold text-[#15161A] dark:text-[#F8FAFC] mb-1">
                     {dim.title}
                   </h3>
 
-                  <p className="text-xs text-[#61646E] dark:text-[#A6A8B0] line-clamp-2 leading-relaxed">
+                  <p className="text-xs text-[#61646E] dark:text-[#94A3B8] leading-relaxed">
                     {dim.headline}
                   </p>
                 </motion.button>
@@ -243,11 +357,11 @@ export const EvaluationSection: React.FC = () => {
                 </div>
 
                 {/* Core Question Headline */}
-                <h3 className="font-serif text-2xl sm:text-3xl font-semibold text-[#15161A] dark:text-[#F4F1EC] leading-snug">
+                <h3 className="font-serif text-2xl sm:text-3xl font-semibold text-[#15161A] dark:text-[#F8FAFC] leading-snug">
                   “{activeDimension.coreQuestion}”
                 </h3>
 
-                <p className="text-sm text-[#61646E] dark:text-[#A6A8B0] leading-relaxed">
+                <p className="text-sm text-[#61646E] dark:text-[#94A3B8] leading-relaxed">
                   {activeDimension.description}
                 </p>
 
@@ -256,21 +370,21 @@ export const EvaluationSection: React.FC = () => {
                   <span className="text-[10px] font-mono uppercase tracking-widest text-[#9D1738] dark:text-[#E899AA] block mb-1 font-semibold">
                     Governing Principle
                   </span>
-                  <p className="text-xs sm:text-sm italic font-serif text-[#15161A] dark:text-[#F4F1EC]">
+                  <p className="text-xs sm:text-sm italic font-serif text-[#15161A] dark:text-[#F8FAFC]">
                     “{activeDimension.operationalPrinciple}”
                   </p>
                 </div>
 
                 {/* Required Evidence Audit Trail */}
                 <div>
-                  <span className="text-xs font-semibold uppercase tracking-wider text-[#15161A] dark:text-[#F4F1EC] block mb-3">
+                  <span className="text-xs font-semibold uppercase tracking-wider text-[#15161A] dark:text-[#F8FAFC] block mb-3">
                     Required Evidence Audit Trail
                   </span>
                   <ul className="space-y-2.5">
                     {activeDimension.evidenceChecklist.map((item, idx) => (
                       <li
                         key={idx}
-                        className="flex items-start gap-2.5 text-xs sm:text-sm text-[#61646E] dark:text-[#A6A8B0]"
+                        className="flex items-start gap-2.5 text-xs sm:text-sm text-[#61646E] dark:text-[#94A3B8]"
                       >
                         <CheckCircle2 className="w-4 h-4 text-[#9D1738] dark:text-[#E899AA] shrink-0 mt-0.5" />
                         <span>{item}</span>
@@ -281,6 +395,122 @@ export const EvaluationSection: React.FC = () => {
               </motion.div>
             </AnimatePresence>
           </div>
+        </div>
+
+        {/* SECTION 03: How IndusLink Works — 6-Step Decision Sequence */}
+        <div className="mb-28">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            className="max-w-3xl mb-12"
+          >
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full glass-surface text-xs font-semibold tracking-widest text-[#9D1738] dark:text-[#E899AA] uppercase mb-3">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#9D1738] dark:bg-[#E899AA]" aria-hidden="true" />
+              <span>How IndusLink Works</span>
+            </div>
+            <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-medium tracking-tight text-[#15161A] dark:text-[#F8FAFC] leading-tight mb-4">
+              “The 6-Step Evidence-to-Decision Workflow.”
+            </h2>
+            <p className="text-base sm:text-lg text-[#61646E] dark:text-[#94A3B8] leading-relaxed">
+              From raw batch sampling to signed commercial dispatch, every material exchange follows a transparent, auditable sequence.
+            </p>
+          </motion.div>
+
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.12 }}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+          >
+            {[
+              {
+                step: '01',
+                title: 'Register Profile',
+                subtitle: 'Origin or Recipient Specification',
+                desc: 'Register an industrial byproduct stream with origin facility parameters, or define a recipient manufacturing requirement.',
+                icon: Factory,
+                metric: 'Silo & cadence specs',
+              },
+              {
+                step: '02',
+                title: 'Assay Ingestion',
+                subtitle: 'Chemical & Physical Extraction',
+                desc: 'Upload laboratory reports (XRF, XRD, sieve analysis) to extract elemental composition, mineral phases, and loss on ignition.',
+                icon: FileSpreadsheet,
+                metric: 'Automated data parser',
+              },
+              {
+                step: '03',
+                title: 'Validate Evidence',
+                subtitle: 'Uncertainty & Gap Detection',
+                desc: 'Validate accredited test standards (ISO 17025, ASTM), detect unverified claims, and flag critical missing parameters.',
+                icon: FileCheck,
+                metric: 'Unknown Data Guard',
+              },
+              {
+                step: '04',
+                title: 'Evaluate Compatibility',
+                subtitle: 'Cross-Industry Tolerance Matching',
+                desc: 'Run multi-parameter compatibility checks against recipient engineering standards to verify technical suitability.',
+                icon: Cpu,
+                metric: 'Zero False Matches',
+              },
+              {
+                step: '05',
+                title: 'Waterfall Economics',
+                subtitle: 'Delivered Cost & Carbon Abatement',
+                desc: 'Calculate point-to-point freight, drying/micronizing energy, and net lifecycle CO2e abatement against virgin benchmarks.',
+                icon: BarChart3,
+                metric: 'Break-even radius math',
+              },
+              {
+                step: '06',
+                title: 'Audit Report & Review',
+                subtitle: 'Digital Passport & Human Signoff',
+                desc: 'Generate an auditable assessment report and route to human engineering teams for commercial and regulatory review.',
+                icon: Shield,
+                metric: 'Auditable Passport',
+              },
+            ].map((st, i) => {
+              const Icon = st.icon;
+              return (
+                <motion.div
+                  key={i}
+                  variants={cardVariants}
+                  whileHover={{ y: -4, transition: { duration: 0.25 } }}
+                  className="glass-surface-elevated rounded-3xl p-6 sm:p-7 flex flex-col justify-between relative overflow-hidden transition-all duration-300 hover:border-[#9D1738]/50 hover:shadow-xl group"
+                >
+                  <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#9D1738] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <div>
+                    <div className="flex items-center justify-between mb-4">
+                      <span className="font-mono text-base font-bold text-[#9D1738] dark:text-[#E899AA]">
+                        STEP {st.step}
+                      </span>
+                      <div className="w-8 h-8 rounded-xl bg-black/5 dark:bg-white/5 flex items-center justify-center text-[#9D1738] dark:text-[#E899AA]">
+                        <Icon className="w-4 h-4" />
+                      </div>
+                    </div>
+                    <h3 className="font-serif text-xl font-semibold text-[#15161A] dark:text-[#F8FAFC] mb-1">
+                      {st.title}
+                    </h3>
+                    <div className="text-[11px] font-mono text-[#8E919B] mb-3">
+                      {st.subtitle}
+                    </div>
+                    <p className="text-xs sm:text-sm text-[#61646E] dark:text-[#94A3B8] leading-relaxed mb-4">
+                      {st.desc}
+                    </p>
+                  </div>
+                  <div className="pt-3 border-t border-black/5 dark:border-white/5 flex items-center justify-between text-[11px] font-mono">
+                    <span className="text-[#8E919B]">Feature:</span>
+                    <span className="text-[#9D1738] dark:text-[#E899AA] font-semibold">{st.metric}</span>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </motion.div>
         </div>
 
         {/* NEW SIGNATURE VISUAL: Live Evaluation Network Data Visualizer */}
@@ -301,13 +531,13 @@ export const EvaluationSection: React.FC = () => {
                 <Radio className="w-3.5 h-3.5 animate-pulse text-[#9D1738]" />
                 <span>Live Resource Intelligence Data Stream</span>
               </div>
-              <h3 className="font-serif text-2xl sm:text-3xl font-semibold text-[#15161A] dark:text-[#F4F1EC]">
+              <h3 className="font-serif text-2xl sm:text-3xl font-semibold text-[#15161A] dark:text-[#F8FAFC]">
                 Multi-Vector Evaluation Conduit
               </h3>
             </div>
 
             {/* Network Channel Mode Switcher */}
-            <div className="flex items-center gap-1.5 p-1 rounded-2xl glass-surface overflow-x-auto scrollbar-none">
+            <div className="grid grid-cols-2 sm:flex sm:flex-wrap items-center gap-1.5 p-1 rounded-2xl glass-surface">
               {(['chemistry', 'logistics', 'carbon', 'evidence'] as TelemetryMode[]).map((mode) => {
                 const isSelected = telemetryMode === mode;
                 const labels: Record<TelemetryMode, string> = {
@@ -320,10 +550,10 @@ export const EvaluationSection: React.FC = () => {
                   <button
                     key={mode}
                     onClick={() => setTelemetryMode(mode)}
-                    className={`px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#9D1738] ${
+                    className={`min-h-11 px-2 sm:px-3 py-1.5 rounded-xl text-xs font-semibold text-center transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#9D1738] ${
                       isSelected
-                        ? 'bg-[#9D1738] text-[#F4F1EC] shadow-[0_0_12px_rgba(157,23,56,0.35)]'
-                        : 'text-[#61646E] dark:text-[#A6A8B0] hover:text-[#15161A] dark:hover:text-[#F4F1EC]'
+                        ? 'bg-[#9D1738] text-[#F8FAFC] shadow-[0_0_12px_rgba(157,23,56,0.35)]'
+                        : 'text-[#61646E] dark:text-[#94A3B8] hover:text-[#15161A] dark:hover:text-[#F8FAFC]'
                     }`}
                   >
                     {labels[mode]}
@@ -337,7 +567,7 @@ export const EvaluationSection: React.FC = () => {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             {/* Left Col (5): Visual Network Topology Diagram (SVG with Live Pulse Animation) */}
             <div className="lg:col-span-5 p-5 rounded-2xl glass-surface relative flex flex-col items-center justify-center min-h-[300px]">
-              <div className="w-full flex items-center justify-between text-[11px] font-mono text-[#8E919B] mb-3">
+              <div className="w-full flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 text-[11px] font-mono text-[#8E919B] mb-3">
                 <span className="flex items-center gap-1.5">
                   <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
                   <span>Pipeline Active</span>
@@ -366,7 +596,7 @@ export const EvaluationSection: React.FC = () => {
                     strokeWidth="2.5"
                     initial={{ pathLength: 0 }}
                     animate={{ pathLength: 1 }}
-                    transition={{ duration: 1.5, repeat: Infinity, ease: 'linear' }}
+                    transition={{ duration: 1.5, repeat: prefersReducedMotion ? 0 : Infinity, ease: 'linear' }}
                   />
                   <motion.line
                     x1="160"
@@ -377,7 +607,7 @@ export const EvaluationSection: React.FC = () => {
                     strokeWidth="2.5"
                     initial={{ pathLength: 0 }}
                     animate={{ pathLength: 1 }}
-                    transition={{ duration: 1.5, repeat: Infinity, delay: 0.5, ease: 'linear' }}
+                    transition={{ duration: 1.5, repeat: prefersReducedMotion ? 0 : Infinity, delay: 0.5, ease: 'linear' }}
                   />
 
                   {/* Center Intelligence Hub */}
@@ -387,29 +617,29 @@ export const EvaluationSection: React.FC = () => {
                   {/* Corner Node 1: Chemical Assay */}
                   <g className="cursor-pointer" onClick={() => setTelemetryMode('chemistry')}>
                     <circle cx="60" cy="60" r="22" fill={telemetryMode === 'chemistry' ? '#9D1738' : '#221C22'} stroke="#9D1738" strokeWidth="1.5" />
-                    <text x="60" y="64" textAnchor="middle" fill="#F4F1EC" fontSize="10" fontFamily="monospace" fontWeight="bold">XRF</text>
+                    <text x="60" y="64" textAnchor="middle" fill="#F8FAFC" fontSize="10" fontFamily="monospace" fontWeight="bold">XRF</text>
                   </g>
 
                   {/* Corner Node 2: Delivered Haulage */}
                   <g className="cursor-pointer" onClick={() => setTelemetryMode('logistics')}>
                     <circle cx="260" cy="60" r="22" fill={telemetryMode === 'logistics' ? '#9D1738' : '#221C22'} stroke="#C9AA79" strokeWidth="1.5" />
-                    <text x="260" y="64" textAnchor="middle" fill="#F4F1EC" fontSize="10" fontFamily="monospace" fontWeight="bold">USD</text>
+                    <text x="260" y="64" textAnchor="middle" fill="#F8FAFC" fontSize="10" fontFamily="monospace" fontWeight="bold">USD</text>
                   </g>
 
                   {/* Corner Node 3: Carbon LCA */}
                   <g className="cursor-pointer" onClick={() => setTelemetryMode('carbon')}>
                     <circle cx="60" cy="180" r="22" fill={telemetryMode === 'carbon' ? '#9D1738' : '#221C22'} stroke="#10B981" strokeWidth="1.5" />
-                    <text x="60" y="184" textAnchor="middle" fill="#F4F1EC" fontSize="10" fontFamily="monospace" fontWeight="bold">CO2</text>
+                    <text x="60" y="184" textAnchor="middle" fill="#F8FAFC" fontSize="10" fontFamily="monospace" fontWeight="bold">CO2</text>
                   </g>
 
                   {/* Corner Node 4: Proof Ledger */}
                   <g className="cursor-pointer" onClick={() => setTelemetryMode('evidence')}>
                     <circle cx="260" cy="180" r="22" fill={telemetryMode === 'evidence' ? '#9D1738' : '#221C22'} stroke="#91AAB8" strokeWidth="1.5" />
-                    <text x="260" y="184" textAnchor="middle" fill="#F4F1EC" fontSize="10" fontFamily="monospace" fontWeight="bold">ISO</text>
+                    <text x="260" y="184" textAnchor="middle" fill="#F8FAFC" fontSize="10" fontFamily="monospace" fontWeight="bold">ISO</text>
                   </g>
 
                   {/* Center Node Title */}
-                  <text x="160" y="123" textAnchor="middle" fill="#F4F1EC" fontSize="11" fontFamily="sans-serif" fontWeight="bold">
+                  <text x="160" y="123" textAnchor="middle" fill="#F8FAFC" fontSize="11" fontFamily="sans-serif" fontWeight="bold">
                     GATE
                   </text>
                 </svg>
@@ -426,10 +656,10 @@ export const EvaluationSection: React.FC = () => {
                 <span className="font-mono text-[10px] uppercase tracking-wider text-[#9D1738] dark:text-[#E899AA] block font-semibold">
                   Channel Specification
                 </span>
-                <h4 className="font-serif text-xl sm:text-2xl font-semibold text-[#15161A] dark:text-[#F4F1EC]">
+                <h4 className="font-serif text-xl sm:text-2xl font-semibold text-[#15161A] dark:text-[#F8FAFC]">
                   {currentTelemetry.title}
                 </h4>
-                <p className="text-xs text-[#61646E] dark:text-[#A6A8B0] mt-0.5">
+                <p className="text-xs text-[#61646E] dark:text-[#94A3B8] mt-0.5">
                   {currentTelemetry.subtitle}
                 </p>
               </div>
@@ -450,7 +680,7 @@ export const EvaluationSection: React.FC = () => {
                       className="p-3.5 rounded-2xl glass-surface flex flex-col justify-between space-y-2"
                     >
                       <div className="flex items-center justify-between text-xs">
-                        <span className="text-[#8E919B] truncate">{pkt.label}</span>
+                        <span className="min-w-0 text-[#8E919B] leading-snug break-words">{pkt.label}</span>
                         {pkt.status === 'passed' && (
                           <span className="w-2 h-2 rounded-full bg-emerald-500 shrink-0" />
                         )}
@@ -463,15 +693,15 @@ export const EvaluationSection: React.FC = () => {
                       </div>
 
                       <div>
-                        <div className="font-mono text-base font-bold text-[#15161A] dark:text-[#F4F1EC]">
+                        <div className="font-mono text-base font-bold text-[#15161A] dark:text-[#F8FAFC]">
                           {pkt.value}
                         </div>
-                        <div className="text-[11px] text-[#61646E] dark:text-[#A6A8B0]">
+                        <div className="text-[11px] text-[#61646E] dark:text-[#94A3B8]">
                           Baseline: <span className="font-mono">{pkt.benchmark}</span>
                         </div>
                       </div>
 
-                      <div className="pt-2 border-t border-black/5 dark:border-white/5 text-[10px] font-mono text-[#9D1738] dark:text-[#E899AA] truncate">
+                      <div className="pt-2 border-t border-black/5 dark:border-white/5 text-[10px] font-mono text-[#9D1738] dark:text-[#E899AA] break-words">
                         {pkt.variance}
                       </div>
                     </div>
@@ -496,7 +726,7 @@ export const EvaluationSection: React.FC = () => {
                 <Sparkles className="w-3.5 h-3.5" />
                 <span>Explainable Intelligence Architecture</span>
               </div>
-              <h3 className="font-serif text-2xl sm:text-4xl font-semibold text-[#15161A] dark:text-[#F4F1EC]">
+              <h3 className="font-serif text-2xl sm:text-4xl font-semibold text-[#15161A] dark:text-[#F8FAFC]">
                 “Intelligence that explains its reasoning.”
               </h3>
             </div>
@@ -513,7 +743,7 @@ export const EvaluationSection: React.FC = () => {
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, amount: 0.2 }}
-              className="lg:col-span-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-2 max-h-[480px] overflow-y-auto pr-1"
+              className="lg:col-span-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-2 min-w-0"
             >
               {PRODUCT_CAPABILITIES.map((cap) => {
                 const isSelected = selectedCapabilityId === cap.id;
@@ -524,15 +754,15 @@ export const EvaluationSection: React.FC = () => {
                     onClick={() => setSelectedCapabilityId(cap.id)}
                     className={`text-left p-3.5 rounded-xl transition-all text-xs flex items-center justify-between gap-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#9D1738] ${
                       isSelected
-                        ? 'glass-surface-elevated border-[#9D1738] text-[#15161A] dark:text-[#F4F1EC] font-semibold shadow-md'
-                        : 'glass-surface text-[#61646E] dark:text-[#A6A8B0] hover:text-[#15161A] dark:hover:text-[#F4F1EC]'
+                        ? 'glass-surface-elevated border-[#9D1738] text-[#15161A] dark:text-[#F8FAFC] font-semibold shadow-md'
+                        : 'glass-surface text-[#61646E] dark:text-[#94A3B8] hover:text-[#15161A] dark:hover:text-[#F8FAFC]'
                     }`}
                   >
-                    <div className="flex items-center gap-2.5 truncate">
+                    <div className="flex min-w-0 items-center gap-2.5">
                       <span className="font-mono text-[11px] font-bold text-[#9D1738] dark:text-[#E899AA]">
                         {cap.number}.
                       </span>
-                      <span className="truncate">{cap.title}</span>
+                      <span className="min-w-0 whitespace-normal break-words">{cap.title}</span>
                     </div>
                     <ChevronRight
                       className={`w-3.5 h-3.5 shrink-0 transition-transform ${
@@ -563,7 +793,7 @@ export const EvaluationSection: React.FC = () => {
                     </span>
                   </div>
 
-                  <h4 className="font-serif text-2xl font-semibold text-[#15161A] dark:text-[#F4F1EC] mb-1.5">
+                  <h4 className="font-serif text-2xl font-semibold text-[#15161A] dark:text-[#F8FAFC] mb-1.5">
                     {selectedCapability.title}
                   </h4>
                   <p className="text-xs sm:text-sm font-medium text-[#9D1738] dark:text-[#E899AA] mb-6">
@@ -575,7 +805,7 @@ export const EvaluationSection: React.FC = () => {
                       <span className="text-[10px] font-mono uppercase tracking-widest text-[#8E919B] block mb-1 font-semibold">
                         Trigger Condition
                       </span>
-                      <p className="text-[#15161A] dark:text-[#F4F1EC] leading-relaxed">
+                      <p className="text-[#15161A] dark:text-[#F8FAFC] leading-relaxed">
                         {selectedCapability.triggerCondition}
                       </p>
                     </div>
@@ -584,7 +814,7 @@ export const EvaluationSection: React.FC = () => {
                       <span className="text-[10px] font-mono uppercase tracking-widest text-[#8E919B] block mb-1 font-semibold">
                         Algorithmic Mechanism
                       </span>
-                      <p className="text-[#61646E] dark:text-[#A6A8B0] leading-relaxed">
+                      <p className="text-[#61646E] dark:text-[#94A3B8] leading-relaxed">
                         {selectedCapability.algorithmicMechanism}
                       </p>
                     </div>
@@ -592,11 +822,11 @@ export const EvaluationSection: React.FC = () => {
                 </motion.div>
               </AnimatePresence>
 
-              <div className="mt-6 pt-4 border-t border-black/8 dark:border-white/10 flex items-center justify-between text-xs">
+              <div className="mt-6 pt-4 border-t border-black/8 dark:border-white/10 flex flex-wrap items-start justify-between gap-2 text-xs">
                 <span className="font-mono text-[11px] text-[#8E919B]">
                   Auditable Deliverable:
                 </span>
-                <span className="font-semibold text-[#15161A] dark:text-[#F4F1EC] text-right max-w-sm truncate">
+                <span className="font-semibold text-[#15161A] dark:text-[#F8FAFC] text-left sm:text-right max-w-sm break-words">
                   {selectedCapability.traceableOutput}
                 </span>
               </div>

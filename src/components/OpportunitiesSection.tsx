@@ -4,6 +4,7 @@
  */
 
 import React, { useState } from 'react';
+import { motion } from 'motion/react';
 import {
   SAMPLE_CONNECTIONS,
   STATE_DEFINITIONS,
@@ -37,6 +38,29 @@ const SECTORS: ('All' | IndustrialSector)[] = [
   'Energy',
 ];
 
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.08,
+      delayChildren: 0.05,
+    },
+  },
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 24 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.55,
+      ease: [0.16, 1, 0.3, 1] as const,
+    },
+  },
+};
+
 export const OpportunitiesSection: React.FC = () => {
   const [selectedSector, setSelectedSector] = useState<'All' | IndustrialSector>('All');
   const [selectedState, setSelectedState] = useState<'All' | ConnectionState>('All');
@@ -55,7 +79,7 @@ export const OpportunitiesSection: React.FC = () => {
     <section
       id="opportunities"
       aria-label="Opportunities section"
-      className="relative min-h-screen py-28 md:py-36 border-t border-black/5 dark:border-white/5 transition-colors overflow-hidden"
+      className="relative min-h-screen py-28 md:py-36 border-t border-black/5 dark:border-white/5 transition-colors overflow-hidden scroll-mt-24 md:scroll-mt-32"
     >
       {/* Background Volumetric Blooms */}
       <div className="absolute top-1/4 right-1/10 w-[500px] h-[500px] bg-[#9D1738]/8 dark:bg-[#9D1738]/12 blur-[140px] rounded-full pointer-events-none" />
@@ -63,28 +87,40 @@ export const OpportunitiesSection: React.FC = () => {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="max-w-3xl mb-14">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          className="max-w-3xl mb-14"
+        >
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full glass-surface text-xs font-semibold tracking-widest text-[#9D1738] dark:text-[#E899AA] uppercase mb-3">
             <Network className="w-3.5 h-3.5" />
             <span>Cross-Industry Resource Intelligence</span>
           </div>
-          <h2 className="font-serif text-3xl sm:text-5xl lg:text-5xl font-medium tracking-tight text-[#15161A] dark:text-[#F4F1EC] leading-tight mb-4">
+          <h2 className="font-serif text-3xl sm:text-5xl lg:text-5xl font-medium tracking-tight text-[#15161A] dark:text-[#F8FAFC] leading-tight mb-4">
             “Resources can connect industries. Evidence determines what proceeds.”
           </h2>
-          <p className="text-base sm:text-lg text-[#61646E] dark:text-[#A6A8B0] leading-relaxed">
+          <p className="text-base sm:text-lg text-[#61646E] dark:text-[#94A3B8] leading-relaxed">
             Byproducts and secondary minerals create viable industrial symbiosis pathways only when physical assays, transportation economics, and regulatory bounds align.
           </p>
-        </div>
+        </motion.div>
 
         {/* Evidence-Aware Connection State Banner */}
-        <div className="mb-10 p-5 rounded-3xl glass-surface-elevated relative overflow-hidden shadow-lg">
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          className="mb-10 p-5 rounded-3xl glass-surface-elevated relative overflow-hidden shadow-lg"
+        >
           <div className="flex items-center gap-2 mb-3">
             <Info className="w-4 h-4 text-[#9D1738] dark:text-[#E899AA]" />
-            <span className="text-xs font-semibold uppercase tracking-wider text-[#15161A] dark:text-[#F4F1EC]">
+            <span className="text-xs font-semibold uppercase tracking-wider text-[#15161A] dark:text-[#F8FAFC]">
               Five Evidence-Aware Connection States
             </span>
           </div>
-          <p className="text-xs text-[#61646E] dark:text-[#A6A8B0] mb-4 max-w-2xl">
+          <p className="text-xs text-[#61646E] dark:text-[#94A3B8] mb-4 max-w-2xl">
             Candidate resource exchanges are classified by validation status. Missing laboratory data or hard constraint violations are explicitly surfaced.
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 text-xs">
@@ -95,21 +131,21 @@ export const OpportunitiesSection: React.FC = () => {
               >
                 <span className="w-2 h-2 rounded-full mt-1.5 shrink-0 bg-[#9D1738] dark:bg-[#E899AA]" aria-hidden="true" />
                 <div>
-                  <span className="font-semibold text-[#15161A] dark:text-[#F4F1EC] block text-xs">
+                  <span className="font-semibold text-[#15161A] dark:text-[#F8FAFC] block text-xs">
                     {def.label}
                   </span>
-                  <span className="text-[11px] text-[#8E919B] line-clamp-2">
+                  <span className="text-[11px] text-[#8E919B]">
                     {def.desc}
                   </span>
                 </div>
               </div>
             ))}
           </div>
-        </div>
+        </motion.div>
 
         {/* Sector Filter Bar */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
-          <div className="flex items-center gap-1.5 overflow-x-auto pb-2 sm:pb-0 scrollbar-none">
+          <div className="flex flex-wrap items-center gap-1.5 pb-2 sm:pb-0">
             <span className="text-xs font-semibold uppercase tracking-wider text-[#8E919B] mr-1 shrink-0">
               Sector:
             </span>
@@ -119,10 +155,10 @@ export const OpportunitiesSection: React.FC = () => {
                 <button
                   key={sector}
                   onClick={() => setSelectedSector(sector)}
-                  className={`px-3.5 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#9D1738] ${
+                  className={`min-h-11 px-3.5 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#9D1738] ${
                     isSelected
-                      ? 'bg-[#9D1738] text-[#F4F1EC] shadow-[0_0_15px_rgba(157,23,56,0.35)]'
-                      : 'glass-surface text-[#61646E] dark:text-[#A6A8B0] hover:text-[#15161A] dark:hover:text-[#F4F1EC]'
+                      ? 'bg-[#9D1738] text-[#F8FAFC] shadow-[0_0_15px_rgba(157,23,56,0.35)]'
+                      : 'glass-surface text-[#61646E] dark:text-[#94A3B8] hover:text-[#15161A] dark:hover:text-[#F8FAFC]'
                   }`}
                 >
                   {sector}
@@ -177,7 +213,7 @@ export const OpportunitiesSection: React.FC = () => {
                       <div className="text-[11px] text-[#8E919B]">
                         Source: {conn.sourceSector}
                       </div>
-                      <h3 className="font-serif text-lg font-semibold text-[#15161A] dark:text-[#F4F1EC] leading-snug">
+                      <h3 className="font-serif text-lg font-semibold text-[#15161A] dark:text-[#F8FAFC] leading-snug">
                         {conn.sourceMaterial}
                       </h3>
                       <p className="text-[11px] text-[#8E919B]">
@@ -195,7 +231,7 @@ export const OpportunitiesSection: React.FC = () => {
                       <div className="text-[11px] text-[#8E919B]">
                         Target Recipient: {conn.targetSector}
                       </div>
-                      <h4 className="font-sans text-sm font-semibold text-[#15161A] dark:text-[#F4F1EC]">
+                      <h4 className="font-sans text-sm font-semibold text-[#15161A] dark:text-[#F8FAFC]">
                         {conn.targetApplication}
                       </h4>
                       <p className="text-[11px] text-[#8E919B]">
@@ -205,7 +241,7 @@ export const OpportunitiesSection: React.FC = () => {
                   </div>
 
                   {/* Summary */}
-                  <p className="text-xs text-[#61646E] dark:text-[#A6A8B0] leading-relaxed line-clamp-2 mb-4">
+                  <p className="text-xs text-[#61646E] dark:text-[#94A3B8] leading-relaxed mb-4">
                     {conn.compatibilitySummary}
                   </p>
                 </div>
@@ -217,7 +253,7 @@ export const OpportunitiesSection: React.FC = () => {
                       <MapPin className="w-3 h-3 text-[#9D1738]" />
                       <span>{conn.distanceKm} km freight</span>
                     </span>
-                    <span className="font-mono font-bold text-[#15161A] dark:text-[#F4F1EC]">
+                    <span className="font-mono font-bold text-[#15161A] dark:text-[#F8FAFC]">
                       ${conn.estDeliveredCostPerTon}/t delivered
                     </span>
                   </div>
@@ -250,10 +286,10 @@ export const OpportunitiesSection: React.FC = () => {
             <span className="text-xs font-mono uppercase tracking-widest text-[#9D1738] dark:text-[#E899AA] block mb-2 font-semibold">
               Regional Ecosystem Synergy
             </span>
-            <h3 className="font-serif text-2xl sm:text-3xl font-semibold text-[#15161A] dark:text-[#F4F1EC] mb-3 leading-tight">
+            <h3 className="font-serif text-2xl sm:text-3xl font-semibold text-[#15161A] dark:text-[#F8FAFC] mb-3 leading-tight">
               Physical co-location reduces the delivered cost penalty.
             </h3>
-            <p className="text-xs sm:text-sm text-[#61646E] dark:text-[#A6A8B0] leading-relaxed mb-6">
+            <p className="text-xs sm:text-sm text-[#61646E] dark:text-[#94A3B8] leading-relaxed mb-6">
               Haulage emissions and transportation rates often determine whether an environmentally beneficial exchange is economically viable. IndusLink calculates the precise break-even radius for every material pair.
             </p>
             <div className="inline-flex items-center gap-3 text-xs font-mono font-semibold text-[#9D1738] dark:text-[#E899AA]">
@@ -276,7 +312,7 @@ export const OpportunitiesSection: React.FC = () => {
           <div className="glass-surface-floating rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6 sm:p-8 shadow-2xl relative text-left">
             <button
               onClick={() => setActiveConnection(null)}
-              className="absolute top-5 right-5 p-2 rounded-full hover:bg-black/5 dark:hover:bg-white/10 text-[#61646E] dark:text-[#A6A8B0] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#9D1738]"
+              className="absolute top-5 right-5 p-2 rounded-full hover:bg-black/5 dark:hover:bg-white/10 text-[#61646E] dark:text-[#94A3B8] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#9D1738]"
               aria-label="Close dossier"
             >
               <X className="w-5 h-5" />
@@ -293,7 +329,7 @@ export const OpportunitiesSection: React.FC = () => {
               </span>
               <h3
                 id="modal-conn-title"
-                className="font-serif text-2xl font-semibold text-[#15161A] dark:text-[#F4F1EC]"
+                className="font-serif text-2xl font-semibold text-[#15161A] dark:text-[#F8FAFC]"
               >
                 {activeConnection.sourceMaterial} → {activeConnection.targetApplication}
               </h3>
@@ -310,7 +346,7 @@ export const OpportunitiesSection: React.FC = () => {
 
             {/* Engineering Property Tolerance Checklist */}
             <div className="mb-6">
-              <div className="text-xs font-semibold uppercase tracking-wider text-[#15161A] dark:text-[#F4F1EC] mb-3">
+              <div className="text-xs font-semibold uppercase tracking-wider text-[#15161A] dark:text-[#F8FAFC] mb-3">
                 Engineering Specification Tolerance Check
               </div>
               <div className="space-y-2.5">
@@ -320,7 +356,7 @@ export const OpportunitiesSection: React.FC = () => {
                     className="p-3.5 rounded-xl glass-surface text-xs"
                   >
                     <div className="flex items-center justify-between gap-2 mb-1">
-                      <span className="font-medium text-[#15161A] dark:text-[#F4F1EC]">
+                      <span className="font-medium text-[#15161A] dark:text-[#F8FAFC]">
                         {check.name}
                       </span>
                       <div className="flex items-center gap-1.5 shrink-0">
@@ -347,10 +383,10 @@ export const OpportunitiesSection: React.FC = () => {
                       </div>
                     </div>
                     <div className="grid grid-cols-2 gap-2 text-[11px] text-[#8E919B] mb-1">
-                      <div>Required: <span className="font-mono text-[#15161A] dark:text-[#F4F1EC]">{check.requiredRange}</span></div>
-                      <div>Documented: <span className="font-mono text-[#15161A] dark:text-[#F4F1EC]">{check.documentedValue ?? 'None'}</span></div>
+                      <div>Required: <span className="font-mono text-[#15161A] dark:text-[#F8FAFC]">{check.requiredRange}</span></div>
+                      <div>Documented: <span className="font-mono text-[#15161A] dark:text-[#F8FAFC]">{check.documentedValue ?? 'None'}</span></div>
                     </div>
-                    <p className="text-[11px] text-[#61646E] dark:text-[#A6A8B0] italic">
+                    <p className="text-[11px] text-[#61646E] dark:text-[#94A3B8] italic">
                       {check.comment} {check.testStandard && `(${check.testStandard})`}
                     </p>
                   </div>
@@ -364,10 +400,10 @@ export const OpportunitiesSection: React.FC = () => {
                 <span className="text-[10px] font-mono uppercase tracking-widest text-[#8E919B] block mb-1 font-semibold">
                   Delivered Economics
                 </span>
-                <div className="text-xl font-mono font-bold text-[#15161A] dark:text-[#F4F1EC] mb-1">
+                <div className="text-xl font-mono font-bold text-[#15161A] dark:text-[#F8FAFC] mb-1">
                   ${activeConnection.estDeliveredCostPerTon} / ton delivered
                 </div>
-                <p className="text-[11px] text-[#61646E] dark:text-[#A6A8B0]">
+                <p className="text-[11px] text-[#61646E] dark:text-[#94A3B8]">
                   {activeConnection.economicNotes}
                 </p>
               </div>
@@ -376,10 +412,10 @@ export const OpportunitiesSection: React.FC = () => {
                 <span className="text-[10px] font-mono uppercase tracking-widest text-[#8E919B] block mb-1 font-semibold">
                   Net Lifecycle Emissions
                 </span>
-                <div className="text-xl font-mono font-bold text-[#15161A] dark:text-[#F4F1EC] mb-1">
+                <div className="text-xl font-mono font-bold text-[#15161A] dark:text-[#F8FAFC] mb-1">
                   {activeConnection.netEmissionsKgCO2ePerTon} kg CO2e / ton
                 </div>
-                <p className="text-[11px] text-[#61646E] dark:text-[#A6A8B0]">
+                <p className="text-[11px] text-[#61646E] dark:text-[#94A3B8]">
                   {activeConnection.environmentalBaseline}
                 </p>
               </div>
@@ -388,7 +424,7 @@ export const OpportunitiesSection: React.FC = () => {
             <div className="flex justify-end">
               <button
                 onClick={() => setActiveConnection(null)}
-                className="px-6 py-2.5 rounded-full text-xs font-semibold bg-[#9D1738] hover:bg-[#B81D43] text-[#F4F1EC] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#9D1738]"
+                className="px-6 py-2.5 rounded-full text-xs font-semibold bg-[#9D1738] hover:bg-[#BE185D] text-[#F8FAFC] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#9D1738]"
               >
                 Close Dossier
               </button>

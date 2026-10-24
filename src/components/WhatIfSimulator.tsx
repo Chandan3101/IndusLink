@@ -35,17 +35,17 @@ export const WhatIfSimulator: React.FC = () => {
             <Sliders className="w-3.5 h-3.5" />
             <span>Interactive Feasibility Exploration</span>
           </div>
-          <h3 className="font-serif text-2xl sm:text-3xl font-semibold text-[#15161A] dark:text-[#F4F1EC]">
+          <h3 className="font-serif text-2xl sm:text-3xl font-semibold text-[#15161A] dark:text-[#F8FAFC]">
             What-If Scenario Simulator
           </h3>
-          <p className="text-xs sm:text-sm text-[#61646E] dark:text-[#A6A8B0] max-w-xl mt-1">
+          <p className="text-xs sm:text-sm text-[#61646E] dark:text-[#94A3B8] max-w-xl mt-1">
             Simulate how haulage distance, conditioning costs, and batch volume shift delivered economics and net carbon abatement.
           </p>
         </div>
 
         <button
           onClick={handleReset}
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-[#61646E] dark:text-[#A6A8B0] hover:text-[#15161A] dark:hover:text-[#F4F1EC] border border-black/10 dark:border-white/10 hover:bg-black/5 dark:hover:bg-white/5 transition-colors self-start md:self-auto focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#9D1738]"
+          className="min-h-11 flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-[#61646E] dark:text-[#94A3B8] hover:text-[#15161A] dark:hover:text-[#F8FAFC] border border-black/10 dark:border-white/10 hover:bg-black/5 dark:hover:bg-white/5 transition-colors self-start md:self-auto focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#9D1738]"
         >
           <RotateCcw className="w-3 h-3" />
           <span>Reset Defaults</span>
@@ -56,7 +56,7 @@ export const WhatIfSimulator: React.FC = () => {
         {/* Sliders Input Rail (Col 5) */}
         <div className="lg:col-span-5 space-y-6">
           <div className="p-4 rounded-2xl glass-surface space-y-4">
-            <div className="text-xs font-semibold uppercase tracking-wider text-[#15161A] dark:text-[#F4F1EC] flex items-center justify-between">
+            <div className="text-xs font-semibold uppercase tracking-wider text-[#15161A] dark:text-[#F8FAFC] flex items-center justify-between">
               <span>Simulation Controls</span>
               <span className="text-[11px] font-mono text-[#9D1738] dark:text-[#E899AA]">Hypothetical Variables</span>
             </div>
@@ -64,8 +64,8 @@ export const WhatIfSimulator: React.FC = () => {
             {/* Slider 1: Distance */}
             <div>
               <div className="flex justify-between items-center text-xs mb-1.5">
-                <label className="text-[#61646E] dark:text-[#A6A8B0] font-medium">One-Way Haulage Distance</label>
-                <span className="font-mono font-bold text-[#15161A] dark:text-[#F4F1EC] text-sm">
+                <label className="text-[#61646E] dark:text-[#94A3B8] font-medium">One-Way Haulage Distance</label>
+                <span className="font-mono font-bold text-[#15161A] dark:text-[#F8FAFC] text-sm">
                   {params.distanceKm} km
                 </span>
               </div>
@@ -78,7 +78,7 @@ export const WhatIfSimulator: React.FC = () => {
                 onChange={(e) => setParams({ ...params, distanceKm: Number(e.target.value) })}
                 className="w-full accent-[#9D1738] cursor-pointer"
               />
-              <div className="flex justify-between text-[10px] font-mono text-[#8E919B]">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-2 gap-y-1 text-[10px] font-mono text-[#8E919B] leading-snug">
                 <span>10 km (Local)</span>
                 <span>300 km (Regional)</span>
                 <span>600 km (Inter-State)</span>
@@ -88,8 +88,8 @@ export const WhatIfSimulator: React.FC = () => {
             {/* Slider 2: Preprocessing Cost */}
             <div>
               <div className="flex justify-between items-center text-xs mb-1.5">
-                <label className="text-[#61646E] dark:text-[#A6A8B0] font-medium">Pre-Treatment & Conditioning</label>
-                <span className="font-mono font-bold text-[#15161A] dark:text-[#F4F1EC] text-sm">
+                <label className="text-[#61646E] dark:text-[#94A3B8] font-medium">Pre-Treatment & Conditioning</label>
+                <span className="font-mono font-bold text-[#15161A] dark:text-[#F8FAFC] text-sm">
                   ${params.preprocessingCostPerTon} / ton
                 </span>
               </div>
@@ -102,7 +102,7 @@ export const WhatIfSimulator: React.FC = () => {
                 onChange={(e) => setParams({ ...params, preprocessingCostPerTon: Number(e.target.value) })}
                 className="w-full accent-[#9D1738] cursor-pointer"
               />
-              <div className="flex justify-between text-[10px] font-mono text-[#8E919B]">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-2 gap-y-1 text-[10px] font-mono text-[#8E919B] leading-snug">
                 <span>$0 (As-is)</span>
                 <span>$35 (Drying / Micronizing)</span>
                 <span>$75 (High Beneficiation)</span>
@@ -112,8 +112,8 @@ export const WhatIfSimulator: React.FC = () => {
             {/* Slider 3: Annual Volume */}
             <div>
               <div className="flex justify-between items-center text-xs mb-1.5">
-                <label className="text-[#61646E] dark:text-[#A6A8B0] font-medium">Annual Material Exchange Volume</label>
-                <span className="font-mono font-bold text-[#15161A] dark:text-[#F4F1EC] text-sm">
+                <label className="text-[#61646E] dark:text-[#94A3B8] font-medium">Annual Material Exchange Volume</label>
+                <span className="font-mono font-bold text-[#15161A] dark:text-[#F8FAFC] text-sm">
                   {params.annualTonnage.toLocaleString()} tons / yr
                 </span>
               </div>
@@ -126,7 +126,7 @@ export const WhatIfSimulator: React.FC = () => {
                 onChange={(e) => setParams({ ...params, annualTonnage: Number(e.target.value) })}
                 className="w-full accent-[#9D1738] cursor-pointer"
               />
-              <div className="flex justify-between text-[10px] font-mono text-[#8E919B]">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-2 gap-y-1 text-[10px] font-mono text-[#8E919B] leading-snug">
                 <span>500 t (Batch Pilot)</span>
                 <span>10,000 t (Commercial)</span>
                 <span>25,000 t (Base-Load)</span>
@@ -151,12 +151,12 @@ export const WhatIfSimulator: React.FC = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {/* KPI 1: Delivered Cost per Ton */}
             <div className="p-5 rounded-2xl glass-surface relative overflow-hidden flex flex-col justify-between">
-              <div className="flex items-center justify-between text-xs text-[#61646E] dark:text-[#A6A8B0] mb-2">
+              <div className="flex items-center justify-between text-xs text-[#61646E] dark:text-[#94A3B8] mb-2">
                 <span className="uppercase font-mono text-[10px]">Delivered Price</span>
                 <DollarSign className="w-4 h-4 text-[#C9AA79]" />
               </div>
               <div>
-                <div className="text-2xl sm:text-3xl font-mono font-bold text-[#15161A] dark:text-[#F4F1EC]">
+                <div className="text-2xl sm:text-3xl font-mono font-bold text-[#15161A] dark:text-[#F8FAFC]">
                   ${results.totalDeliveredCostPerTon.toFixed(2)}
                   <span className="text-xs font-normal text-[#8E919B] ml-1">/ ton</span>
                 </div>
@@ -179,17 +179,17 @@ export const WhatIfSimulator: React.FC = () => {
 
             {/* KPI 2: Annual Economic Delta */}
             <div className="p-5 rounded-2xl glass-surface relative overflow-hidden flex flex-col justify-between">
-              <div className="flex items-center justify-between text-xs text-[#61646E] dark:text-[#A6A8B0] mb-2">
+              <div className="flex items-center justify-between text-xs text-[#61646E] dark:text-[#94A3B8] mb-2">
                 <span className="uppercase font-mono text-[10px]">Annual Financial Impact</span>
                 <TrendingDown className="w-4 h-4 text-[#9D1738]" />
               </div>
               <div>
-                <div className="text-2xl sm:text-3xl font-mono font-bold text-[#15161A] dark:text-[#F4F1EC]">
+                <div className="text-2xl sm:text-3xl font-mono font-bold text-[#15161A] dark:text-[#F8FAFC]">
                   {results.grossAnnualEconomicDelta >= 0 ? '+' : ''}$
                   {(results.grossAnnualEconomicDelta / 1000).toFixed(1)}k
                   <span className="text-xs font-normal text-[#8E919B] ml-1">/ yr</span>
                 </div>
-                <div className="text-xs mt-1 text-[#61646E] dark:text-[#A6A8B0]">
+                <div className="text-xs mt-1 text-[#61646E] dark:text-[#94A3B8]">
                   Across {params.annualTonnage.toLocaleString()} metric tons delivered
                 </div>
               </div>
@@ -200,12 +200,12 @@ export const WhatIfSimulator: React.FC = () => {
 
             {/* KPI 3: Net Avoided CO2e */}
             <div className="p-5 rounded-2xl glass-surface relative overflow-hidden flex flex-col justify-between">
-              <div className="flex items-center justify-between text-xs text-[#61646E] dark:text-[#A6A8B0] mb-2">
+              <div className="flex items-center justify-between text-xs text-[#61646E] dark:text-[#94A3B8] mb-2">
                 <span className="uppercase font-mono text-[10px]">Carbon Abatement</span>
                 <Leaf className="w-4 h-4 text-emerald-500" />
               </div>
               <div>
-                <div className="text-2xl sm:text-3xl font-mono font-bold text-[#15161A] dark:text-[#F4F1EC]">
+                <div className="text-2xl sm:text-3xl font-mono font-bold text-[#15161A] dark:text-[#F8FAFC]">
                   {results.netAvoidedCO2ePerTonKg > 0 ? '+' : ''}
                   {results.netAvoidedCO2ePerTonKg.toFixed(0)}
                   <span className="text-xs font-normal text-[#8E919B] ml-1">kg CO2e / t</span>
@@ -221,16 +221,16 @@ export const WhatIfSimulator: React.FC = () => {
 
             {/* KPI 4: Haulage Break-Even Limit */}
             <div className="p-5 rounded-2xl glass-surface relative overflow-hidden flex flex-col justify-between">
-              <div className="flex items-center justify-between text-xs text-[#61646E] dark:text-[#A6A8B0] mb-2">
+              <div className="flex items-center justify-between text-xs text-[#61646E] dark:text-[#94A3B8] mb-2">
                 <span className="uppercase font-mono text-[10px]">Carbon Break-Even Distance</span>
                 <Gauge className="w-4 h-4 text-[#91AAB8]" />
               </div>
               <div>
-                <div className="text-2xl sm:text-3xl font-mono font-bold text-[#15161A] dark:text-[#F4F1EC]">
+                <div className="text-2xl sm:text-3xl font-mono font-bold text-[#15161A] dark:text-[#F8FAFC]">
                   {results.breakEvenDistanceKm}
                   <span className="text-xs font-normal text-[#8E919B] ml-1">km radius</span>
                 </div>
-                <div className="text-xs mt-1 text-[#61646E] dark:text-[#A6A8B0]">
+                <div className="text-xs mt-1 text-[#61646E] dark:text-[#94A3B8]">
                   Distance where freight footprint cancels savings
                 </div>
               </div>
@@ -245,7 +245,7 @@ export const WhatIfSimulator: React.FC = () => {
             <span className="font-mono text-[10px] uppercase tracking-widest text-[#9D1738] dark:text-[#E899AA] block font-semibold">
               Delivered Cost Formula
             </span>
-            <div className="font-mono text-[11px] text-[#15161A] dark:text-[#F4F1EC] bg-black/[0.03] dark:bg-white/[0.04] p-2.5 rounded-lg overflow-x-auto">
+            <div className="font-mono text-[11px] text-[#15161A] dark:text-[#F8FAFC] bg-black/[0.03] dark:bg-white/[0.04] p-2.5 rounded-lg break-words">
               DeliveredCost = GatePrice($15) + (Distance({params.distanceKm}km) × $0.18) + Prep(${params.preprocessingCostPerTon}) + QA($3.50) = ${results.totalDeliveredCostPerTon}/t
             </div>
           </div>

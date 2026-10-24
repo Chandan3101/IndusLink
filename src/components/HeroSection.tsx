@@ -4,6 +4,7 @@
  */
 
 import React, { useState } from 'react';
+import { motion } from 'motion/react';
 import { ArrowRight, Factory, FileSpreadsheet, Cpu, Building2, CheckCircle2, AlertTriangle, HelpCircle, ShieldCheck, Activity } from 'lucide-react';
 import { SectionId } from '../types/index.ts';
 
@@ -109,7 +110,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onOpenAcce
     <section
       id="home"
       aria-label="Home section"
-      className="relative min-h-screen pt-28 pb-20 md:py-36 flex flex-col justify-center overflow-hidden"
+      className="relative min-h-screen pt-28 pb-20 md:py-36 flex flex-col justify-center overflow-hidden scroll-mt-24 md:scroll-mt-32"
     >
       {/* Cinematic Liquid-Glass Background Environment */}
       <div className="absolute inset-0 pointer-events-none -z-10 overflow-hidden">
@@ -117,17 +118,17 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onOpenAcce
         <img
           src="/src/assets/images/hero_industrial_facility_1792836301559.jpg"
           alt="Modern sustainable heavy industrial facility architecture at evening twilight"
-          className="w-full h-full object-cover object-center opacity-30 dark:opacity-35 scale-105 transition-transform duration-1000 ease-out"
+          className="w-full h-full object-cover object-center opacity-15 dark:opacity-20 scale-105 transition-transform duration-1000 ease-out"
           referrerPolicy="no-referrer"
         />
 
         {/* Ambient Industrial Atmospheric Scrim */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#FAF7F2]/90 via-[#FAF7F2]/75 to-[#FAF7F2] dark:from-[#101114]/92 dark:via-[#101114]/85 dark:to-[#101114]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#F7F5F0]/85 via-[#F7F5F0]/60 to-[#F7F5F0] dark:from-[#0B0D11]/88 dark:via-[#0B0D11]/70 dark:to-[#0B0D11]" />
 
         {/* Liquid Glass Volumetric Burgundy & Metallic Blooms */}
-        <div className="absolute top-1/4 left-1/4 w-[480px] h-[480px] bg-[#9D1738]/12 dark:bg-[#9D1738]/18 blur-[130px] rounded-full pointer-events-none" />
-        <div className="absolute bottom-1/4 right-1/4 w-[420px] h-[420px] bg-[#C9AA79]/10 dark:bg-[#C9AA79]/12 blur-[120px] rounded-full pointer-events-none" />
-        <div className="absolute top-2/3 right-1/3 w-[360px] h-[360px] bg-[#91AAB8]/8 dark:bg-[#91AAB8]/10 blur-[110px] rounded-full pointer-events-none" />
+        <div className="absolute top-1/4 left-1/4 w-[480px] h-[480px] bg-[#9D1738]/10 dark:bg-[#9D1738]/16 blur-[130px] rounded-full pointer-events-none" />
+        <div className="absolute bottom-1/4 right-1/4 w-[420px] h-[420px] bg-[#C9AA79]/8 dark:bg-[#C9AA79]/10 blur-[120px] rounded-full pointer-events-none" />
+        <div className="absolute top-2/3 right-1/3 w-[360px] h-[360px] bg-[#38BDF8]/6 dark:bg-[#38BDF8]/8 blur-[110px] rounded-full pointer-events-none" />
 
         {/* Delicate Technical Grid Mesh */}
         <div
@@ -139,10 +140,15 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onOpenAcce
         />
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
           {/* Left Column: Asymmetric Editorial Hierarchy (Col 6) */}
-          <div className="lg:col-span-6 space-y-6">
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            className="lg:col-span-6 space-y-6"
+          >
             {/* Eyebrow */}
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full glass-surface text-xs font-semibold tracking-widest text-[#9D1738] dark:text-[#E899AA] uppercase">
               <span className="w-1.5 h-1.5 rounded-full bg-[#9D1738] dark:bg-[#E899AA] animate-pulse" aria-hidden="true" />
@@ -150,30 +156,33 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onOpenAcce
             </div>
 
             {/* Headline */}
-            <h1 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-medium tracking-tight text-[#15161A] dark:text-[#F4F1EC] text-balance leading-[1.1]">
-              “What one industry discards, another could put to use.”
+            <h1 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-medium tracking-tight text-[#15161A] dark:text-[#F8FAFC] text-balance leading-[1.1]">
+              Turn Industrial Byproducts Into Valuable Resources.
             </h1>
+            <p className="font-serif italic text-sm sm:text-base text-[#9D1738] dark:text-[#E899AA]">
+              What one industry discards, another could put to use.
+            </p>
 
             {/* Supporting Copy */}
-            <p className="text-base sm:text-lg text-[#61646E] dark:text-[#A6A8B0] leading-relaxed max-w-xl">
-              Evaluate potential industrial resource exchanges through compatibility, delivered cost, environmental impact, and evidence.
+            <p className="text-base sm:text-lg text-[#61646E] dark:text-[#94A3B8] leading-relaxed max-w-xl">
+              Evaluate potential industrial resource exchanges through material compatibility, technical evidence, delivered cost, and environmental impact.
             </p>
 
             {/* CTAs */}
             <div className="flex flex-wrap items-center gap-3 pt-2">
               <button
-                onClick={() => onNavigate('opportunities')}
-                className="flex items-center gap-2 px-6 py-3.5 rounded-full text-xs sm:text-sm font-semibold bg-[#9D1738] hover:bg-[#B81D43] text-[#F4F1EC] shadow-[0_0_20px_rgba(157,23,56,0.35)] active:scale-[0.98] transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#9D1738]"
+                onClick={() => onNavigate('explore')}
+                className="flex items-center gap-2 px-6 py-3.5 rounded-full text-xs sm:text-sm font-semibold bg-[#9D1738] hover:bg-[#BE185D] text-[#F8FAFC] shadow-[0_0_20px_rgba(157,23,56,0.35)] active:scale-[0.98] transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#9D1738]"
               >
-                <span>Explore IndusLink</span>
+                <span>Explore the Platform</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
 
               <button
-                onClick={() => onNavigate('evaluation')}
-                className="px-6 py-3.5 rounded-full text-xs sm:text-sm font-semibold glass-surface text-[#15161A] dark:text-[#F4F1EC] hover:bg-black/5 dark:hover:bg-white/10 active:scale-[0.98] transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#9D1738]"
+                onClick={() => onOpenAccess('start')}
+                className="px-6 py-3.5 rounded-full text-xs sm:text-sm font-semibold glass-surface text-[#15161A] dark:text-[#F8FAFC] hover:bg-black/5 dark:hover:bg-white/10 active:scale-[0.98] transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#9D1738]"
               >
-                How It Works
+                Sign In / Get Started
               </button>
             </div>
 
@@ -192,10 +201,15 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onOpenAcce
                 <span>Traceable Evidence</span>
               </div>
             </div>
-          </div>
+          </motion.div>
 
           {/* Right Column: Immersive Liquid-Glass Evaluation Sequence Visual (Col 6) */}
-          <div className="lg:col-span-6">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.85, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+            className="lg:col-span-6"
+          >
             <div className="glass-surface-elevated rounded-3xl p-5 sm:p-7 relative overflow-hidden shadow-2xl transition-all">
               {/* Subtle top edge burgundy sheen */}
               <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#9D1738] to-transparent opacity-90" />
@@ -205,7 +219,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onOpenAcce
                   <span className="text-[10px] font-mono tracking-widest text-[#9D1738] dark:text-[#E899AA] uppercase block">
                     Dynamic Pathway Validation
                   </span>
-                  <h2 className="font-serif text-lg sm:text-xl font-semibold text-[#15161A] dark:text-[#F4F1EC]">
+                  <h2 className="font-serif text-lg sm:text-xl font-semibold text-[#15161A] dark:text-[#F8FAFC]">
                     Resource Evaluation Conduits
                   </h2>
                 </div>
@@ -244,10 +258,10 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onOpenAcce
                           }`}
                         />
                       </div>
-                      <h3 className="font-sans font-semibold text-xs text-[#15161A] dark:text-[#F4F1EC] leading-tight mb-0.5 truncate">
+                      <h3 className="font-sans font-semibold text-xs text-[#15161A] dark:text-[#F8FAFC] leading-tight mb-0.5 break-words">
                         {step.title}
                       </h3>
-                      <p className="text-[10px] text-[#8E919B] truncate">
+                      <p className="text-[10px] text-[#94A3B8] leading-snug break-words">
                         {step.subtitle}
                       </p>
 
@@ -267,7 +281,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onOpenAcce
                     <span className="font-mono text-[10px] uppercase tracking-wider text-[#9D1738] dark:text-[#E899AA] block">
                       Active Node Specification
                     </span>
-                    <h4 className="font-serif text-base sm:text-lg font-semibold text-[#15161A] dark:text-[#F4F1EC]">
+                    <h4 className="font-serif text-base sm:text-lg font-semibold text-[#15161A] dark:text-[#F8FAFC]">
                       {activeStep.details.headline}
                     </h4>
                   </div>
@@ -276,7 +290,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onOpenAcce
                   </span>
                 </div>
 
-                <p className="text-xs text-[#61646E] dark:text-[#A6A8B0] leading-relaxed">
+                <p className="text-xs text-[#61646E] dark:text-[#94A3B8] leading-relaxed">
                   {activeStep.details.description}
                 </p>
 
@@ -285,11 +299,11 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onOpenAcce
                   {activeStep.details.sampleData.map((item, i) => (
                     <div
                       key={i}
-                      className="flex items-center justify-between gap-2 p-2 rounded-xl bg-black/[0.02] dark:bg-white/[0.03] border border-black/5 dark:border-white/5 text-xs"
+                      className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1.5 p-2 rounded-xl bg-black/[0.02] dark:bg-white/[0.03] border border-black/5 dark:border-white/5 text-xs"
                     >
-                      <span className="text-[#8E919B] truncate">{item.label}</span>
-                      <div className="flex items-center gap-1.5 shrink-0">
-                        <span className="font-mono font-medium text-[#15161A] dark:text-[#F4F1EC] text-[11px]">
+                      <span className="text-[#94A3B8] leading-snug break-words">{item.label}</span>
+                      <div className="flex items-start gap-1.5 min-w-0 sm:shrink-0">
+                        <span className="font-mono font-medium text-[#15161A] dark:text-[#F8FAFC] text-[11px] leading-snug break-words min-w-0">
                           {item.value}
                         </span>
                         {item.status === 'verified' && (
@@ -307,7 +321,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onNavigate, onOpenAcce
                 </div>
               </div>
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>
